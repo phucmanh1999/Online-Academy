@@ -1,0 +1,23 @@
+{
+  "name": "online-academy",
+  "version": "1.0.0",
+  "description": "Final Project Web\r HCMUS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phucmanh1999/Online-Academy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phucmanh1999/Online-Academy/issues"
+  },
+  "homepage": "https://github.com/phucmanh1999/Online-Academy#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.5.1"
+  }
+}
