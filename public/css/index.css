@@ -36,6 +36,21 @@ body {
   outline: none;
 }
 
+/* Introduce */
+.introduce-website {
+  position: relative;
+}
+
+.introduce-website div {
+  position: absolute;
+  display: inline-block;
+  padding: 15px;
+  top: 20%;
+  left: 10%;
+  background: #fff;
+}
+
+/* Carousel */
 .carousel-indicators li {
   background-color: #000;
   width: 7px;
@@ -47,13 +62,121 @@ body {
   bottom: -38px;
 }
 
+
+/* Courses */
 .courses span {
   display: block;
   font-weight: bold;
-  font-size: larger;
+  font-size: 25px;
   margin-bottom: 10px !important;
 }
 
 .carousel-item img {
   border-radius: 5px;
+}
+
+.courses-group-title span{
+  padding: 0 15px;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.courses-item a:hover {
+  text-decoration: none;
+}
+
+.courses-item-title {
+  font-weight: bold;
+  color: #000;
+}
+
+.courses-item-lectures {
+  color: #555;
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.courses-item-img {
+  position: relative;
+}
+
+.courses-item-img img {
+  border-radius: 5px;
+}
+
+.courses-item-img div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.courses-item:hover .courses-item-img div{
+  opacity: 0.3;
+}
+
+.courses-item-star {
+  color: #be5a0e;
+  font-size: 15px;
+}
+
+.courses-item-star i{
+  font-size: 12px;
+}
+
+.courses-item-price {
+  color: #000;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.courses-item-price span {
+  font-weight: 400;
+  text-decoration: line-through;
+  color: #555;
+  margin-left: 5px;
+  font-size: 0.9rem
+}
+
+
+/* footer */
+.logo {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.footer-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 10px 30px;
+}
+
+.footer-text a {
+  color: #0f7c90;
+}
+
+.footer ul{
+  padding-left: 30px;
+}
+
+.footer li a{
+  color: #0f7c90 !important;
+}
+
+.footer li a:hover {
+  text-decoration: none;
+  color: #035b70 !important;
+}
+
+.footer-logo {
+  padding: 30px;
 }
