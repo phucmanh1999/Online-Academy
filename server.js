@@ -1,11 +1,15 @@
 const express = require('express')
+const router = require('./router')
 const pg = require('pg')
+const path = require('path')
 
 const port = process.env.PORT||3000
 const app = express()
 
-app.get('/', (req,res) =>{
-    res.send("Online Academy")
-})
+app.use("/",router)
 
-app.listen(port,() => console.log("App available at http://localhost:3000"))
+app.set('views', path.join(__dirname, '/views'));
+app.set('view engine', 'ejs')
+app.use(express.static(__dirname + '/public'));
+
+app.listen(port,() => console.log(`App listen on ${port}`))
