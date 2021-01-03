@@ -50,7 +50,7 @@ let data = [
 ]
 
 router.get('/', (req, res) => {
-  res.render("index", {data});
+  res.render("user/index", {data, user: {username: "Nguyen Anh Nam"}});
 })
 
 module.exports = router
