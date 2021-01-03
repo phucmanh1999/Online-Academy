@@ -16,7 +16,7 @@ CREATE TABLE roles ( -- admin, học viên, giảng viên
 	id serial PRIMARY KEY,
 	roleName VARCHAR ( 50 ) UNIQUE NOT NULL,
 	createdAt TIMESTAMP NOT NULL,
-    updatedAt TIMESTAMP 
+    updatedAt TIMESTAMP
 );
 
 -- Unlike VARCHAR, The CHARACTER or  CHAR without the length specifier (n) is the same as the CHARACTER(1) or CHAR(1).
@@ -39,11 +39,11 @@ CREATE TABLE users (
     userAddress VARCHAR(255),
 	createdAt TIMESTAMP NOT NULL,
     updatedAt TIMESTAMP,
-    lastLogin TIMESTAMP, 
+    lastLogin TIMESTAMP,
     roleId INTEGER NOT NULL REFERENCES roles(id)
 
 );
--- 3 bảng update các cột sau :v 
+-- 3 bảng update các cột sau :v
 CREATE TABLE student ( -- mua khóa học, đánh giá khóa học, danh sách khóa học yêu thích
 	id serial PRIMARY KEY,
     userId INTEGER NOT NULL REFERENCES users(id),
@@ -78,7 +78,7 @@ CREATE TABLE categories (
 CREATE TABLE courses (
 	id serial PRIMARY KEY,
 	courseName VARCHAR (255) UNIQUE NOT NULL,
-    avatarUrl VARCHAR(255),
+    imgPath VARCHAR(255),
     shortDescription TEXT,
     fullDescription TEXT,
     --videoPresentUrl VARCHAR(255),???
@@ -166,5 +166,5 @@ insert into roles values (DEFAULT,'Student',current_timestamp,current_timestamp)
 
 -- user table
 
-insert into users (id,userName,userPassword,email,createdAt,updatedAt,lastLogin,roleId
+insert into users (id,userName,userPassword,email,createdAt,updatedAt,lastLogin,roleId)
             values (DEFAULT,'phucmanh1999','12345678','phucmanh1999@gmail.com',current_timestamp,current_timestamp,current_timestamp,3)

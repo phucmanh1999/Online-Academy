@@ -1,12 +1,11 @@
 const express = require('express')
-const router = require('./router')
 const pg = require('pg')
 const path = require('path')
 
 const port = process.env.PORT||3000
 const app = express()
 
-app.use("/",router)
+app.use("/",require('./routes/index'))
 
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs')
