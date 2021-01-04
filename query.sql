@@ -155,16 +155,4 @@ CREATE TABLE courseBought(-- khóa học đã đc mua:  nhiều - nhiều
     updatedAt TIMESTAMP
 );
 
---insert data
 
---roles table
-insert into roles values (DEFAULT,'Administrator',current_timestamp,current_timestamp);
-insert into roles values (DEFAULT,'Instructor',current_timestamp,current_timestamp);
-insert into roles values (DEFAULT,'Student',current_timestamp,current_timestamp);
-
---select * from roles;
-
--- user table
-
-insert into users (id,userName,userPassword,email,createdAt,updatedAt,lastLogin,roleId)
-            values (DEFAULT,'phucmanh1999','12345678','phucmanh1999@gmail.com',current_timestamp,current_timestamp,current_timestamp,3)

@@ -1,2 +1,32 @@
+
+--insert data
+
+--roles table
+insert into roles values (DEFAULT,'Administrator',current_timestamp,current_timestamp);
+insert into roles values (DEFAULT,'Instructor',current_timestamp,current_timestamp);
+insert into roles values (DEFAULT,'Student',current_timestamp,current_timestamp);
+
+--select * from roles;
+
+-- user table
 insert into users (id,userName,userPassword,email,createdAt,updatedAt,lastLogin,roleId)
             values (DEFAULT,'phucmanh1999','12345678','phucmanh1999@gmail.com',current_timestamp,current_timestamp,current_timestamp,3)
+
+-- categories
+insert into categories (id,categoryName,createdAt,updatedAt)
+			values (DEFAULT,'Mobile',current_timestamp,current_timestamp);
+insert into categories (id,categoryName,createdAt,updatedAt)
+			values (DEFAULT,'Web',current_timestamp,current_timestamp);
+
+-- courses
+insert into courses (id, courseName, imgPath, shortDescription, price, concurrency , viewNumber, createdAt, updatedAt, categoryId, instructorId)
+			values (DEFAULT, 'Artificial Intelligence A-Z™: Learn How To Build An AI', '/assets/images/Course3.jpg', 'This is the lectures of courses and have many word', '9.99', 'USD', 1000, current_timestamp, current_timestamp, 1, 1);
+insert into courses (id, courseName, imgPath, shortDescription, price, rating, concurrency , viewNumber, createdAt, updatedAt, categoryId, instructorId)
+			values (DEFAULT, 'React-native for beginer', '/assets/images/Course4.jpg', 'This is the lectures of courses and have many word', '9.99', 4.5, 'USD', 1234, current_timestamp, current_timestamp, 1, 1);
+insert into courses (id, courseName, imgPath, shortDescription, price, rating, concurrency , viewNumber, createdAt, updatedAt, categoryId, instructorId)
+			values (DEFAULT, 'Flutter for beginer', '/assets/images/Course4.jpg', 'This is the lectures of courses and have many word', '9.99', 4.5, 'USD', 1234, current_timestamp, current_timestamp, 1, 1);
+insert into courses (id, courseName, imgPath, shortDescription, price, rating, concurrency , viewNumber, createdAt, updatedAt, categoryId, instructorId)
+			values (DEFAULT, 'Java for beginer', '/assets/images/Course6.jpg', 'This is the lectures of courses and have many word', '9.99', 1.2, 'USD', 3231, current_timestamp, current_timestamp, 1, 1);
+insert into courses (id, courseName, imgPath, shortDescription, price, rating, concurrency , viewNumber, createdAt, updatedAt, categoryId, instructorId)
+			values (DEFAULT, 'Kotlin for beginer', '/assets/images/Course7.jpg', 'This is the lectures of courses and have many word', '9.99', 4.9, 'USD', 323, current_timestamp, current_timestamp, 1, 1);
+

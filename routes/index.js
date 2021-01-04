@@ -1,5 +1,6 @@
 const express = require("express")
 const Course = require("../Model/Course");
+const Category = require("../Model/Category");
 const router = express.Router()
 
 let data = [
@@ -54,7 +55,10 @@ router.get('/', (req, res) => {
 
     Course.findAll().then((courses) => {
         console.log(courses)
-        res.render("index", {'courses': courses});
+        Category.findAll().then((categories) => {
+            console.log(categories)
+            res.render("index", {data});
+        })
     })
 })
 
