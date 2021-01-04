@@ -1,6 +1,6 @@
-const sequelize = require('sequelize')
+const {Sequelize} = require('sequelize')
 
-const database = new sequelize({
+const database = new Sequelize({
     database: "online-academy",
     username: "postgres",
     password: "1",

@@ -1,7 +1,7 @@
 const database = require('../database')
 const sequelize = require('sequelize')
 
-const Category = database.define('categories', {
+const Category = database.define('Category', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
@@ -17,6 +17,7 @@ const Category = database.define('categories', {
     {
         timestamps: false,
         paranoid: true,
+        tableName: 'categories',
     }
 )
 

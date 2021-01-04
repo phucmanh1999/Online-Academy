@@ -1,6 +1,7 @@
 const express = require("express")
 const Course = require("../Model/Course");
 const Category = require("../Model/Category");
+const Instructor = require("../Model/Instructor");
 const router = express.Router()
 
 let data = [
@@ -52,16 +53,27 @@ let data = [
 ]
 
 router.get('/', (req, res) => {
-
-    Course.findAll().then((courses) => {
-        console.log(courses)
-        Category.findAll().then((categories) => {
-            console.log(categories)
-            res.render("index", {data});
-        })
+    // res.render("index",{data})
+    Category.findAll({
+        include: [{
+            model: Course
+        }]
+    }).then((ca) => {
+        console.log(ca)
     })
+    //     .then((courses) => {
+    //     console.log(courses)
+    //     Category.findAll(
+    //         {
+    //             include: [{
+    //                 model: Course,
+    //             }]
+    //         }).then((categories) => {
+    //         console.log(categories)
+    //         res.render("index", {data});
+    //     })
+    // })
 })
-
 
 
 module.exports = router

@@ -1,7 +1,7 @@
 const express = require('express')
 const pg = require('pg')
 const path = require('path')
-
+require('./Model/relationalMapping')
 const port = process.env.PORT||3000
 const app = express()
 
