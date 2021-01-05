@@ -6,7 +6,7 @@ const Instructor = database.define('Instructor', {
             primaryKey: true,
             type: sequelize.INTEGER,
         },
-        userid: {
+        user_id: {
             type: sequelize.INTEGER,
             notNull: true,
         },

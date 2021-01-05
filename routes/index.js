@@ -1,8 +1,10 @@
 const express = require("express")
-const Course = require("../Model/Course");
-const Category = require("../Model/Category");
-const Instructor = require("../Model/Instructor");
+const {getNewestCourses} = require("../Services/course-service");
+const {getHighLightCourses} = require("../Services/course-service");
+const {getCourseByTopView} = require("../Services/course-service");
+const {getAllCategories} = require("../Services/category-service");
 const router = express.Router()
+
 
 let data = [
     {
@@ -52,16 +54,17 @@ let data = [
     }
 ]
 
-router.get('/', (req, res) => {
-    // res.render("index",{data})
-    Category.findAll({
-        include: [{
-            model: Course,
-        }]
-    }).then((ca) => {
-        console.log(ca)
-        res.render("index", {data});
+router.get('/', async (req, res) => {
+    getNewestCourses().then(rs => {
+        console.log(rs)
     })
+    res.render('index', {
+        user: null,
+        categories: await getAllCategories(),
+        topTenViewCourses: await getCourseByTopView(),
+        highLightCourses: await getHighLightCourses(),
+        topNewCourses: await getNewestCourses(),
+    });
 })
 
 
