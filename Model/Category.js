@@ -6,13 +6,13 @@ const Category = database.define('Category', {
             primaryKey: true,
             type: sequelize.INTEGER,
         },
-        categoryname: {
+        category_name: {
             type: sequelize.STRING(255),
             unique: true,
             notNull: true,
         },
-        createdat: sequelize.DATE,
-        updatedat: sequelize.DATE,
+        created_at: sequelize.DATE,
+        updated_at: sequelize.DATE,
     },
     {
         timestamps: false,

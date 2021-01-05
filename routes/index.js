@@ -56,23 +56,12 @@ router.get('/', (req, res) => {
     // res.render("index",{data})
     Category.findAll({
         include: [{
-            model: Course
+            model: Course,
         }]
     }).then((ca) => {
         console.log(ca)
+        res.render("index", {data});
     })
-    //     .then((courses) => {
-    //     console.log(courses)
-    //     Category.findAll(
-    //         {
-    //             include: [{
-    //                 model: Course,
-    //             }]
-    //         }).then((categories) => {
-    //         console.log(categories)
-    //         res.render("index", {data});
-    //     })
-    // })
 })
 
 
