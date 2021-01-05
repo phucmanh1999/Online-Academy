@@ -100,6 +100,7 @@ CREATE TABLE courses (
 
 CREATE TABLE chapters( -- một khóa học có nhiều chương 1 2 3 ...
     id serial PRIMARY KEY,
+    chapterName VARCHAR(255),    
     courseId INTEGER NOT NULL REFERENCES courses(id),
     lessonNumber INTEGER,
     shortDescription TEXT,

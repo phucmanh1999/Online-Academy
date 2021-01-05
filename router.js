@@ -53,4 +53,19 @@ router.get('/', (req, res) => {
   res.render("user/index", {data});
 })
 
+let category = [
+  {
+    id:"1",
+    categoryName: "Web"
+  },
+  {
+    id:"2",
+    categoryName: "Mobile"
+  }
+]
+
+router.get('/instructor/addCourse', (req,res) => {
+  res.render("instructor/addCourse",{category})
+})
+
 module.exports = router
