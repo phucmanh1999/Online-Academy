@@ -332,4 +332,8 @@ router.get("/category", (req, res) => {
   res.render("user/category", {data: data.slice(20*(p-1), 20*p), length: data.length, p})
 })
 
+router.get("/course/:id", (req, res) => {
+  res.render("user/course")
+})
+
 module.exports = router

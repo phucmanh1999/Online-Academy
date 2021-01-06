@@ -1,12 +1,13 @@
 const express = require('express')
-const router = require('./router')
 const pg = require('pg')
 const path = require('path')
-
+require('./Model/relationalMapping')
 const port = process.env.PORT||3000
 const app = express()
 
-app.use("/",router)
+app.use("/",require('./routes/index'))
+// app.use("/", require('./router'))
+app.use("/authentication",require('./routes/authentication'))
 
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs')
