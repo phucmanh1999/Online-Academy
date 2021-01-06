@@ -6,7 +6,7 @@ const UserService = require('../Services/user-service')
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 router.get('/', (req, res) => {
-    UserService.findAll().then(users => {
+    UserService.getAllUsers().then(users => {
         console.log(users)
     })
 })
