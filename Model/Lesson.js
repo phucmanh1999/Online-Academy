@@ -5,6 +5,7 @@ const Lesson = database.define('Lesson', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         chapter_id: sequelize.INTEGER,
         lesson_name: sequelize.STRING(255),

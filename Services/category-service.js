@@ -7,7 +7,7 @@ const getAllCategories = async () => {
             limit: 5,
         }]
     });
-    return categories.map(c => c.toJSON());
+    return categories;
 }
 
 module.exports = {

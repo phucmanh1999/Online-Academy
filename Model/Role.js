@@ -5,6 +5,7 @@ const Role = database.define('Role', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         role_name: sequelize.STRING(50),
         created_at: sequelize.DATE,

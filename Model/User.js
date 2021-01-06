@@ -5,6 +5,7 @@ const User = database.define('User', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         user_name: sequelize.STRING(255),
         user_password: sequelize.STRING(255),

@@ -1,7 +1,7 @@
 const database = require('../database')
 const sequelize = require('sequelize')
 
-const Administrator = database.define('Administrator', {
+const Student = database.define('Student', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
@@ -11,12 +11,13 @@ const Administrator = database.define('Administrator', {
             type: sequelize.INTEGER,
             notNull: true,
         },
+        buy_number: sequelize.INTEGER,
     },
     {
         timestamps: false,
         paranoid: true,
-        tableName: 'administrator',
+        tableName: 'student',
     }
 )
 
-module.exports = Administrator
+module.exports = Student

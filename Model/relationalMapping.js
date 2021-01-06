@@ -5,6 +5,8 @@ const User = require("./User");
 const Role = require("./Role");
 const Chapter = require("./Chapter");
 const Lesson = require("./Lesson");
+const Student = require("./Student");
+const Administrator = require("./Administrator");
 
 Category.hasMany(Course, {foreignKey: 'id'})
 Instructor.hasMany(Course, {foreignKey: 'id'})
@@ -18,3 +20,8 @@ Lesson.belongsTo(Chapter, {foreignKey: 'chapter_id'})
 Course.belongsTo(Category, {foreignKey: 'category_id'})
 User.hasOne(Instructor, {foreignKey: 'id'})
 Instructor.belongsTo(User, {foreignKey: 'user_id'})
+User.hasOne(Student, {foreignKey: 'id'})
+Student.belongsTo(User, {foreignKey: 'user_id'})
+User.hasOne(Administrator, {foreignKey: 'id'})
+Administrator.belongsTo(User, {foreignKey: 'user_id'})
+

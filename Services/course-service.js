@@ -17,7 +17,7 @@ const getAllCourses = async () => {
         },
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getCourseByTopView = async () => {
@@ -35,7 +35,7 @@ const getCourseByTopView = async () => {
             ['view_number', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getHighLightCourses = async () => {
@@ -53,7 +53,7 @@ const getHighLightCourses = async () => {
             ['view_number', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getNewestCourses = async () => {
@@ -71,7 +71,7 @@ const getNewestCourses = async () => {
             ['created_at', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
@@ -91,7 +91,7 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
     })
 
     const count = result.count
-    const courses = result.rows.map(course => course.toJSON());
+    const courses = result.rows;
 
     return {count, courses}
 }

@@ -3,9 +3,11 @@ const pg = require('pg')
 const path = require('path')
 const port = process.env.PORT||3000
 const app = express()
+const bodyParser = require('body-parser')
 
-require('./auth/auth')
 require('./Model/relationalMapping')
+
+app.use(bodyParser.json());
 
 app.use("/",require('./routes/index'))
 app.use("/courses",require('./routes/courses'))
