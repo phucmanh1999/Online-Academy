@@ -4,14 +4,8 @@ const router = express.Router()
 const UserService = require('../Services/user-service')
 
 const urlencodedParser = bodyParser.urlencoded({extended: false})
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
-
-router.get('/', (req, res) => {
-    UserService.getAllUsers().then(users => {
-        console.log(users)
-    })
-})
 
 // passport.use(
 //     'signup',
@@ -32,36 +26,39 @@ router.get('/', (req, res) => {
 //     )
 // );
 
-// ...
+router.post(
+    '/login',
+    async (req, res, next) => {
+        passport.authenticate(
+            'login',
+            async (err, user, info) => {
+                try {
+                    if (err || !user) {
+                        const error = new Error('An error occurred.');
 
-passport.use(
-    'login',
-    new localStrategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password'
-        },
-        async (email, password, done) => {
-            try {
-                const user = await UserModel.findOne({ email });
+                        return next(error);
+                    }
 
-                if (!user) {
-                    return done(null, false, { message: 'User not found' });
+                    req.login(
+                        user,
+                        { session: false },
+                        async (error) => {
+                            if (error) return next(error);
+
+                            const body = { _id: user._id, email: user.email };
+                            const token = jwt.sign({ user: body }, 'TOP_SECRET');
+
+                            return res.json({ token });
+                        }
+                    );
+                } catch (error) {
+                    return next(error);
                 }
-
-                const validate = await user.isValidPassword(password);
-
-                if (!validate) {
-                    return done(null, false, { message: 'Wrong Password' });
-                }
-
-                return done(null, user, { message: 'Logged in Successfully' });
-            } catch (error) {
-                return done(error);
             }
-        }
-    )
+        )(req, res, next);
+    }
 );
+
 
 // router.post('/login', urlencodedParser, async function (req, res) {
 //         const email = req.body.email

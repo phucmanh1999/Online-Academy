@@ -1,9 +1,11 @@
 const express = require('express')
 const pg = require('pg')
 const path = require('path')
-require('./Model/relationalMapping')
 const port = process.env.PORT||3000
 const app = express()
+
+require('./auth/auth')
+require('./Model/relationalMapping')
 
 app.use("/",require('./routes/index'))
 app.use("/courses",require('./routes/courses'))

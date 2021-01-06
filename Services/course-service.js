@@ -74,9 +74,12 @@ const getNewestCourses = async () => {
     return courses.map(c => c.toJSON());
 }
 
-const getCoursesByCategoryId = async (categoryId, page, size) => {
+const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
     const pagination = getPagination(page, size)
     const result = await Course.findAndCountAll({
+        where: {
+            category_id: categoryId,
+        },
         limit: pagination.limit,
         offset: pagination.offset,
         include: [{

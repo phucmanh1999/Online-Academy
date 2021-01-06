@@ -20,9 +20,11 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
-    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then((result) => {
-        console.log(result)
-        res.json({result})
+    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then( async (result) => {
+        res.json({
+            categories: await getAllCategories(),
+            payload: result,
+        })
     });
 })
 

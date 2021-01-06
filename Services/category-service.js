@@ -4,7 +4,7 @@ const getAllCategories = async () => {
     const categories = await  Category.findAll({
         include: [{
             model: Course,
-            limit: 10,
+            limit: 5,
         }]
     });
     return categories.map(c => c.toJSON());

@@ -16,7 +16,17 @@ const getUser = async obj => {
     });
 }
 
+const createUser = async obj => {
+
+}
+
+const isValidPassword = async (user, password) => {
+    return password === user.user_password;
+}
+
 module.exports = {
     getAllUsers,
     getUser,
+    createUser,
+    isValidPassword,
 }
