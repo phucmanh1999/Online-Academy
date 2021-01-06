@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
-    console.log(req.params.categoryid);
     getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then((result) => {
         console.log(result)
         res.json({result})
