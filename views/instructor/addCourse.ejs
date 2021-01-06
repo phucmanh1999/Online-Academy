@@ -107,7 +107,7 @@
 
     <!-- Courses -->
     <div class="container mt-5 mb-5">
-        <form>
+        <form action="/addCourse" method="post" id="formCourse">
             <div class="form-group">
               <label for="courseName">Course name</label>
               <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?">
@@ -143,30 +143,51 @@
               <label for="concurency">Concurency</label>
               <input type="text" class="form-control" id="Concurency" placeholder="USD">
             </div>
-            <button id="addbt" type="button" class="btn btn-primary">Add Chapter</button>
-            <div class="addChapter" hidden>
-              <div class="form-group">
-                <label for="chapterName">Chapter name</label>
-                <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?">
-              </div>
-              <div class="form-group">
-                <label for="shortDescription">Short description</label>
-                <textarea class="form-control" id="shortDescription" rows="3"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="chapterName">Chapter name</label>
-                <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?">
-              </div>
-              <input class="btn btn-primary" type="submit" value="Submit this chapter">
-
+            <button id="add-chapter-btn" type="button" class="btn btn-primary" onclick = "addFunc('chapter')" >Add Chapter</button>
+            <!-- add chapter -->
+            <div  id="addChapter" style="display:none;width: 95%; margin:10px auto;"  >
+              <form action="/addChapter" method="post" id="formChapter">
+                <div class="form-group">
+                  <label for="chapterName">Chapter name</label>
+                  <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?">
+                </div>
+                <div class="form-group">
+                  <label for="shortDescription">Short description</label>
+                  <textarea class="form-control" id="shortDescription" rows="3"></textarea>
+                </div>
+                <button id="add-lesson-btn" type="button" class="btn btn-primary" onclick = "addFunc('lesson')" >Add Lesson</button>
+  
+                <!-- add lesson -->
+                <div id="addLesson" style="display:none;width: 90%; margin:10px auto;" >
+                  
+                  <form action="/addLesson" method="post" id="formLesson">
+                    <div class="form-group">
+                      <label for="lessonName">Lesson name</label>
+                      <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?">
+                    </div>
+                    <div class="form-group">
+                      <label for="shortDescription">Short description</label>
+                      <textarea class="form-control" id="shortDescription" rows="3"></textarea>
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="uploadVideo">Upload video</label>
+                        <input type="file" class="form-control-file" id="uploadVideo">
+                      </div>
+                    </form>
+                  </form>
+                  
+                  <input class="btn btn-primary" type="submit" form="formLesson" value="Submit this lesson">
+                </div>              
+          
+              </form>
+              <input class="btn btn-primary" type="submit" form="formChapter" value="Submit this chapter">
             </div>
 
-
-            <input class="btn btn-primary" type="submit" value="Submit this course">
-
           </form>
-
+          <input class="btn btn-primary" type="submit" form="formCourse" value="Submit this course">
     </div>
+
     
     <!-- Footer -->
     <div class="container-fluid footer">
@@ -221,14 +242,48 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        addFunc = (str) => {
+          let upcase = (str === "chapter") ?"Chapter":"Lesson";
+          let id = "add" + upcase;
+          let btnid = "add-" + str + "-btn" ;
+          let obj = document.getElementById(id)
+          let btnAdd = document.getElementById(btnid)
+
+          if (obj.style.display === "none")
+          {
+            obj.style.display = "block";
+            btnAdd.style.background = "red"
+            btnAdd.innerHTML = "Cancle"
+          } else {
+            obj.style.display = "none";
+            btnAdd.style.background = "#007BFF"
+            btnAdd.innerHTML = "Add " + upcase;
+          }
+
+        }
+        // $("#add-chapter-btn").click(function(){
+        //   let chapter = document.getElementById("addChapter")
+
+        //   if (chapter.style.display === "none")
+        //   {
+        //     chapter.style.display = "block";
+        //     let btnAdd = document.getElementById("add-chapter-btn")
+        //     btnAdd.style.background = "red"
+        //     btnAdd.innerHTML = "Cancle"
+        //   } else {
+        //     chapter.style.display = "none";
+        //     let btnAdd = document.getElementById("add-chapter-btn")
+        //     btnAdd.style.background = "#007BFF"
+        //     btnAdd.innerHTML = "Add Chapter"
+        //   }
+          
+        // });
+        // $("#add-lesson-btn").click(function(){
+        //   document.getElementById("addLesson").style.display = "block";
+        // });
+
+    </script>
   </body>
 </html>
 
-<script>
-  $(document).ready(function(){
-    $("#addbt").click(function(){
-      alert("ákdjasd")
-      $("addChapter").show();
-    });
-  });
-</script>
