@@ -6,6 +6,7 @@ const UserService = require('../Services/user-service')
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const bcrypt = require("bcrypt");
 const {deleteUser} = require("../Services/user-service");
 const {createAdministrator} = require("../Services/admin-service");
 const {createInstructor} = require("../Services/instructor-service");
@@ -24,10 +25,9 @@ router.post('/user', (req, res) => {
 })
 
 router.post('/signup', urlencodedParser, (req, res) => {
-
     const user = {
         user_name: req.body.name,
-        user_password: req.body.password,
+        user_password: bcrypt.hashSync(req.body.password, 10),
         email: req.body.email,
         first_name: req.body.firt_name,
         last_name: req.body.last_name,
