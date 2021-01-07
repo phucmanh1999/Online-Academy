@@ -10,43 +10,15 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passportJWT = require('passport-jwt');
 const User = require("./Model/User");
+const {applyPassportStrategy} = require("./passport-strategy");
 const {getUser} = require("./Services/user-service");
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 
 app.use(bodyParser.json());
-
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
-
-passport.use(new JWTStrategy(
-    {
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: 'secret',
-    },
-    async (jwtPayload, done) => {
-        console.log('payload received', jwtPayload);
-        User.findOne({id: jwtPayload.id}, function(err, user) {
-            if (err) {
-                return done(err, false);
-            }
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }})
-    }
-));
-
+applyPassportStrategy(passport)
 app.use(passport.initialize());
 app.set('views', path.join(__dirname, '/views'));
-
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
