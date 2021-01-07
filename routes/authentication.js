@@ -1,16 +1,16 @@
 const express = require("express")
 const router = express.Router()
-const UserService = require('../Services/user-service')
+const UserService = require('../services/user-service')
 const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcrypt = require("bcrypt");
-const {deleteUser} = require("../Services/user-service");
-const {createAdministrator} = require("../Services/admin-service");
-const {createInstructor} = require("../Services/instructor-service");
-const {createStudent} = require("../Services/student-service");
-const {getRole} = require("../Services/role-service");
+const {deleteUser} = require("../services/user-service");
+const {createAdministrator} = require("../services/admin-service");
+const {createInstructor} = require("../services/instructor-service");
+const {createStudent} = require("../services/student-service");
+const {getRole} = require("../services/role-service");
 const {ROLE_ADMIN} = require("../constant/constant");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 const {ROLE_STUDENT} = require("../constant/constant");
@@ -39,44 +39,49 @@ router.post('/signup', urlencodedParser, (req, res) => {
 
     const type = req.body.type
 
-    if (UserService.getUser({email: user.email})) {
-        res.status()
-        res.json({'msg': 'Email existed'})
-        return
-    }
+    UserService.getUser({email: user.email}).then (user => {
+        if (user) {
+            res.status(400)
+            res.json({'msg': 'Email existed'})
+            return
+        }
+    })
 
     getRole({role_name: type}).then( role => {
-        UserService.createUser({...user, role_id: role.id}).then(user => {
+        console.log(role)
+        console.log(user)
+        UserService.createUser({...user, role_id: role.id}).then(user_created => {
+            console.log(user_created)
             if (type === ROLE_INSTRUCTOR) {
                 const instructor = {
                     job_title: req.body.job_title,
                     short_description: req.body.short_description,
                     full_description: req.body.full_description,
-                    user_id: user.id
+                    user_id: user_created.id
                 }
                 console.log(instructor)
                 createInstructor(instructor).then(
                     res.json({'msg': 'Create account sucessful'})
                 ).catch(() => {
-                    deleteUser(user)
+                    deleteUser(user_created)
                 })
             } else if (type === ROLE_STUDENT) {
                 const student = {
-                    user_id: user.id
+                    user_id: user_created.id
                 }
                 createStudent(student).then(
                     res.json({'msg': 'Create account sucessful'})
                 ).catch(() => {
-                    deleteUser(user)
+                    deleteUser(user_created)
                 })
             } else if (type === ROLE_ADMIN) {
                 const admin = {
-                    user_id: user.id
+                    user_id: user_created.id
                 }
                 createAdministrator(admin).then(
                     res.json({'msg': 'Create account sucessful'})
                 ).catch(() => {
-                    deleteUser(user)
+                    deleteUser(user_created)
                 })
             }
         }).catch(() => {

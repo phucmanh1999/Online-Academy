@@ -1,6 +1,6 @@
 const passportJWT = require("passport-jwt");
 const User = require("./Model/User");
-const {getUser} = require("./Services/user-service");
+const {getUser} = require("./services/user-service");
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 
@@ -19,16 +19,20 @@ const applyPassportStrategy = passport => {
             secretOrKey: 'secret',
         },
         async (jwtPayload, done) => {
-            console.log('payload received', jwtPayload);
-            User.findOne({id: jwtPayload.id}, function(err, user) {
-                if (err) {
-                    return done(err, false);
-                }
-                if (user) {
-                    return done(null, user);
-                } else {
-                    return done(null, false);
-                }})
+            return getUser({
+                    id: jwtPayload.id
+            })
+                .then(result=>{
+                    if (result) {
+                        done(null, result);
+
+                    } else {
+                        done(null, false);
+                    }
+                })
+                .catch(err=>{
+                    done(err)
+                })
         }
     ));
 }

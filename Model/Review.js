@@ -7,6 +7,7 @@ const Review = database.define('Review', {
             type: sequelize.INTEGER,
             autoIncrement: true,
         },
+        star: sequelize.INTEGER,
         comment: sequelize.TEXT,
         student_id: sequelize.INTEGER,
         course_id: sequelize.INTEGER,

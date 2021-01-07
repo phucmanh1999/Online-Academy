@@ -11,7 +11,7 @@ const session = require("express-session");
 const passportJWT = require('passport-jwt');
 const User = require("./Model/User");
 const {applyPassportStrategy} = require("./passport-strategy");
-const {getUser} = require("./Services/user-service");
+const {getUser} = require("./services/user-service");
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 

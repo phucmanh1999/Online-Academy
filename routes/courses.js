@@ -1,6 +1,6 @@
 const express = require("express")
-const {getAllCategories} = require("../Services/category-service");
-const {getCourse} = require("../Services/course-service");
+const {getAllCategories} = require("../services/category-service");
+const {getCourse} = require("../services/course-service");
 const router = express.Router()
 
 router.get('/:id', async (req, res) => {
