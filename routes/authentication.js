@@ -1,8 +1,7 @@
-const bodyParser = require("body-parser")
 const express = require("express")
 const router = express.Router()
 const UserService = require('../Services/user-service')
-
+const bodyParser = require("body-parser")
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
@@ -39,6 +38,12 @@ router.post('/signup', urlencodedParser, (req, res) => {
     }
 
     const type = req.body.type
+
+    if (UserService.getUser({email: user.email})) {
+        res.status()
+        res.json({'msg': 'Email existed'})
+        return
+    }
 
     getRole({role_name: type}).then( role => {
         UserService.createUser({...user, role_id: role.id}).then(user => {
@@ -93,16 +98,18 @@ router.post('/login', urlencodedParser, (req, res)=>{
     }).then( async (result) =>{
         if(result) {
             if (await UserService.isValidPassword(result, password)){
-                const payload = { id: result.id, type: result.Role.role_name }
+                const data = result.dataValues
+                delete data.user_password
+                const payload = { id: data.id, type: data.Role.role_name }
                 const accessToken = jwt.sign(payload, 'secret')
-                if (result.Role.role_name === ROLE_STUDENT) {
-                    res.json({token: accessToken, user: result})
+                if (data.Role.role_name === ROLE_STUDENT) {
+                    res.json({token: accessToken, user: data})
                 }
-                else if (result.Role.role_name === ROLE_INSTRUCTOR) {
-                    res.json({token: accessToken, user: result})
+                else if (data.Role.role_name === ROLE_INSTRUCTOR) {
+                    res.json({token: accessToken, user: data})
                 }
-                else if (result.Role.role_name === ROLE_ADMIN) {
-                    res.json({token: accessToken, user: result})
+                else if (data.Role.role_name === ROLE_ADMIN) {
+                    res.json({token: accessToken, user: data})
                 }
             }
             else

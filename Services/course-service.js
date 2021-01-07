@@ -4,6 +4,8 @@ const Instructor = require("../Model/Instructor");
 const Chapter = require("../Model/Chapter");
 const Lesson = require("../Model/Lesson");
 const User = require("../Model/User");
+const Review = require("../Model/Review");
+const Student = require("../Model/Student");
 
 const getAllCourses = async () => {
     const courses = await Course.findAll({
@@ -86,6 +88,7 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
             model: Instructor,
             include: [{
                 model: User,
+                attributes: ['id', 'user_name', 'avatar_url']
             }]
         },],
     })
@@ -103,12 +106,13 @@ const getPagination = (pageNum, pageSize) => {
 };
 
 const getCourse = async obj => {
-    return await Course.findOne({
+    return Course.findOne({
         where: obj,
         include: [{
             model: Instructor,
             include: [{
                 model: User,
+                attributes: ['id', 'user_name', 'avatar_url']
             }]
         }, {
             model: Category,
@@ -118,7 +122,16 @@ const getCourse = async obj => {
                 model: Lesson,
             }
             ]
-        }
+        }, {
+            model: Review,
+            include: {
+                model: Student,
+                include: {
+                    model: User,
+                    attributes: ['id', 'user_name', 'avatar_url']
+                }
+            }
+        },
         ],
     });
 }

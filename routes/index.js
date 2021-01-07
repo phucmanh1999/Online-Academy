@@ -29,7 +29,8 @@ router.get('/category-courses/:categoryid', (req, res) => {
 })
 
 router.get('/search', (req,res) => {
-    const { citeria } = req.params;
+    const query  = req.query;
+    console.log(citeria)
 })
 
 module.exports = router
