@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {createWatchList} = require("../services/watchlist-service");
 const {createReview} = require("../services/review-services");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
@@ -22,6 +23,20 @@ router.post('/review', urlencodedParser, passport.authenticate('jwt', {session: 
     })
 })
 
-router.post('/favourite', )
+router.post('/favourite', passport.authenticate('jwt', {session: false}) , (req, res) => {
+    const course_id = req.query.course_id
+    if (req.user.Student){
+        createWatchList({
+            student_id: req.user.Student.id,
+            course_id: course_id,
+            created_at:  new Date(),
+        }).then(() => {
+            res.json({'msg': 'Add favourite success'})
+        }).catch((err) => {
+            console.log(err)
+            res.status(400)
+        })
+    }
+})
 
 module.exports = router
