@@ -31,5 +31,6 @@ app.use("/courses",require('./routes/courses'))
 app.use("/authentication",require('./routes/authentication'))
 app.use("/student",require('./routes/student'))
 app.use("/user",require('./routes/user'))
+app.use("/instructor",require('./routes/instructor'))
 
 app.listen(port,() => console.log(`App listen on ${port}`))

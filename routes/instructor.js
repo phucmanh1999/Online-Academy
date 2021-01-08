@@ -1,17 +1,15 @@
 const app = require("express")
+const {getAllCategories} = require("../services/category-service");
 const router = app.Router()
 
-router.get('/instructor/addCourse', (req,res) => {
-  res.render("instructor/addCourse",{category})
+router.get('/addCourse',  async (req,res) => {
+  res.render("instructor/addCourse",await getAllCategories)
 })
-router.get('/instructor/addChapter', (req,res) => {
-  res.render("instructor/addChapter",{category})
+router.get('/addChapter', async (req,res) => {
+  res.render("instructor/addChapter",await getAllCategories)
 })
-router.get('/instructor/addLesson', (req,res) => {
-  res.render("instructor/addLesson",{category})
+router.get('/addLesson', async (req,res) => {
+  res.render("instructor/addLesson",await getAllCategories)
 })
-
-
-
 
 module.exports = router
