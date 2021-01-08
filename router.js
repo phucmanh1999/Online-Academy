@@ -1,6 +1,7 @@
 const app = require("express")
 const router = app.Router()
-
+// const bodyParser = require('body-parser');
+// router.use(bodyParser);
 let data = [
   {
     id: "1",
@@ -67,5 +68,17 @@ let category = [
 router.get('/instructor/addCourse', (req,res) => {
   res.render("instructor/addCourse",{category})
 })
+router.get('/instructor/addChapter', (req,res) => {
+  res.render("instructor/addChapter",{category})
+})
+router.get('/instructor/addLesson', (req,res) => {
+  res.render("instructor/addLesson",{category})
+})
+
+// router.post('/addCourse', (req,res) => {
+//   console.log("req: ")
+//   console.log(req.body)
+// })
+
 
 module.exports = router
