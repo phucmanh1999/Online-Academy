@@ -7,7 +7,7 @@ const getAllCategories = async () => {
             limit: 5,
         }]
     });
-    return categories;
+    return categories.map(ca => ca.dataValues);
 }
 
 module.exports = {
