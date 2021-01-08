@@ -6,7 +6,7 @@ const Administrator = require("../Model/Administrator");
 const Student = require("../Model/Student");
 
 const getAllUsers = async () => {
-    const users = await  User.findAll({
+    const users = await User.findAll({
         include: [{
             model: Role,
         }]
@@ -17,7 +17,7 @@ const getAllUsers = async () => {
 const getUser = async obj => {
     return await User.findOne({
         where: obj,
-        include:[{
+        include: [{
             model: Role,
         }, {
             model: Instructor,
@@ -41,10 +41,23 @@ const isValidPassword = async (user, password) => {
     return await bcrypt.compare(password, user.user_password);
 }
 
+const updateUser = (_id, obj) => {
+    return User.update(
+        obj
+        ,
+        {
+            where: {
+                id: _id
+            },
+        }
+    )
+}
+
 module.exports = {
     getAllUsers,
     getUser,
     createUser,
     isValidPassword,
     deleteUser,
+    updateUser,
 }

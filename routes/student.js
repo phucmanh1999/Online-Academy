@@ -22,4 +22,6 @@ router.post('/review', urlencodedParser, passport.authenticate('jwt', {session: 
     })
 })
 
+router.post('/favourite', )
+
 module.exports = router

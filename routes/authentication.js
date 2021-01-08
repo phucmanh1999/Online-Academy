@@ -116,6 +116,7 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 else if (data.Role.role_name === ROLE_ADMIN) {
                     res.json({token: accessToken, user: data})
                 }
+                UserService.updateUser(result.id, {last_login: new Date()})
             }
             else
                 res.json({'msg': 'password is incorrect'})
