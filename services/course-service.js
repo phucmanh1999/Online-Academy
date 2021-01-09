@@ -6,6 +6,15 @@ const Lesson = require("../Model/Lesson");
 const User = require("../Model/User");
 const Review = require("../Model/Review");
 const Student = require("../Model/Student");
+const sequelize = require('sequelize')
+
+const convertDate = (dateObj) => {
+    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const day =  dateObj.getUTCDate();
+    const year =  dateObj.getUTCFullYear();
+
+    return day + "/" + month + "/" + year;
+}
 
 const getAllCourses = async () => {
     const courses = await Course.findAll({
@@ -88,7 +97,7 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
             model: Instructor,
             include: [{
                 model: User,
-                attributes: ['id', 'user_name', 'avatar_url']
+                attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
             }]
         },],
     })
@@ -110,13 +119,37 @@ const createCourse = obj => {
 }
 
 const getCourse = async obj => {
-    return Course.findOne({
+    let course = await Course.findOne({
         where: obj,
+        // attributes: [
+        //     'course_name',
+        //     'img_path',
+        //     'short_description',
+        //     'full_description',
+        //     'rating',
+        //     'rating_number',
+        //     'enroll_number',
+        //     'chapter_number',
+        //     'view_number',
+        //     'price',
+        //     'concurrency',
+        //     'discount',
+        //     'course_language',
+        //     'course_state',
+        //     [sequelize.fn('date_format', sequelize.col('created_at'), '%Y-%m-%d'), 'created_at'],
+        //     [sequelize.fn('date_format', sequelize.col('updated_at'), '%Y-%m-%d'), 'updated_at'],
+        // ],
         include: [{
             model: Instructor,
             include: [{
                 model: User,
-                attributes: ['id', 'user_name', 'avatar_url']
+                attributes: [
+                    'id',
+                    'user_name',
+                    'avatar_url',
+                    'first_name',
+                    'last_name'
+                ]
             }]
         }, {
             model: Category,
@@ -132,12 +165,16 @@ const getCourse = async obj => {
                 model: Student,
                 include: {
                     model: User,
-                    attributes: ['id', 'user_name', 'avatar_url']
+                    attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
                 }
             }
         },
         ],
-    });
+    })
+    course = course.toJSON()
+    course.created_at = convertDate(course.created_at)
+    course.updated_at = convertDate(course.updated_at)
+    return course;
 }
 
 module.exports = {
