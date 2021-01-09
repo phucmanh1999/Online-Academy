@@ -4,6 +4,8 @@ const Instructor = require("../Model/Instructor");
 const Chapter = require("../Model/Chapter");
 const Lesson = require("../Model/Lesson");
 const User = require("../Model/User");
+const Review = require("../Model/Review");
+const Student = require("../Model/Student");
 
 const getAllCourses = async () => {
     const courses = await Course.findAll({
@@ -17,7 +19,7 @@ const getAllCourses = async () => {
         },
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getCourseByTopView = async () => {
@@ -35,7 +37,7 @@ const getCourseByTopView = async () => {
             ['view_number', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getHighLightCourses = async () => {
@@ -53,7 +55,7 @@ const getHighLightCourses = async () => {
             ['view_number', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
 const getNewestCourses = async () => {
@@ -71,24 +73,28 @@ const getNewestCourses = async () => {
             ['created_at', 'DESC']
         ]
     });
-    return courses.map(c => c.toJSON());
+    return courses;
 }
 
-const getCoursesByCategoryId = async (categoryId, page, size) => {
+const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
     const pagination = getPagination(page, size)
     const result = await Course.findAndCountAll({
+        where: {
+            category_id: categoryId,
+        },
         limit: pagination.limit,
         offset: pagination.offset,
         include: [{
             model: Instructor,
             include: [{
                 model: User,
+                attributes: ['id', 'user_name', 'avatar_url']
             }]
         },],
     })
 
     const count = result.count
-    const courses = result.rows.map(course => course.toJSON());
+    const courses = result.rows;
 
     return {count, courses}
 }
@@ -100,12 +106,13 @@ const getPagination = (pageNum, pageSize) => {
 };
 
 const getCourse = async obj => {
-    return await Course.findOne({
+    return Course.findOne({
         where: obj,
         include: [{
             model: Instructor,
             include: [{
                 model: User,
+                attributes: ['id', 'user_name', 'avatar_url']
             }]
         }, {
             model: Category,
@@ -115,7 +122,16 @@ const getCourse = async obj => {
                 model: Lesson,
             }
             ]
-        }
+        }, {
+            model: Review,
+            include: {
+                model: Student,
+                include: {
+                    model: User,
+                    attributes: ['id', 'user_name', 'avatar_url']
+                }
+            }
+        },
         ],
     });
 }

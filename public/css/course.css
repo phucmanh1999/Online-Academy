@@ -107,6 +107,21 @@ a:hover{
   text-align: center;
 }
 
+.course-include {
+  margin: 0 20px;
+}
+
+.course-include div {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.course-include ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
 .card-body {
   width: 769px;
 }

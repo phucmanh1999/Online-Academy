@@ -5,6 +5,7 @@ const Chapter = database.define('Chapter', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         course_id: sequelize.INTEGER,
         lesson_number: sequelize.INTEGER,

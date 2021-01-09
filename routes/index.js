@@ -1,9 +1,9 @@
 const express = require("express")
-const {getCoursesByCategoryId} = require("../Services/course-service");
-const {getNewestCourses} = require("../Services/course-service");
-const {getHighLightCourses} = require("../Services/course-service");
-const {getCourseByTopView} = require("../Services/course-service");
-const {getAllCategories} = require("../Services/category-service");
+const {getCoursesByCategoryId} = require("../services/course-service");
+const {getNewestCourses} = require("../services/course-service");
+const {getHighLightCourses} = require("../services/course-service");
+const {getCourseByTopView} = require("../services/course-service");
+const {getAllCategories} = require("../services/category-service");
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -27,14 +27,17 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
-    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then((result) => {
-        console.log(result)
-        res.render("user/category",{result})
+    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then( async (result) => {
+        res.json({
+            categories: await getAllCategories(),
+            payload: result,
+        })
     });
 })
 
 router.get('/search', (req,res) => {
-    const { citeria } = req.params;
+    const query  = req.query;
+    console.log(citeria)
 })
 
 module.exports = router

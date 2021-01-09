@@ -5,6 +5,7 @@ const Category = database.define('Category', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         category_name: {
             type: sequelize.STRING(255),

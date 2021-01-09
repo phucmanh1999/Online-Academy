@@ -5,6 +5,7 @@ const Instructor = database.define('Instructor', {
         id: {
             primaryKey: true,
             type: sequelize.INTEGER,
+            autoIncrement: true,
         },
         user_id: {
             type: sequelize.INTEGER,
