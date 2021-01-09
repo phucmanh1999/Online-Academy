@@ -106,23 +106,21 @@
 
 
     <div id="addLesson" class="container mt-5 mb-5"> 
-      <form action="/addLesson" method="post" id="formLesson">
+      <form action="/instructor/addLesson" method="post" id="formLesson" enctype="multipart/form-data">
         <div class="form-group">
-        <label for="lessonName">Lesson name</label>
-        <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?">
+          <label for="lessonName">Lesson name</label>
+          <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?" name ="lessonName">
         </div>
         <div class="form-group">
-        <label for="shortDescription">Short description</label>
-        <textarea class="form-control" id="shortDescription" rows="3"></textarea>
+          <label for="shortDescription">Short description</label>
+          <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
         </div>
-        <form>
         <div class="form-group">
-            <label for="uploadVideo">Upload video</label>
-            <input type="file" class="form-control-file" id="uploadVideo">
+          <label for="uploadVideo">Upload video</label>
+          <input type="file" class="form-control-file" id="uploadVideo" name="video">
         </div>
-        </form>
+        <input class="btn btn-primary" type="submit" value="Submit this lesson">
       </form>
-      <input class="btn btn-primary" type="submit" form="formLesson" value="Submit this lesson">
     </div>
     <!-- Footer -->
     <div class="container-fluid footer">

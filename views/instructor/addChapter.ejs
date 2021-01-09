@@ -107,19 +107,20 @@
 
     <!-- add chapter -->
     <div  id="addChapter"class="container mt-5 mb-5">
-        <form action="/addChapter" method="post" id="formChapter">
+      <form action="/instructor/addChapter" method="post" id="formChapter">
         <div class="form-group">
-            <label for="chapterName">Chapter name</label>
-            <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?">
+          <label for="chapterName">Chapter name</label>
+          <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?" name = "chapterName">
         </div>
         <div class="form-group">
-            <label for="shortDescription">Short description</label>
-            <textarea class="form-control" id="shortDescription" rows="3"></textarea>
+          <label for="shortDescription">Short description</label>
+          <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
         </div>
-        <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson');" >Add Lesson</button>
-        </form>
-        <input class="btn btn-primary" type="submit" form="formChapter" value="Submit this chapter">
+        <input class="btn btn-primary" type="submit" value="Submit this chapter">
+      </form>
     </div>
+    <!-- <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson');" >Add Lesson</button> -->
+
     <!-- Footer -->
     <div class="container-fluid footer">
       <div class="row">
