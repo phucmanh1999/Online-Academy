@@ -1,23 +1,24 @@
 const { render } = require("ejs");
 const app = require("express")
 const {getAllCategories} = require("../services/category-service");
+const {getCourse} = require("../services/course-service");
+
 const router = app.Router()
 
-let category = [
-    {
-      id:"1",
-      categoryName: "Web"
-    },
-    {
-      id:"2",
-      categoryName: "Mobile"
-    }
-  ]
+// let category = [
+//     {
+//       id:"1",
+//       categoryName: "Web"
+//     },
+//     {
+//       id:"2",
+//       categoryName: "Mobile"
+//     }
+// ]
 
 // get render page
 router.get('/addCourse', async (req,res) => {
   res.render("instructor/addCourse",await {category})
-  
 });
 
 router.get('/addChapter', async (req,res) => {
@@ -31,12 +32,21 @@ router.get('/addLesson', async (req,res) => {
   res.render("instructor/addLesson")
 })
 
+//edit
+router.get('/editCourse', async (req,res) => {
+  // res.render("instructor/addLesson",await getAllCategories())
+  let category = await getAllCategories();
+  let course = await getCourse({id: req.query.id})
+  console.log("course data: " + JSON.stringify(course))
+  res.render("instructor/editCourse",  {category,course})
+})
+
 //post form
 router.post('/addCourse', (req,res) => {
   console.log(req.body)
-  if (!req.file) {
-    res.status(401).json({error: 'Please provide an image'});
-  }
+  // if (!req.file) {
+  //   res.status(401).json({error: 'Please provide an image'});
+  // }
   res.send(req.body)
 
 });

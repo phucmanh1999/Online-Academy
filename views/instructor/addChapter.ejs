@@ -118,6 +118,7 @@
         </div>
         <input class="btn btn-primary" type="submit" value="Submit this chapter">
       </form>
+      
     </div>
     <!-- <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson');" >Add Lesson</button> -->
 
@@ -175,25 +176,25 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        addFunc = (str) => {
-          let upcase = (str === "chapter") ?"Chapter":"Lesson";
-          let id = "add" + upcase;
-          let btnid = "add-" + str + "-btn" ;
-          let obj = document.getElementById(id)
-          let btnAdd = document.getElementById(btnid)
+        // addFunc = (str) => {
+        //   let upcase = (str === "chapter") ?"Chapter":"Lesson";
+        //   let id = "add" + upcase;
+        //   let btnid = "add-" + str + "-btn" ;
+        //   let obj = document.getElementById(id)
+        //   let btnAdd = document.getElementById(btnid)
 
-          if (obj.style.display === "none")
-          {
-            obj.style.display = "block";
-            btnAdd.style.background = "red"
-            btnAdd.innerHTML = "Cancle"
-          } else {
-            obj.style.display = "none";
-            btnAdd.style.background = "#007BFF"
-            btnAdd.innerHTML = "Add " + upcase;
-          }
+        //   if (obj.style.display === "none")
+        //   {
+        //     obj.style.display = "block";
+        //     btnAdd.style.background = "red"
+        //     btnAdd.innerHTML = "Cancle"
+        //   } else {
+        //     obj.style.display = "none";
+        //     btnAdd.style.background = "#007BFF"
+        //     btnAdd.innerHTML = "Add " + upcase;
+        //   }
 
-        }
+        // }
         // $("#add-chapter-btn").click(function(){
         //   let chapter = document.getElementById("addChapter")
 

@@ -105,56 +105,61 @@
       <form action="/instructor/addCourse" method="post">
           <div class="form-group">
             <label for="courseName">Course name</label>
-            <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?" name="courseName">
+            <input type="text" class="form-control" id="courseName"  name="courseName" value="<%=course.course_name%>" >
           </div>
           <div class="form-group">
             <label for="courseImage">Course image</label>
-            <input type="file" class="form-control-file" id="courseImage" name = "image">
+						<div class="">
+							<img src=<%=course.img_path%> alt="Image" width="60%" height="60%">
+						</div>
+						<input type="file" class="form-control-file" id="courseImage" name = "image">
           </div>
           <div class="form-group">
-            <label for="category">Category</label>
+						<label for="category">Category</label>
+
             <select class="form-control" id="category" name="category">
+							<option value="none" selected disabled hidden> 
+								<%=course.Category.category_name%> 
+							</option>
               <% for(let i=0;i<category.length;i++) {%>
-              <option><%=category[i].category_name%></option>
+              	<option><%=category[i].category_name%></option>
               <%}%>
             </select>
           </div>
           
           <div class="form-group">
             <label for="shortDescription">Short description</label>
-            <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
+            <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription" >
+              <%=course.short_description%>
+            </textarea>
           </div>
           <div class="form-group">
             <label for="fullDescription">Full description</label>
-            <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription"></textarea>
+            <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription" >
+              <%=course.full_description%>
+						</textarea>
+						
           </div>
           <div class="form-group">
-              <label for="price">Price</label>
-              <input type="text" class="form-control" id="price" placeholder="699" name = "price">
+						<label for="price">Price</label>
+						<input type="text" class="form-control" id="price"  name = "price" value = "<%=course.price%>">
           </div>
           <div class="form-group">
             <label for="concurency">Concurency</label>
-            <input type="text" class="form-control" id="concurency" placeholder="USD" name = "concurency">
-          </div>
-          
-      
-          <input type="submit" class ="btn btn-primary" value="Submit this course"/>
+            <input type="text" class="form-control" id="concurency" name = "concurency" value = "<%=course.concurrency%>">
+					</div>
+          <div class="form-group">
+            <label for="language">Language</label>
+            <input type="text" class="form-control" id="language" name = "language" value = "<%=course.course_language%>">
+					</div>
+					<div class="form-group">
+						<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
+					</div>
+					<div class="center">
+
+						<input type="submit" class ="btn btn-primary" value="Save"/>
+					</div>
       </form>
-      <!-- <div class="d-flex justify-content-center">
-          <input class="btn btn-primary" type="submit" form="formCourse" value="Submit this course">
-        </div> -->
-        <!-- <form action="/instructor/addCourse" method="post">
-          <input type="text" name="field">
-          <input type="submit">
-          <div class="form-group">
-            <label for="courseName">Course name</label>
-            <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?">
-          </div>
-          <div class="form-group">
-            <label for="courseImage">Course image</label>
-            <input type="file" class="form-control-file" id="courseImage">
-          </div>
-        </form> -->
     </div>
 
     <!-- Footer -->
