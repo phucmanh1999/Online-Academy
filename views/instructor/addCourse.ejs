@@ -114,11 +114,11 @@
             <label for="category">Category</label>
             <select class="form-control" id="category" name="category">
               <% for(let i=0;i<category.length;i++) {%>
-              <option><%=category[i].categoryName%></option>
+              <option><%=category[i].category_name%></option>
               <%}%>
             </select>
           </div>
-          
+
           <div class="form-group">
             <label for="shortDescription">Short description</label>
             <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
@@ -135,8 +135,8 @@
             <label for="concurency">Concurency</label>
             <input type="text" class="form-control" id="concurency" placeholder="USD" name = "concurency">
           </div>
-          
-      
+
+
           <input type="submit" class ="btn btn-primary" value="Submit this course"/>
       </form>
       <!-- <div class="d-flex justify-content-center">

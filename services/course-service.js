@@ -105,6 +105,10 @@ const getPagination = (pageNum, pageSize) => {
     return {limit, offset};
 };
 
+const createCourse = obj => {
+    return Course.create(obj);
+}
+
 const getCourse = async obj => {
     return Course.findOne({
         where: obj,
@@ -143,4 +147,5 @@ module.exports = {
     getNewestCourses,
     getCoursesByCategoryId,
     getCourse,
+    createCourse,
 }

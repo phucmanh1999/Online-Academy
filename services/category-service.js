@@ -9,7 +9,12 @@ const getAllCategories = async () => {
     });
     return categories.map(ca => ca.dataValues);
 }
-
+const getCategory = async obj => {
+    return Category.findOne({
+        where: obj
+    })
+}
 module.exports = {
     getAllCategories,
+    getCategory
 }
