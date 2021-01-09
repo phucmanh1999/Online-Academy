@@ -10,8 +10,8 @@ const sequelize = require('sequelize')
 
 const convertDate = (dateObj) => {
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day =  dateObj.getUTCDate();
-    const year =  dateObj.getUTCFullYear();
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
 
     return day + "/" + month + "/" + year;
 }
@@ -90,7 +90,7 @@ const getTopBuyCourseByCategoryId = async (categoryId) => {
         where: {
             category_id: categoryId,
         },
-        include: [ {
+        include: [{
             model: Instructor,
             include: [{
                 model: User,
@@ -119,13 +119,18 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
                 model: User,
                 attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
             }]
-        },],
+        }, {
+            model: Category
+        }],
     })
 
     const count = result.count
     const courses = result.rows;
+    const limit = pagination.limit;
+    const pageCount = Math.ceil(count / limit);
 
-    return {count, courses}
+
+    return {courses, count, limit, page, pageCount}
 }
 
 const getPagination = (pageNum, pageSize) => {
