@@ -85,6 +85,26 @@ const getNewestCourses = async () => {
     return courses;
 }
 
+const getTopBuyCourseByCategoryId = async (categoryId) => {
+    const courses = await Course.findAll({
+        where: {
+            category_id: categoryId,
+        },
+        include: [ {
+            model: Instructor,
+            include: [{
+                model: User,
+                attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
+            }]
+        },],
+        limit: 5,
+        order: [
+            ['enroll_number', 'DESC']
+        ]
+    });
+    return courses;
+}
+
 const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
     const pagination = getPagination(page, size)
     const result = await Course.findAndCountAll({
@@ -185,4 +205,5 @@ module.exports = {
     getCoursesByCategoryId,
     getCourse,
     createCourse,
+    getTopBuyCourseByCategoryId
 }

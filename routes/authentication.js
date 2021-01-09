@@ -28,7 +28,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
         user_name: req.body.name,
         user_password: bcrypt.hashSync(req.body.password, 10),
         email: req.body.email,
-        first_name: req.body.firt_name,
+        first_name: req.body.first_name,
         last_name: req.body.last_name,
         gender: req.body.gender,
         birthday: req.body.birthday,
