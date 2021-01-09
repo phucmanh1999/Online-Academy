@@ -23,7 +23,7 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
       <div class="container">
-        <a href="#" class="navbar-branch">
+        <a href="/" class="navbar-branch">
           <img src="/assets/images/logo.svg" width="160px" />
         </a>
         <button
@@ -54,8 +54,9 @@
                 >Categories</a
               >
               <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                <a class="dropdown-item" href="#">Mobile</a>
-                <a class="dropdown-item" href="#">web</a>
+                <% for(const category of categories) { %>
+                  <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+                <%} %>
               </div>
             </li>
             <li class="nav-item">
@@ -112,19 +113,26 @@
 
     <!-- Hot Courses -->
     <div class="container mt-5 courses">
-      <span>Hot Courses</span>
-      <div id="my-carousel" class="carousel slide" data-ride="carousel">
+      <span>Top Highlight Courses</span>
+      <div id="hightlight-courses-carousel" class="carousel slide" data-ride="carousel">
         <ul class="carousel-indicators">
-          <li class="active" data-target="#my-carousel" data-slide-to="0" aria-current="location"></li>
-          <li data-target="#my-carousel" data-slide-to="1"></li>
+          <li class="active" data-target="#hightlight-courses-carousel" data-slide-to="0" aria-current="location"></li>
+          <li data-target="#hightlight-courses-carousel" data-slide-to="1"></li>
+          <li data-target="#hightlight-courses-carousel" data-slide-to="2"></li>
+          <li data-target="#hightlight-courses-carousel" data-slide-to="3"></li>
         </ul>
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="/assets/images/Course1.jpg" alt="">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="/assets/images/Course2.jpg" alt="">
-          </div>
+          <% for(let i = 0; i < highLightCourses.length; i++) { %>
+              <% if(i === 0) { %>
+                <div class="carousel-item active">
+                  <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                </div>
+              <% } else { %>
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                </div>
+              <% } %>
+          <% } %>
         </div>
       </div>
     </div>
@@ -133,160 +141,83 @@
     <!-- Courses -->
     <div class="courses-group container mt-5 mb-5">
       <div class="courses-group-title row">
-        <span>Top Courses</span>
+        <span>Top Views Courses</span>
       </div>
-      <div class="courses-row row d-flex justify-content-between">
-        <% for(let i = 0; i < 5; i++){ %>
-          <div class="courses-item col">
-            <a href="#">
+      <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
+        <% for(let i = 0; i < topTenViewCourses.length; i++){ %>
+          <div class="courses-item col mb-3">
+            <a href="/courses/<%= topTenViewCourses[i].id %>">
               <div class="courses-item-img">
-                <img src="<%= data[i].imgPath %>" alt="" width="100%">
+                <img src="<%= topTenViewCourses[i].img_path %>" alt="" width="100%">
                 <div></div>
               </div>
               <div class="courses-item-title">
-                <%= data[i].title %>
+                <%= topTenViewCourses[i].course_name %>
               </div>
               <div class="courses-item-lectures">
-                <%= data[i].lectures %> 
+                <%= topTenViewCourses[i].Instructor.User.first_name %> <%= topTenViewCourses[i].Instructor.User.last_name %>  
               </div>
               <div class="courses-item-star">
-                <%= data[i].star %>
-                <% for(let j = 1; j <= Math.floor(data[i].star); j++) { %>
+                <%= topTenViewCourses[i].rating %>
+                <% for(let j = 1; j <= Math.floor(topTenViewCourses[i].rating); j++) { %>
                   <i class="fa fa-star"></i>
                 <% } %>
-                <% if(data[i].star - Math.floor(data[i].star) !== 0) { %>
+                <% if(topTenViewCourses[i].rating - Math.floor(topTenViewCourses[i].rating) !== 0) { %>
                   <i class="fa fa-star-half-alt"></i>
                 <% } %>
-                <% for(let j = Math.ceil(data[i].star); j < 5; j++) { %>
+                <% for(let j = Math.ceil(topTenViewCourses[i].rating); j < 5; j++) { %>
                   <i class="far fa-star"></i>
                 <% } %>
-                 (<%= data[i].view %>)
+                 (<%= topTenViewCourses[i].view_number %>)
               </div>
               <div class="courses-item-price">
-                <%= data[i].price %> <span>$129.99</span>
+                <%= topTenViewCourses[i].price %> <%= topTenViewCourses[i].concurrency %> <span></span>
               </div>
             </a> 
           </div>
+          
         <% } %>
         %>
       </div>
     </div>
+
     <div class="courses-group container mt-5 mb-5">
       <div class="courses-group-title row">
-        <span>Top Courses</span>
+        <span>Top New Courses</span>
       </div>
-      <div class="courses-row row d-flex justify-content-between">
-        <% for(let i = 0; i < 5; i++){ %>
-          <div class="courses-item col">
-            <a href="#">
+      <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
+        <% for(let i = 0; i < topNewCourses.length; i++){ %>
+          <div class="courses-item col mb-3">
+            <a href="/courses/<%= topNewCourses[i].id %>">
               <div class="courses-item-img">
-                <img src="<%= data[i].imgPath %>" alt="" width="100%">
+                <img src="<%= topNewCourses[i].img_path %>" alt="" width="100%">
                 <div></div>
               </div>
               <div class="courses-item-title">
-                <%= data[i].title %>
+                <%= topNewCourses[i].course_name %>
               </div>
               <div class="courses-item-lectures">
-                <%= data[i].lectures %> 
+                <%= topNewCourses[i].Instructor.User.first_name %> <%= topNewCourses[i].Instructor.User.last_name %>
               </div>
               <div class="courses-item-star">
-                <%= data[i].star %>
-                <% for(let j = 1; j <= Math.floor(data[i].star); j++) { %>
+                <%= topNewCourses[i].rating %>
+                <% for(let j = 1; j <= Math.floor(topNewCourses[i].rating); j++) { %>
                   <i class="fa fa-star"></i>
                 <% } %>
-                <% if(data[i].star - Math.floor(data[i].star) !== 0) { %>
+                <% if(topNewCourses[i].rating - Math.floor(topNewCourses[i].rating) !== 0) { %>
                   <i class="fa fa-star-half-alt"></i>
                 <% } %>
-                <% for(let j = Math.ceil(data[i].star); j < 5; j++) { %>
+                <% for(let j = Math.ceil(topNewCourses[i].rating); j < 5; j++) { %>
                   <i class="far fa-star"></i>
                 <% } %>
-                 (<%= data[i].view %>)
+                 (<%= topNewCourses[i].view_number %>)
               </div>
               <div class="courses-item-price">
-                <%= data[i].price %> <span>$129.99</span>
+                <%= topNewCourses[i].price %><%= topNewCourses[i].concurrency %> <span></span>
               </div>
             </a> 
           </div>
-        <% } %>
-        %>
-      </div>
-    </div>
-    <div class="courses-group container mt-5 mb-5">
-      <div class="courses-group-title row">
-        <span>Top Courses</span>
-      </div>
-      <div class="courses-row row d-flex justify-content-between">
-        <% for(let i = 0; i < 5; i++){ %>
-          <div class="courses-item col">
-            <a href="#">
-              <div class="courses-item-img">
-                <img src="<%= data[i].imgPath %>" alt="" width="100%">
-                <div></div>
-              </div>
-              <div class="courses-item-title">
-                <%= data[i].title %>
-              </div>
-              <div class="courses-item-lectures">
-                <%= data[i].lectures %> 
-              </div>
-              <div class="courses-item-star">
-                <%= data[i].star %>
-                <% for(let j = 1; j <= Math.floor(data[i].star); j++) { %>
-                  <i class="fa fa-star"></i>
-                <% } %>
-                <% if(data[i].star - Math.floor(data[i].star) !== 0) { %>
-                  <i class="fa fa-star-half-alt"></i>
-                <% } %>
-                <% for(let j = Math.ceil(data[i].star); j < 5; j++) { %>
-                  <i class="far fa-star"></i>
-                <% } %>
-                 (<%= data[i].view %>)
-              </div>
-              <div class="courses-item-price">
-                <%= data[i].price %> <span>$129.99</span>
-              </div>
-            </a> 
-          </div>
-        <% } %>
-        %>
-      </div>
-    </div>
-    <div class="courses-group container mt-5 mb-5">
-      <div class="courses-group-title row">
-        <span>Top Courses</span>
-      </div>
-      <div class="courses-row row d-flex justify-content-between">
-        <% for(let i = 0; i < 5; i++){ %>
-          <div class="courses-item col">
-            <a href="#">
-              <div class="courses-item-img">
-                <img src="<%= data[i].imgPath %>" alt="" width="100%">
-                <div></div>
-              </div>
-              <div class="courses-item-title">
-                <%= data[i].title %>
-              </div>
-              <div class="courses-item-lectures">
-                <%= data[i].lectures %> 
-              </div>
-              <div class="courses-item-star">
-                <%= data[i].star %>
-                <% for(let j = 1; j <= Math.floor(data[i].star); j++) { %>
-                  <i class="fa fa-star"></i>
-                <% } %>
-                <% if(data[i].star - Math.floor(data[i].star) !== 0) { %>
-                  <i class="fa fa-star-half-alt"></i>
-                <% } %>
-                <% for(let j = Math.ceil(data[i].star); j < 5; j++) { %>
-                  <i class="far fa-star"></i>
-                <% } %>
-                 (<%= data[i].view %>)
-              </div>
-              <div class="courses-item-price">
-                <%= data[i].price %> <span>$129.99</span>
-              </div>
-            </a> 
-          </div>
+          
         <% } %>
         %>
       </div>

@@ -12,4 +12,7 @@ router.get('/:id', async (req, res) => {
     })
 })
 
+router.get("/", (req, res) => {
+    res.render("user/course")
+})
 module.exports = router

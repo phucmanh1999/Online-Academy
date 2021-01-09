@@ -8,23 +8,28 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     getNewestCourses().then(rs => {
-        console.log(rs)
+        // console.log(rs)
     })
-    res.json( {
-        user: null,
+    res.render("user/index", {
+        // user: null,
         categories: await getAllCategories(),
         topTenViewCourses: await getCourseByTopView(),
         highLightCourses: await getHighLightCourses(),
         topNewCourses: await getNewestCourses(),
     });
+    // res.send({
+    //         // user: null,
+    //         categories: await getAllCategories(),
+    //         topTenViewCourses: await getCourseByTopView(),
+    //         highLightCourses: await getHighLightCourses(),
+    //         topNewCourses: await getNewestCourses(),
+    //     })
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
-    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then( async (result) => {
-        res.json({
-            categories: await getAllCategories(),
-            payload: result,
-        })
+    getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then((result) => {
+        console.log(result)
+        res.render("user/category",{result})
     });
 })
 
