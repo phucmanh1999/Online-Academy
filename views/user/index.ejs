@@ -54,8 +54,9 @@
                 >Categories</a
               >
               <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                <a class="dropdown-item" href="/category">Mobile</a>
-                <a class="dropdown-item" href="#">web</a>
+                <% for(const category of categories) { %>
+                  <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+                <%} %>
               </div>
             </li>
             <li class="nav-item">
@@ -145,7 +146,7 @@
       <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
         <% for(let i = 0; i < topTenViewCourses.length; i++){ %>
           <div class="courses-item col mb-3">
-            <a href="/course/<%= topTenViewCourses[i].id %>">
+            <a href="/courses/<%= topTenViewCourses[i].id %>">
               <div class="courses-item-img">
                 <img src="<%= topTenViewCourses[i].img_path %>" alt="" width="100%">
                 <div></div>
@@ -154,7 +155,7 @@
                 <%= topTenViewCourses[i].course_name %>
               </div>
               <div class="courses-item-lectures">
-                <%= topTenViewCourses[i].Instructor.job_title %> 
+                <%= topTenViewCourses[i].Instructor.User.first_name %> <%= topTenViewCourses[i].Instructor.User.last_name %>  
               </div>
               <div class="courses-item-star">
                 <%= topTenViewCourses[i].rating %>
@@ -187,7 +188,7 @@
       <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
         <% for(let i = 0; i < topNewCourses.length; i++){ %>
           <div class="courses-item col mb-3">
-            <a href="#">
+            <a href="/courses/<%= topNewCourses[i].id %>">
               <div class="courses-item-img">
                 <img src="<%= topNewCourses[i].img_path %>" alt="" width="100%">
                 <div></div>
@@ -196,7 +197,7 @@
                 <%= topNewCourses[i].course_name %>
               </div>
               <div class="courses-item-lectures">
-                <%= topNewCourses[i].Instructor.job_title %> 
+                <%= topNewCourses[i].Instructor.User.first_name %> <%= topNewCourses[i].Instructor.User.last_name %>
               </div>
               <div class="courses-item-star">
                 <%= topNewCourses[i].rating %>

@@ -1,6 +1,9 @@
 const Course = require("../Model/Course");
 const Category = require("../Model/Category");
 const Instructor = require("../Model/Instructor");
+const Chapter = require("../Model/Chapter");
+const Lesson = require("../Model/Lesson");
+const User = require("../Model/User");
 
 const getAllCourses = async () => {
     const courses = await Course.findAll({
@@ -8,6 +11,9 @@ const getAllCourses = async () => {
             model: Category,
         }, {
             model: Instructor,
+            include: [{
+                model: User,
+            }]
         },
         ]
     });
@@ -20,6 +26,9 @@ const getCourseByTopView = async () => {
             model: Category,
         }, {
             model: Instructor,
+            include: [{
+                model: User,
+            }]
         },],
         limit: 10,
         order: [
@@ -35,6 +44,9 @@ const getHighLightCourses = async () => {
             model: Category,
         }, {
             model: Instructor,
+            include: [{
+                model: User,
+            }]
         },],
         limit: 4,
         order: [
@@ -50,6 +62,9 @@ const getNewestCourses = async () => {
             model: Category,
         }, {
             model: Instructor,
+            include: [{
+                model: User,
+            }]
         },],
         limit: 10,
         order: [
@@ -66,6 +81,9 @@ const getCoursesByCategoryId = async (categoryId, page, size) => {
         offset: pagination.offset,
         include: [{
             model: Instructor,
+            include: [{
+                model: User,
+            }]
         },],
     })
 
@@ -78,8 +96,29 @@ const getCoursesByCategoryId = async (categoryId, page, size) => {
 const getPagination = (pageNum, pageSize) => {
     const limit = pageSize ? pageSize : 10;
     const offset = 0 + (pageNum - 1) * limit;
-    return { limit, offset };
+    return {limit, offset};
 };
+
+const getCourse = async obj => {
+    return await Course.findOne({
+        where: obj,
+        include: [{
+            model: Instructor,
+            include: [{
+                model: User,
+            }]
+        }, {
+            model: Category,
+        }, {
+            model: Chapter,
+            include: [{
+                model: Lesson,
+            }
+            ]
+        }
+        ],
+    });
+}
 
 module.exports = {
     getAllCourses,
@@ -87,4 +126,5 @@ module.exports = {
     getHighLightCourses,
     getNewestCourses,
     getCoursesByCategoryId,
+    getCourse,
 }

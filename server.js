@@ -7,6 +7,7 @@ const app = express()
 
 app.use("/",require('./routes/index'))
 // app.use("/", require('./router'))
+app.use("/courses",require('./routes/courses'))
 app.use("/authentication",require('./routes/authentication'))
 
 app.set('views', path.join(__dirname, '/views'));

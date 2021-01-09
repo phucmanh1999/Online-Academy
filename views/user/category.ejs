@@ -110,7 +110,7 @@
           <button class="btn btn-light">Most Popular</button>
         </div>
         <div class="col-9 text-right">
-          <%= length%> results
+          <%= result.count%> results
         </div>
       </div>
       <div class="row">
@@ -118,12 +118,12 @@
           
         </div>
         <div class="col-9">    
-          <% data.forEach((item) => { %>
+          <% result.courses.forEach((item) => { %>
             <a href="#" class="d-block mb-3">
               <div class="row courses-item">
                 <div class="col-4">
                   <div class="courses-item-img">
-                    <img src="<%= item.imgPath %>" width="100%">
+                    <img src="<%= item.img_path %>" width="100%">
                     <div></div>
                   </div>
                 </div>
@@ -131,27 +131,27 @@
                   <div class="d-flex justify-content-between">
                     <div class="courses-item-detail">
                       <div class="courses-item-title">
-                        <%= item.title %>
+                        <%= item.course_name %>
                       </div>
                       <div class="courses-item-lectures">
-                        <%= item.lectures %>
+                        <%= item.Instructor.User.first_name %> <%= item.Instructor.User.last_name %>
                       </div>
                       <div class="courses-item-star">
-                        <%= item.star %>
-                        <% for(let j = 1; j <= Math.floor(item.star); j++) { %>
+                        <%= item.rating %>
+                        <% for(let j = 1; j <= Math.floor(item.rating); j++) { %>
                           <i class="fa fa-star"></i>
                         <% } %>
-                        <% if(item.star - Math.floor(item.star) !== 0) { %>
+                        <% if(item.rating - Math.floor(item.rating) !== 0) { %>
                           <i class="fa fa-star-half-alt"></i>
                         <% } %>
-                        <% for(let j = Math.ceil(item.star); j < 5; j++) { %>
+                        <% for(let j = Math.ceil(item.rating); j < 5; j++) { %>
                           <i class="far fa-star"></i>
                         <% } %>
-                        <%= item.view %>
+                        <%= item.view_number %>
                       </div>
                     </div>
                     <div class="courses-item-price">
-                      <%= item.price%><span class="d-block">129.99</span>
+                      <%= item.price %> <%= item.concurrency %><span class="d-block"></span>
                     </div>
                   </div>
                 </div>
