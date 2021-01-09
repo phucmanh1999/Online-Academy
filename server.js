@@ -1,5 +1,4 @@
 const express = require('express')
-const pg = require('pg')
 const path = require('path')
 const port = process.env.PORT||3000
 const app = express()
@@ -8,13 +7,12 @@ const passport = require('passport')
 require('./Model/relationalMapping')
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const passportJWT = require('passport-jwt');
-const User = require("./Model/User");
 const {applyPassportStrategy} = require("./passport-strategy");
-const {getUser} = require("./services/user-service");
-const ExtractJWT = passportJWT.ExtractJwt;
-const JWTStrategy = passportJWT.Strategy;
+const fileUpload = require('express-fileupload');
 
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.use(bodyParser.json());
 applyPassportStrategy(passport)
 app.use(passport.initialize());

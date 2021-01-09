@@ -23,7 +23,7 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container">
-      <a href="#" class="navbar-branch">
+      <a href="/" class="navbar-branch">
         <img src="/assets/images/logo.svg" width="160px" />
       </a>
       <button
@@ -207,7 +207,7 @@
         </div>
         <div class="relate-courses">
           <div class="course-content-title">
-            Most Views Courses Related "Web"
+            Most Views Courses Related "<%= payload.Category.category_name %>"
           </div>
           <div class="container-fluid">
             <a href="#">
@@ -387,7 +387,7 @@
       </div>
       <div id="scrollDiv" class="course-commerce">
         <div class="course-commerce-img">
-          <img src="/assets/images/Course3.jpg" width="100%">
+          <img src="<%= payload.img_path %>" width="100%">
           <div class="d-flex justify-content-center">
             <i class="far fa-play-circle"></i>
           </div>

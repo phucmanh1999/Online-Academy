@@ -17,18 +17,11 @@ router.get('/', async (req, res) => {
         highLightCourses: await getHighLightCourses(),
         topNewCourses: await getNewestCourses(),
     });
-    // res.send({
-    //         // user: null,
-    //         categories: await getAllCategories(),
-    //         topTenViewCourses: await getCourseByTopView(),
-    //         highLightCourses: await getHighLightCourses(),
-    //         topNewCourses: await getNewestCourses(),
-    //     })
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
     getCoursesByCategoryId(req.params.categoryid,req.query.page,5).then( async (result) => {
-        res.json({
+        res.render("user/category",{
             categories: await getAllCategories(),
             payload: result,
         })
@@ -38,6 +31,10 @@ router.get('/category-courses/:categoryid', (req, res) => {
 router.get('/search', (req,res) => {
     const query  = req.query;
     console.log(citeria)
+})
+
+router.get("/signup", (req, res) => {
+    res.render("user/signup")
 })
 
 module.exports = router
