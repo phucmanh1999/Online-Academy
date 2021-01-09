@@ -14,8 +14,8 @@ const getAllUsers = async () => {
     return users;
 }
 
-const getUser = async obj => {
-    return await User.findOne({
+const getUser =  obj => {
+    return User.findOne({
         where: obj,
         include: [{
             model: Role,
