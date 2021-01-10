@@ -1,201 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-      crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+            crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/index.css"/>
     <title>
-      Online Courses - Learn Anything On Your Schedule | MNP Courses
+        Online Courses - Learn Anything On Your Schedule | MNP Courses
     </title>
-    <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
-  </head>
-  <body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-      <div class="container">
+    <link rel="shortcut icon" href="/assets/images/logo-images.svg"/>
+</head>
+<body>
+<!-- Header -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <div class="container">
         <a href="#" class="navbar-branch">
-          <img src="/assets/images/logo.svg" width="160px" />
+            <img src="/assets/images/logo.svg" width="160px"/>
         </a>
         <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarResponsive"
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarResponsive"
         >
-          <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <form id="formSearch" class="ml-1">
-            <span><i class="fas fa-search"></i></span>
-            <input type="text" placeholder="Search..." class="rounded-pill" />
-          </form>
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="dropdownCategory"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                >Categories</a
-              >
-              <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                <a class="dropdown-item" href="#">Mobile</a>
-                <a class="dropdown-item" href="#">web</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <% if(typeof user !== 'undefined' ) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-shopping-cart"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="dropdownUser"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                ><%= user.username %></a
-              >
-              <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                <a class="dropdown-item" href="#">My Profile</a>
-                <a class="dropdown-item" href="#">Log out</a>
-              </div>
-            </li>
-            <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="#"> Login </a>
-            </li>
-            <% } %>
-          </ul>
+            <form id="formSearch" class="ml-1">
+                <span><i class="fas fa-search"></i></span>
+                <input type="text" placeholder="Search..." class="rounded-pill"/>
+            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="dropdownCategory"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                    >Categories</a
+                    >
+                    <div class="dropdown-menu" aria-labelledby="dropdownCategory">
+                        <a class="dropdown-item" href="#">Mobile</a>
+                        <a class="dropdown-item" href="#">web</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <% if(typeof user !== 'undefined' ) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="dropdownUser"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                        ><%= user.username %></a
+                        >
+                        <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                            <a class="dropdown-item" href="#">My Profile</a>
+                            <a class="dropdown-item" href="#">Log out</a>
+                        </div>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"> Login </a>
+                    </li>
+                <% } %>
+            </ul>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Courses -->
-    <div class="container mt-5 mb-5">
-      <!-- <form action="/instructor/addCourse" method="post" enctype="multipart/form-data"> -->
-      <form action="/instructor/addCourse" method="post">
-          <div class="form-group">
+<!-- Courses -->
+<div class="container mt-5 mb-5">
+    <!-- <form action="/instructor/addCourse" method="post" enctype="multipart/form-data"> -->
+    <form action="/instructor/addCourse" method="post" enctype="multipart/form-data">
+        <!--      <form action="/instructor/addCourse" method="post">-->
+        <div class="form-group">
             <label for="courseName">Course name</label>
-            <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?" name="courseName">
-          </div>
-          <div class="form-group">
+            <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?"
+                   name="courseName">
+        </div>
+        <div class="form-group">
             <label for="courseImage">Course image</label>
-            <input type="file" class="form-control-file" id="courseImage" name = "image">
-          </div>
-          <div class="form-group">
+            <input type="file" class="form-control-file" id="courseImage" name="image">
+        </div>
+        <div class="form-group">
             <label for="category">Category</label>
             <select class="form-control" id="category" name="category">
-              <% for(let i=0;i<category.length;i++) {%>
-              <option><%=category[i].category_name%></option>
-              <%}%>
+                <% for(let i = 0;i < category.length;i++) { %>
+                <option><%= category[i].category_name %></option>
+                <% } %>
             </select>
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label for="shortDescription">Short description</label>
-            <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
-          </div>
-          <div class="form-group">
+            <textarea class="form-control" id="shortDescription" rows="3" name="shortDescription"></textarea>
+        </div>
+        <div class="form-group">
             <label for="fullDescription">Full description</label>
-            <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription"></textarea>
-          </div>
-          <div class="form-group">
-              <label for="price">Price</label>
-              <input type="text" class="form-control" id="price" placeholder="699" name = "price">
-          </div>
-          <div class="form-group">
+            <textarea class="form-control" id="fullDescription" rows="3" name="fullDescription"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" placeholder="699" name="price">
+        </div>
+        <div class="form-group">
             <label for="concurency">Concurency</label>
-            <input type="text" class="form-control" id="concurency" placeholder="USD" name = "concurency">
-          </div>
+            <input type="text" class="form-control" id="concurency" placeholder="USD" name="concurency">
+        </div>
 
 
-          <input type="submit" class ="btn btn-primary" value="Submit this course"/>
-      </form>
-      <!-- <div class="d-flex justify-content-center">
-          <input class="btn btn-primary" type="submit" form="formCourse" value="Submit this course">
-        </div> -->
-        <!-- <form action="/instructor/addCourse" method="post">
-          <input type="text" name="field">
-          <input type="submit">
-          <div class="form-group">
-            <label for="courseName">Course name</label>
-            <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?">
-          </div>
-          <div class="form-group">
-            <label for="courseImage">Course image</label>
-            <input type="file" class="form-control-file" id="courseImage">
-          </div>
-        </form> -->
-    </div>
-
-    <!-- Footer -->
-    <div class="container-fluid footer">
-      <div class="row">
-        <ul class="col list-group">
-          <li class="list-group"><a href="#"> MNP for Business</a></li>
-          <li class="list-group"><a href="#"> Teach on Udemy</a></li>
-          <li class="list-group"><a href="#"> About us</a></li>
-          <li class="list-group"><a href="#"> Contact us</a></li>
-        </ul>
-        <ul class="col list-group">
-          <li class="list-group"><a href="#"> Careers</a></li>
-          <li class="list-group"><a href="#"> Blog</a></li>
-          <li class="list-group"><a href="#"> Help and Support</a></li>
-          <li class="list-group"><a href="#"> Affiliate</a></li>
-        </ul>
-        <ul class="col list-group">
-          <li class="list-group"><a href="#"> Terms</a></li>
-          <li class="list-group">
-            <a href="#"> Privacy policy and cookie policy</a>
-          </li>
-          <li class="list-group"><a href="#"> Sitemap</a></li>
-          <li class="list-group"><a href="#"> Featured courses</a></li>
-        </ul>
+        <input type="submit" class="btn btn-primary" value="Submit this course"/>
+    </form>
+    <!-- <div class="d-flex justify-content-center">
+        <input class="btn btn-primary" type="submit" form="formCourse" value="Submit this course">
+      </div> -->
+    <!-- <form action="/instructor/addCourse" method="post">
+      <input type="text" name="field">
+      <input type="submit">
+      <div class="form-group">
+        <label for="courseName">Course name</label>
+        <input type="text" class="form-control" id="courseName" placeholder="How to carry daxua 0/8/1?">
       </div>
-      <div class="row footer-logo d-flex justify-content-between">
+      <div class="form-group">
+        <label for="courseImage">Course image</label>
+        <input type="file" class="form-control-file" id="courseImage">
+      </div>
+    </form> -->
+</div>
+
+<!-- Footer -->
+<div class="container-fluid footer">
+    <div class="row">
+        <ul class="col list-group">
+            <li class="list-group"><a href="#"> MNP for Business</a></li>
+            <li class="list-group"><a href="#"> Teach on Udemy</a></li>
+            <li class="list-group"><a href="#"> About us</a></li>
+            <li class="list-group"><a href="#"> Contact us</a></li>
+        </ul>
+        <ul class="col list-group">
+            <li class="list-group"><a href="#"> Careers</a></li>
+            <li class="list-group"><a href="#"> Blog</a></li>
+            <li class="list-group"><a href="#"> Help and Support</a></li>
+            <li class="list-group"><a href="#"> Affiliate</a></li>
+        </ul>
+        <ul class="col list-group">
+            <li class="list-group"><a href="#"> Terms</a></li>
+            <li class="list-group">
+                <a href="#"> Privacy policy and cookie policy</a>
+            </li>
+            <li class="list-group"><a href="#"> Sitemap</a></li>
+            <li class="list-group"><a href="#"> Featured courses</a></li>
+        </ul>
+    </div>
+    <div class="row footer-logo d-flex justify-content-between">
         <div>
-          <img src="/assets/images/logo-images.svg" width="50px" />
+            <img src="/assets/images/logo-images.svg" width="50px"/>
         </div>
         <div class="mt-3">Copyright @ 2020 MNP, Inc</div>
-      </div>
     </div>
+</div>
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>

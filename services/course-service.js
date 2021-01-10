@@ -150,24 +150,6 @@ const createCourse = obj => {
 const getCourse = async obj => {
     let course = await Course.findOne({
         where: obj,
-        // attributes: [
-        //     'course_name',
-        //     'img_path',
-        //     'short_description',
-        //     'full_description',
-        //     'rating',
-        //     'rating_number',
-        //     'enroll_number',
-        //     'chapter_number',
-        //     'view_number',
-        //     'price',
-        //     'concurrency',
-        //     'discount',
-        //     'course_language',
-        //     'course_state',
-        //     [sequelize.fn('date_format', sequelize.col('created_at'), '%Y-%m-%d'), 'created_at'],
-        //     [sequelize.fn('date_format', sequelize.col('updated_at'), '%Y-%m-%d'), 'updated_at'],
-        // ],
         include: [{
             model: Instructor,
             include: [{
