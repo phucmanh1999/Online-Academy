@@ -6,17 +6,13 @@ const router = express.Router()
 
 router.get('/:id', async (req, res) => {
     getCourse({id: req.params.id}).then(async course => {
-        // res.render("user/course",{course})
-        res.send(
-            {
-                payload: course,
-                topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id)
-            }
-            )
+        res.render("user/course",{
+            user: req.user ? req.user : undefined,
+            payload: course,
+            categories: await getAllCategories(),
+            topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id)
+        })
     })
 })
 
-router.get("/", (req, res) => {
-    res.render("user/course")
-})
 module.exports = router

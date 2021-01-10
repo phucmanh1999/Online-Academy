@@ -85,12 +85,12 @@
                 >
                 <div class="dropdown-menu" aria-labelledby="dropdownUser">
                   <a class="dropdown-item" href="#">My Profile</a>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="/logout">Log out</a>
                 </div>
               </li>
             <% } else { %>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/login">
                   Login
                 </a>
               </li>
@@ -173,6 +173,11 @@
               <div class="courses-item-price">
                 <%= topTenViewCourses[i].price %> <%= topTenViewCourses[i].concurrency %> <span></span>
               </div>
+              <% if(topTenViewCourses[i].view_number > 1000) { %>
+                <div class="best-seller">
+                  Bestseller
+                </div>
+            <% } %>
             </a> 
           </div>
           
@@ -215,6 +220,11 @@
               <div class="courses-item-price">
                 <%= topNewCourses[i].price %><%= topNewCourses[i].concurrency %> <span></span>
               </div>
+              <% if(topNewCourses[i].view_number > 1000) { %>
+                  <div class="best-seller">
+                    Bestseller
+                  </div>
+              <% } %>
             </a> 
           </div>
           
@@ -291,5 +301,9 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      
+    </script>
   </body>
 </html>

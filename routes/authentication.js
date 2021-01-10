@@ -36,14 +36,14 @@ router.post('/signup', urlencodedParser, (req, res) => {
         email: req.body.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-        avatar_url: req.body.avatar,
-        user_address: req.body.address,
+        // gender: req.body.gender,
+        // birthday: req.body.birthday,
+        // avatar_url: req.body.avatar,
+        // user_address: req.body.address,
         created_at: new Date(),
     }
 
-    const type = req.body.type
+    const type = req.body.type ? req.body.type : ROLE_STUDENT
 
     if (validateEmail(user.email)){
         res.status(400).json({'msg': 'Email not valid'})
@@ -56,10 +56,10 @@ router.post('/signup', urlencodedParser, (req, res) => {
     })
 
     getRole({role_name: type}).then( role => {
-        console.log(role)
-        console.log(user)
+        // console.log(role)
+        // console.log(user)
         UserService.createUser({...user, role_id: role.id}).then(user_created => {
-            console.log(user_created)
+            // console.log(user_created)
             if (type === ROLE_INSTRUCTOR) {
                 const instructor = {
                     job_title: req.body.job_title,
@@ -67,9 +67,9 @@ router.post('/signup', urlencodedParser, (req, res) => {
                     full_description: req.body.full_description,
                     user_id: user_created.id
                 }
-                console.log(instructor)
+                // console.log(instructor)
                 createInstructor(instructor).then(
-                    res.json({'msg': 'Create account sucessful'})
+                    res.redirect("/login")
                 ).catch(() => {
                     deleteUser(user_created)
                 })
@@ -78,7 +78,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
                     user_id: user_created.id
                 }
                 createStudent(student).then(
-                    res.json({'msg': 'Create account sucessful'})
+                    res.redirect('/login')
                 ).catch(() => {
                     deleteUser(user_created)
                 })
@@ -101,8 +101,6 @@ router.post('/signup', urlencodedParser, (req, res) => {
 router.post('/login', urlencodedParser, (req, res)=>{
     const email = req.body.email
     const password = req.body.password
-
-
     if(!email || !password) {
         console.log(req.body)
         res.status(400).json({'msg': 'Email or password must not be empty'})
@@ -119,10 +117,12 @@ router.post('/login', urlencodedParser, (req, res)=>{
             if (await UserService.isValidPassword(result, password)){
                 const data = result.dataValues
                 delete data.user_password
-                const payload = { id: data.id, type: data.Role.role_name }
+                // console.log("data", data)
+                const payload = { id: data.id, username: data.user_name, type: data.Role.role_name }
                 const accessToken = jwt.sign(payload, 'secret')
                 if (data.Role.role_name === ROLE_STUDENT) {
-                    res.json({token: accessToken, user: data})
+                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                    res.redirect("/")
                 }
                 else if (data.Role.role_name === ROLE_INSTRUCTOR) {
                     res.json({token: accessToken, user: data})
