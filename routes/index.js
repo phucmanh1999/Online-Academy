@@ -29,12 +29,22 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
 
 
-    getCoursesByCategoryId(id, page,5, order_price, order_rating).then(async (result) => {
-        console.log(result)
-        res.render("user/category",{
-            payload: result,
+    getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {
+        console.log(payload)
+        res.render("user/category",
+        {
+            categories: [
+                {
+                    id: 2,
+                    category_name: "Mobile"
+                },
+                {
+                    id: 3,
+                    category_name: "Web"
+                }
+            ],
             user: req.user ? req.user : undefined,
-            categories: await getAllCategories(),
+            payload
         })
     });
 })
@@ -49,10 +59,11 @@ router.get("/signup", (req, res) => {
 })
 
 router.get("/login", (req, res) => {
-    if(req.user) {
-        res.redirect("/")
+    if(!req.user) {
+        res.render("user/login")
+        return;
     }
-    res.render("user/login")
+    res.redirect("/")
 })
 
 router.get("/logout", (req, res) => {

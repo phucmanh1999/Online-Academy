@@ -42,6 +42,14 @@
   margin: 25px 0;
 }
 
+.signup button[type="button"] {
+  margin: 10px 0;
+  background-size: 300% 100%;
+  box-shadow: 0 0 10px 1px gray;
+  background-image: linear-gradient(120deg, #0A81D1, #EFBDEB, #0A81D1);
+  transition: all .4s ease-in-out;
+  border: none;
+}
 .signup button[type="submit"] {
   margin: 10px 0;
   background-size: 300% 100%;
@@ -54,4 +62,8 @@
 .signup button:hover {
   background-position: 100% 0 !important;
   transition: all .4s ease-in-out;
+}
+
+.form-group span{
+  color: red;
 }

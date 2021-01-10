@@ -122,7 +122,7 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 const accessToken = jwt.sign(payload, 'secret')
                 if (data.Role.role_name === ROLE_STUDENT) {
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.redirect("/")
+                    res.json({"msg": "Login success"})
                 }
                 else if (data.Role.role_name === ROLE_INSTRUCTOR) {
                     res.json({token: accessToken, user: data})
@@ -133,10 +133,10 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 UserService.updateUser(result.id, {last_login: new Date()})
             }
             else
-                res.json({'msg': 'password is incorrect'})
+                res.json({'msg': 'Password is incorrect'})
         }
         else{
-            res.json({'msg': 'email is incorrect'})
+            res.json({'msg': 'Email is incorrect'})
         }
     })
         .catch(err=> {
