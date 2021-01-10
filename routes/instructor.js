@@ -9,6 +9,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // get render page
 router.get('/addCourse', async (req,res) => {
+  console.log(await JSON.stringify(req.user))
   const category = await getAllCategories();
   res.render("instructor/addCourse", {category})
 });

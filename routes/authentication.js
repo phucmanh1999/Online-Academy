@@ -106,7 +106,7 @@ router.post('/login', urlencodedParser, (req, res)=>{
         res.status(400).json({'msg': 'Email or password must not be empty'})
     }
 
-    if (validateEmail(user.email)){
+    if (!validateEmail(email)){
         res.status(400).json({'msg': 'Email not valid'})
     }
 
