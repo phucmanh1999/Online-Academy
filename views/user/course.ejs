@@ -140,11 +140,14 @@
           </div>
     
           <div class="course-lectures mt-2">
-            Create by: <span>Adam Leviz</span>
+            Create by: <span><%= payload.Instructor.User.first_name %> <%= payload.Instructor.User.last_name %></span>
           </div>
     
           <div class="course-update">
             <i class="fas fa-edit"></i> Last update: <%= payload.updated_at %>
+          </div>
+          <div class="course_language">
+            <i class="fas fa-closed-captioning"></i> Language: <%= payload.course_language %>
           </div>
         </div>
         <div class="course-content">
@@ -359,32 +362,59 @@
           </div>
           <div class="instructor-profile">
             <div class="instructor-name">
-              Lionel Andres Messi
+              <%= payload.Instructor.User.first_name %> <%= payload.Instructor.User.last_name %>
               <span class="d-block">
-                Head of Barcelona
+                <%= payload.Instructor.job_title %>
               </span>
             </div>
             <div class="instructor-avatar d-flex">
               <div class="instructor-img ">
-                <img class="rounded-pill" src="https://znews-stc.zdn.vn/static/topic/person/messi.jpg" height="100px">
+                <img class="rounded-pill" src="<%= payload.Instructor.User.avatar_url %>" height="100px">
               </div>
               <div class="instructor-detail">
                 <ul>
-                  <li><i class="fa fa-star"></i> 4.6 Instructor Rating</li>
-                  <li><i class="fas fa-user-friends"></i> 2132131 Students</li>
-                  <li><i class="fas fa-holly-berry"></i> 43242 Reviews</li>
-                  <li><i class="fa fa-play"></i> 32 Courses</li>
+                  <li><i class="fa fa-star"></i> <%= payload.Instructor.rating %> Rating</li>
+                  <li><i class="fas fa-user-friends"></i> <%= payload.Instructor.enroll_number %> Students</li>
+                  <li><i class="fas fa-holly-berry"></i> <%= payload.Instructor.rating_number %> Reviews</li>
+                  <li><i class="fa fa-play"></i> <%= payload.Instructor.course_number %> Courses</li>
                 </ul>
               </div>
             </div>
             <div class="instructor-description">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque porro, voluptatem culpa cupiditate aperiam dignissimos aliquid repellat dolor saepe facere veritatis obcaecati itaque? Animi, corrupti illum repudiandae nemo id quam voluptates atque! Aperiam cumque corrupti doloremque tenetur facere delectus, laboriosam modi consequuntur, totam officia in incidunt? Quibusdam libero veniam cumque.
+              <%= payload.Instructor.full_description %>
             </div>
           </div>
         </div>
         <div class="student-feedback">
+          <div class="course-content-title">
+            Student feedback
+          </div>
+          <div class="course-rating">
+            <div>
+              <%= payload.Instructor.rating %>
+            </div>
+            <div>
+              <% for(let j = 1; j <= Math.floor(payload.Instructor.rating); j++) { %>
+                <i class="fa fa-star"></i>
+              <% } %>
+              <% if(payload.Instructor.rating - Math.floor(payload.Instructor.rating) !== 0) { %>
+                <i class="fa fa-star-half-alt"></i>
+              <% } %>
+              <% for(let j = Math.ceil(payload.Instructor.rating); j < 5; j++) { %>
+                <i class="far fa-star"></i>
+              <% } %>
+            </div>
+            <div>
+              Course Rating
+            </div>
+
+          </div>
+        </div>
+
+        <div class="reviews">
           
         </div>
+
       </div>
       <div id="scrollDiv" class="course-commerce">
         <div class="course-commerce-img">

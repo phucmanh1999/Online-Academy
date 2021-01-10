@@ -9,7 +9,8 @@ router.get('/:id', async (req, res) => {
         res.send({
             user: req.user ? req.user : undefined,
             payload: course,
-            categories: await getAllCategories()
+            categories: await getAllCategories(),
+            relatedCourse: await getTopBuyCourseByCategoryId()
         })
 
     })
