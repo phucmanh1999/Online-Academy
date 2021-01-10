@@ -10,8 +10,8 @@ const sequelize = require('sequelize')
 
 const convertDate = (dateObj) => {
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day =  dateObj.getUTCDate();
-    const year =  dateObj.getUTCFullYear();
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
 
     return day + "/" + month + "/" + year;
 }
@@ -85,14 +85,11 @@ const getNewestCourses = async () => {
     return courses;
 }
 
-const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
-    const pagination = getPagination(page, size)
-    const result = await Course.findAndCountAll({
+const getTopBuyCourseByCategoryId = async (categoryId) => {
+    const courses = await Course.findAll({
         where: {
             category_id: categoryId,
         },
-        limit: pagination.limit,
-        offset: pagination.offset,
         include: [{
             model: Instructor,
             include: [{
@@ -100,12 +97,44 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
                 attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
             }]
         },],
+        limit: 5,
+        order: [
+            ['enroll_number', 'DESC']
+        ]
+    });
+    return courses;
+}
+
+const getCoursesByCategoryId = async (categoryId, page , size, order_price, order_rating) => {
+    const pagination = getPagination(page, size)
+    const result = await Course.findAndCountAll({
+        where: {
+            category_id: categoryId,
+        },
+        limit: pagination.limit,
+        offset: pagination.offset,
+        order: [
+            order_rating ? ["rating",order_rating] :
+                order_price ? ["price",order_price] : []
+        ],
+        include: [{
+            model: Instructor,
+            include: [{
+                model: User,
+                attributes: ['id', 'user_name', 'avatar_url', 'first_name', 'last_name']
+            }]
+        }, {
+            model: Category
+        }],
     })
 
     const count = result.count
     const courses = result.rows;
+    const limit = pagination.limit;
+    const pageCount = Math.ceil(count / limit);
 
-    return {count, courses}
+
+    return {courses, count, limit, page, pageCount}
 }
 
 const getPagination = (pageNum, pageSize) => {
@@ -185,4 +214,5 @@ module.exports = {
     getCoursesByCategoryId,
     getCourse,
     createCourse,
+    getTopBuyCourseByCategoryId
 }

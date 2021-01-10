@@ -29,8 +29,8 @@ app.use(express.static(__dirname + '/public'));
 app.use("/",decodeToken,require('./routes/index'))
 app.use("/courses",decodeToken,require('./routes/courses'))
 app.use("/authentication",require('./routes/authentication'))
-app.use("/student",require('./routes/student'))
-app.use("/user",require('./routes/user'))
+app.use("/student", passport.authenticate('jwt', {session: false}), require('./routes/student'))
+app.use("/user",decodeToken,require('./routes/user'))
 app.use("/instructor",require('./routes/instructor'))
 
 app.listen(port,() => console.log(`App listen on ${port}`))

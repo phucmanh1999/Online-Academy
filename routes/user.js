@@ -38,4 +38,19 @@ router.post('/update', urlencodedParser, passport.authenticate('jwt', {session: 
     })
 })
 
+router.get("/cart", (req, res) => {
+    res.render("user/cart", {
+        categories: [
+            {
+                id: 2,
+                category_name: "Mobile"
+            },
+            {
+                id: 3,
+                category_name: "Web"
+            }
+        ]
+    })
+})
+
 module.exports = router
