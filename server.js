@@ -27,7 +27,7 @@ app.use(express.static(__dirname + '/public'));
 app.use("/",require('./routes/index'))
 app.use("/courses",require('./routes/courses'))
 app.use("/authentication",require('./routes/authentication'))
-app.use("/student",require('./routes/student'))
+app.use("/student", passport.authenticate('jwt', {session: false}), require('./routes/student'))
 app.use("/user",require('./routes/user'))
 app.use("/instructor",require('./routes/instructor'))
 
