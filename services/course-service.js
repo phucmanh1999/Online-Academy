@@ -9,6 +9,8 @@ const Student = require("../Model/Student");
 const sequelize = require('sequelize')
 
 const convertDate = (dateObj) => {
+    if (!dateObj)
+        return null
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
@@ -17,7 +19,7 @@ const convertDate = (dateObj) => {
 }
 
 const getAllCourses = async () => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
         include: [{
             model: Category,
         }, {
@@ -28,11 +30,16 @@ const getAllCourses = async () => {
         },
         ]
     });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     return courses;
 }
 
 const getCourseByTopView = async () => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
         include: [{
             model: Category,
         }, {
@@ -46,11 +53,16 @@ const getCourseByTopView = async () => {
             ['view_number', 'DESC']
         ]
     });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     return courses;
 }
 
 const getHighLightCourses = async () => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
         include: [{
             model: Category,
         }, {
@@ -64,11 +76,16 @@ const getHighLightCourses = async () => {
             ['view_number', 'DESC']
         ]
     });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     return courses;
 }
 
 const getNewestCourses = async () => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
         include: [{
             model: Category,
         }, {
@@ -82,11 +99,16 @@ const getNewestCourses = async () => {
             ['created_at', 'DESC']
         ]
     });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     return courses;
 }
 
 const getTopBuyCourseByCategoryId = async (categoryId) => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
         where: {
             category_id: categoryId,
         },
@@ -102,6 +124,11 @@ const getTopBuyCourseByCategoryId = async (categoryId) => {
             ['enroll_number', 'DESC']
         ]
     });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     return courses;
 }
 
@@ -129,7 +156,12 @@ const getCoursesByCategoryId = async (categoryId, page , size, order_price, orde
     })
 
     const count = result.count
-    const courses = result.rows;
+    let courses = result.rows;
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
     const limit = pagination.limit;
     const pageCount = Math.ceil(count / limit);
 
