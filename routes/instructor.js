@@ -1,6 +1,8 @@
 const { render } = require("ejs");
 const app = require("express")
 const {getAllCategories} = require("../services/category-service");
+const {getCourse} = require("../services/course-service");
+
 const router = app.Router()
 const bodyParser = require("body-parser")
 const {getCategory} = require("../services/category-service");
@@ -9,14 +11,13 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // get render page
 router.get('/addCourse', async (req,res) => {
-  console.log(await JSON.stringify(req.user))
   const category = await getAllCategories();
   res.render("instructor/addCourse", {category})
 });
 
 router.get('/addChapter', async (req,res) => {
   // res.render("instructor/addChapter", await getAllCategories())
-  res.render("instructor/addChapter")
+  res.render("instructor/addChapter",{course_id:req.query.course_id})
 })
 
 
@@ -25,6 +26,24 @@ router.get('/addLesson', async (req,res) => {
   res.render("instructor/addLesson")
 })
 
+//edit
+router.get('/editCourse', async (req,res) => {
+  // res.render("instructor/addLesson",await getAllCategories())
+  let category = await getAllCategories();
+  let course = await getCourse({id: req.query.id})
+  console.log("course data: " + JSON.stringify(course))
+  // console.log("full description: " + course.full_description)
+  res.render("instructor/editCourse",  {category,course})
+})
+
+router.post('/editCourse', (req,res) => {
+  console.log(req.body)
+  // if (!req.file) {
+  //   res.status(401).json({error: 'Please provide an image'});
+  // }
+  res.send(req.body)
+
+});
 //post form
 router.post('/addCourse', urlencodedParser, async (req,res) => {
   const imageFile = req.files.image

@@ -7,8 +7,6 @@ const {getCourseByTopView} = require("../services/course-service");
 const {getAllCategories} = require("../services/category-service");
 const router = express.Router()
 
-// router.get("/", decodeToken)
-
 router.get('/', async (req, res) => {
     getNewestCourses().then(rs => {
         // console.log(rs)
