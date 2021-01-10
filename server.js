@@ -10,6 +10,8 @@ const session = require("express-session");
 const {applyPassportStrategy} = require("./passport-strategy");
 const fileUpload = require('express-fileupload');
 
+const {decodeToken} = require("./middleware/authentication");
+
 app.use(fileUpload({
     createParentPath: true
 }));
@@ -24,8 +26,8 @@ app.use(session({ secret: 'keyboard cat', key: 'sid', resave: true,saveUninitial
 app.use(passport.session());
 
 app.use(express.static(__dirname + '/public'));
-app.use("/",require('./routes/index'))
-app.use("/courses",require('./routes/courses'))
+app.use("/",decodeToken,require('./routes/index'))
+app.use("/courses",decodeToken,require('./routes/courses'))
 app.use("/authentication",require('./routes/authentication'))
 app.use("/student",require('./routes/student'))
 app.use("/user",require('./routes/user'))
