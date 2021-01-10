@@ -105,7 +105,7 @@ const getTopBuyCourseByCategoryId = async (categoryId) => {
     return courses;
 }
 
-const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
+const getCoursesByCategoryId = async (categoryId, page , size, order_price, order_rating) => {
     const pagination = getPagination(page, size)
     const result = await Course.findAndCountAll({
         where: {
@@ -113,6 +113,10 @@ const getCoursesByCategoryId = async (categoryId, page = 1, size) => {
         },
         limit: pagination.limit,
         offset: pagination.offset,
+        order: [
+            order_rating ? ["rating",order_rating] :
+                order_price ? ["price",order_price] : []
+        ],
         include: [{
             model: Instructor,
             include: [{
