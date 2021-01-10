@@ -23,7 +23,7 @@ router.get('/addCourse', async (req,res) => {
 
 router.get('/addChapter', async (req,res) => {
   // res.render("instructor/addChapter", await getAllCategories())
-  res.render("instructor/addChapter")
+  res.render("instructor/addChapter",{course_id:req.query.course_id})
 })
 
 
@@ -37,10 +37,19 @@ router.get('/editCourse', async (req,res) => {
   // res.render("instructor/addLesson",await getAllCategories())
   let category = await getAllCategories();
   let course = await getCourse({id: req.query.id})
-  console.log("course data: " + JSON.stringify(course))
+  console.log("course data: " + JSON.stringify(course)) 
+  // console.log("full description: " + course.full_description) 
   res.render("instructor/editCourse",  {category,course})
 })
 
+router.post('/editCourse', (req,res) => {
+  console.log(req.body)
+  // if (!req.file) {
+  //   res.status(401).json({error: 'Please provide an image'});
+  // }
+  res.send(req.body) 
+
+});
 //post form
 router.post('/addCourse', (req,res) => {
   console.log(req.body)

@@ -20,6 +20,14 @@
       Online Courses - Learn Anything On Your Schedule | MNP Courses
     </title>
     <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
+    <!-- Main Quill library -->
+    <script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.0.0/quill.bubble.css" rel="stylesheet">
+
   </head>
   <body>
     <!-- Header -->
@@ -99,10 +107,10 @@
       </div>
     </nav>
 
-    <!-- Courses -->
+		<!-- Courses -->
     <div class="container mt-5 mb-5">
       <!-- <form action="/instructor/addCourse" method="post" enctype="multipart/form-data"> -->
-      <form action="/instructor/addCourse" method="post">
+      <form action="/instructor/addCourse?id=<%=course.id%>" method="post">
           <div class="form-group">
             <label for="courseName">Course name</label>
             <input type="text" class="form-control" id="courseName"  name="courseName" value="<%=course.course_name%>" >
@@ -110,9 +118,9 @@
           <div class="form-group">
             <label for="courseImage">Course image</label>
 						<div class="">
-							<img src=<%=course.img_path%> alt="Image" width="60%" height="60%">
+							<img id = "image" src=<%=course.img_path%> alt="Image" width="60%" height="60%">
 						</div>
-						<input type="file" class="form-control-file" id="courseImage" name = "image">
+						<input type="file" class="form-control-file" id="courseImage" name = "image" onchange="readURL(this);">
           </div>
           <div class="form-group">
 						<label for="category">Category</label>
@@ -129,16 +137,23 @@
           
           <div class="form-group">
             <label for="shortDescription">Short description</label>
-            <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription" >
-              <%=course.short_description%>
-            </textarea>
+            <textarea  autofocus style="margin:0; padding:0"  cols="20" class="form-control" id="shortDescription" rows="3" name = "shortDescription" ><%=course.short_description %></textarea>
           </div>
           <div class="form-group">
-            <label for="fullDescription">Full description</label>
-            <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription" >
-              <%=course.full_description%>
-						</textarea>
-						
+            <label for="fdcontent">Full description</label>
+            <!-- <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription" ><%=course.full_description%></textarea> -->
+            <!-- Create the toolbar container -->
+            <!-- <div id="toolbar">
+              <button class="ql-bold">Bold</button>
+              <button class="ql-italic">Italic</button>
+            </div> -->
+
+
+
+            <!-- Create the editor container -->
+            <div id="editor" class="form-control" ></div>
+            <input type="text" id="fdcontent" name='fullDescription' hidden>
+           
           </div>
           <div class="form-group">
 						<label for="price">Price</label>
@@ -152,16 +167,75 @@
             <label for="language">Language</label>
             <input type="text" class="form-control" id="language" name = "language" value = "<%=course.course_language%>">
 					</div>
-					<div class="form-group">
-						<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
-					</div>
 					<div class="center">
-
 						<input type="submit" class ="btn btn-primary" value="Save"/>
 					</div>
-      </form>
-    </div>
+			</form>
 
+				<!-- Course content -->
+				<div class="course-content">
+					<div class="course-content-title">
+						Course Content
+				</div>
+				<div class="accordion" id="accordionExample">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<h2 class="mb-0">
+								<button class="btn  btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									Chapter 1
+								</button>
+							</h2>
+						</div>
+	
+						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+							<div class="card-body">
+								<ul class="list-group">
+									<li class="list-group-item">Course Introduction</li>
+									<li class="list-group-item">Course Curriculum Overview</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header" id="headingTwo">
+							<h2 class="mb-0">
+								<button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									Chapter 2
+								</button>
+							</h2>
+						</div>
+						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+							<div class="card-body">
+								<ul class="list-group">
+									<li class="list-group-item">Lesson 3</li>
+									<li class="list-group-item">Lesson 4</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header" id="headingThree">
+							<h2 class="mb-0">
+								<button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									Chapter 3
+								</button>
+							</h2>
+						</div>
+						<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+							<div class="card-body">
+								<ul class="list-group">
+									<li class="list-group-item">Lesson 5</li>
+									<li class="list-group-item">Lesson 6</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="form-group">
+					<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
+				</div>
+    </div>
     <!-- Footer -->
     <div class="container-fluid footer">
       <div class="row">
@@ -201,6 +275,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script>
+			function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+			}
+    </script>
+
+    <% if (course) { %>
+
+     <script>
+      let course = <%- course.full_description.replace('&#34;','"') %>            
+
+      let toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                                         // remove formatting button
+      ];
+
+      var editor = new Quill('#editor', { 
+        modules: { toolbar: toolbarOptions },
+        theme: 'snow'
+      });
+      //load content from db
+      let content = course
+      editor.setContents(content);
+
+      let delta = JSON.stringify(editor.getContents()).replace('\"','"')
+      document.getElementById('fdcontent').value = delta
+      
+      editor.on('text-change', function() {
+        let delta = JSON.stringify(editor.getContents()).replace('\"','"')
+        document.getElementById('fdcontent').value = delta
+      }); 
+
+    </script>
+    <% } %>
+     <!-- Initialize Quill editor -->
+
   </body>
 </html>
