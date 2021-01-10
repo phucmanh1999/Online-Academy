@@ -18,7 +18,8 @@ const router = app.Router()
 
 // get render page
 router.get('/addCourse', async (req,res) => {
-  res.render("instructor/addCourse",await {category})
+  let category = await getAllCategories();
+  res.render("instructor/addCourse",{ category })
 });
 
 router.get('/addChapter', async (req,res) => {
@@ -29,7 +30,7 @@ router.get('/addChapter', async (req,res) => {
 
 router.get('/addLesson', async (req,res) => {
   // res.render("instructor/addLesson",await getAllCategories())
-  res.render("instructor/addLesson")
+  res.render("instructor/addLesson",{chapter_id:req.query.chapter_id})
 })
 
 //edit
@@ -47,7 +48,7 @@ router.post('/editCourse', (req,res) => {
   // if (!req.file) {
   //   res.status(401).json({error: 'Please provide an image'});
   // }
-  res.send(req.body) 
+  res.send(req.body)  
 
 });
 //post form
@@ -65,9 +66,6 @@ router.post('/addChapter', (req,res) => {
 });
 router.post('/addLesson', (req,res) => {
   console.log(req.body)
-  if (!req.file) {
-    res.status(401).json({error: 'Please provide an image'});
-  }
   res.send(req.body)
 });
 

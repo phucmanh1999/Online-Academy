@@ -20,6 +20,13 @@
       Online Courses - Learn Anything On Your Schedule | MNP Courses
     </title>
     <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
+    <!-- Main Quill library -->
+    <script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.0.0/quill.bubble.css" rel="stylesheet">
   </head>
   <body>
     <!-- Header -->
@@ -106,7 +113,7 @@
 
 
     <div id="addLesson" class="container mt-5 mb-5"> 
-      <form action="/instructor/addLesson" method="post" id="formLesson" enctype="multipart/form-data">
+      <form action="/instructor/addLesson?chapter_id=<%=chapter_id%>" method="post" id="formLesson">
         <div class="form-group">
           <label for="lessonName">Lesson name</label>
           <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?" name ="lessonName">
@@ -118,6 +125,12 @@
         <div class="form-group">
           <label for="uploadVideo">Upload video</label>
           <input type="file" class="form-control-file" id="uploadVideo" name="video">
+        </div>
+        <div class="form-group">
+          <label for="fdcontent">Full description</label>
+          <!-- Create the editor container -->
+          <div id="editor" class="form-control" > </div>
+          <input type="text" id="fdcontent" name='fullDescription' hidden>
         </div>
         <input class="btn btn-primary" type="submit" value="Submit this lesson">
       </form>
@@ -176,46 +189,38 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // addFunc = (str) => {
-        //   let upcase = (str === "chapter") ?"Chapter":"Lesson";
-        //   let id = "add" + upcase;
-        //   let btnid = "add-" + str + "-btn" ;
-        //   let obj = document.getElementById(id)
-        //   let btnAdd = document.getElementById(btnid)
+      let toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
 
-        //   if (obj.style.display === "none")
-        //   {
-        //     obj.style.display = "block";
-        //     btnAdd.style.background = "red"
-        //     btnAdd.innerHTML = "Cancle"
-        //   } else {
-        //     obj.style.display = "none";
-        //     btnAdd.style.background = "#007BFF"
-        //     btnAdd.innerHTML = "Add " + upcase;
-        //   }
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
 
-        // }
-        // $("#add-chapter-btn").click(function(){
-        //   let chapter = document.getElementById("addChapter")
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-        //   if (chapter.style.display === "none")
-        //   {
-        //     chapter.style.display = "block";
-        //     let btnAdd = document.getElementById("add-chapter-btn")
-        //     btnAdd.style.background = "red"
-        //     btnAdd.innerHTML = "Cancle"
-        //   } else {
-        //     chapter.style.display = "none";
-        //     let btnAdd = document.getElementById("add-chapter-btn")
-        //     btnAdd.style.background = "#007BFF"
-        //     btnAdd.innerHTML = "Add Chapter"
-        //   }
-          
-        // });
-        // $("#add-lesson-btn").click(function(){
-        //   document.getElementById("addLesson").style.display = "block";
-        // });
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
 
+        ['clean']                                         // remove formatting button
+      ];
+
+      var editor = new Quill('#editor', { 
+        modules: { toolbar: toolbarOptions },
+        theme: 'snow'
+      });
+
+
+      editor.setContents("");
+      
+      editor.on('text-change', function() {
+        let delta = JSON.stringify(editor.getContents()).replace('\"','"')
+        document.getElementById('fdcontent').value = delta
+      });
     </script>
   </body>
 </html>
