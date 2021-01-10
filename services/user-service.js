@@ -4,6 +4,7 @@ const Instructor = require("../Model/Instructor");
 const bcrypt = require("bcrypt");
 const Administrator = require("../Model/Administrator");
 const Student = require("../Model/Student");
+const Cart = require("../Model/Cart");
 
 const convertDate = (dateObj) => {
     if (!dateObj)
@@ -55,6 +56,15 @@ const isValidPassword = async (user, password) => {
     return await bcrypt.compare(password, user.user_password);
 }
 
+const getUserCartNumber = async studentId => {
+    const result = await Cart.count({
+        where: {
+            student_id: studentId
+        }
+    })
+    return result
+}
+
 const updateUser = (_id, obj) => {
     return User.update(
         obj
@@ -74,4 +84,5 @@ module.exports = {
     isValidPassword,
     deleteUser,
     updateUser,
+    getUserCartNumber,
 }
