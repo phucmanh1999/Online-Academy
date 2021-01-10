@@ -10,6 +10,7 @@ const Administrator = require("./Administrator");
 const WatchList = require("./WatchList");
 const CourseBought = require("./CourseBought");
 const Review = require("./Review");
+const Cart = require("./Cart");
 
 Category.hasMany(Course, {foreignKey: 'category_id'})
 Instructor.hasMany(Course, {foreignKey: 'instructor_id'})
@@ -39,3 +40,7 @@ Course.hasMany(Review, {foreignKey: 'course_id'})
 Student.hasMany(Review, {foreignKey: 'student_id'})
 Review.belongsTo(Course, {foreignKey: 'course_id'})
 Review.belongsTo(Student, {foreignKey: 'student_id'})
+Cart.belongsTo(Student, {foreignKey: 'student_id'})
+Cart.belongsTo(Course, {foreignKey: 'course_id'})
+Student.hasMany(Cart, {foreignKey: 'student_id'})
+Course.hasMany(Cart, {foreignKey: 'course_id'})

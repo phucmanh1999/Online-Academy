@@ -180,3 +180,12 @@ body {
 .footer-logo {
   padding: 30px;
 }
+
+.best-seller {
+  background: #ffe799;
+  color: #593d00;
+  font-size: 0.8rem;
+  padding: 5px;
+  border-radius: 5px;
+  width: fit-content;
+}

@@ -7,7 +7,7 @@ const {createWatchList} = require("../services/watchlist-service");
 const {createReview} = require("../services/review-services");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
-router.post('/review', urlencodedParser, passport.authenticate('jwt', {session: false}) , (req, res) => {
+router.post('/review', urlencodedParser,  (req, res) => {
     const user = req.user
     const comment = req.body.comment
     const course_id = req.body.course_id
@@ -16,14 +16,14 @@ router.post('/review', urlencodedParser, passport.authenticate('jwt', {session: 
         star: star,
         comment: comment,
         course_id: course_id,
-        student_id: user.Student.id,
+        student_id: user.role_id,
         created_at:  new Date(),
     }).then(() => {
         res.json({'msg': 'Comment success'})
     })
 })
 
-router.post('/favourite', passport.authenticate('jwt', {session: false}) , (req, res) => {
+router.post('/favourite' , (req, res) => {
     const course_id = req.query.course_id
     if (req.user.Student){
         createWatchList({

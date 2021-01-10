@@ -41,12 +41,11 @@
           </form>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                href="#"
                 id="dropdownCategory"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -60,23 +59,22 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="/about">About</a>
             </li>
             <% if(typeof user !== 'undefined' ) { %>
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="fas fa-shopping-cart"></i>
+                <a class="nav-link" href="/cart">
+                  <i class="fas fa-shopping-cart"></i><span class="badge badge-danger">0</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/watchlist">
                   <i class="fa fa-heart" aria-hidden="true"></i>
                 </a>
               </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
-                  href="#"
                   id="dropdownUser"
                   data-toggle="dropdown"
                   aria-haspopup="true"
@@ -84,13 +82,13 @@
                   ><%= user.username %></a
                 >
                 <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                  <a class="dropdown-item" href="#">My Profile</a>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="/profile">My Profile</a>
+                  <a class="dropdown-item" href="/logout">Log out</a>
                 </div>
               </li>
             <% } else { %>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/login">
                   Login
                 </a>
               </li>
@@ -173,6 +171,11 @@
               <div class="courses-item-price">
                 <%= topTenViewCourses[i].price %> <%= topTenViewCourses[i].concurrency %> <span></span>
               </div>
+              <% if(topTenViewCourses[i].view_number > 1000) { %>
+                <div class="best-seller">
+                  Bestseller
+                </div>
+            <% } %>
             </a> 
           </div>
           
@@ -215,6 +218,11 @@
               <div class="courses-item-price">
                 <%= topNewCourses[i].price %><%= topNewCourses[i].concurrency %> <span></span>
               </div>
+              <% if(topNewCourses[i].view_number > 1000) { %>
+                  <div class="best-seller">
+                    Bestseller
+                  </div>
+              <% } %>
             </a> 
           </div>
           
@@ -291,5 +299,9 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      
+    </script>
   </body>
 </html>
