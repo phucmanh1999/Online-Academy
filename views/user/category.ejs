@@ -64,12 +64,12 @@
           </li>
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/cart">
+              <a class="nav-link" href="/user/cart">
                 <i class="fas fa-shopping-cart"></i><span class="badge badge-danger"><%= user.cartCount %></span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/watchlist">
+              <a class="nav-link" href="/user/watchlist">
                 <i class="fa fa-heart" aria-hidden="true"></i>
               </a>
             </li>
@@ -128,8 +128,8 @@
               </div>
             </button>
             <div class="dropdown-menu w-100" aria-labelledby="dropdownRating">
-              <a class="dropdown-item" href="/category-courses/<%= payload.id %>?page=<%= payload.page %>&order_review=ASC">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.id %>?page=<%= payload.page %>&order_review=DESC">Descending</a>
+              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=ASC&order_price=<%= payload.order_price %>">Ascending</a>
+              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=DESC&order_price=<%= payload.order_price %>">Descending</a>
             </div>
           </div>
           <div class="dropdown">
@@ -139,8 +139,8 @@
               </div>
             </button>
             <div class="dropdown-menu w-100" aria-labelledby="dropdownPrice">
-              <a class="dropdown-item" href="/category-courses/<%= payload.id %>?page=<%= payload.page %>&order_review=ASC">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.id %>?page=<%= payload.page %>&order_review=DESC">Descending</a>
+              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=ASC&order_review=<%= payload.order_review%>">Ascending</a>
+              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=DESC&order_review=<%= payload.order_review%>">Descending</a>
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@
                     <% if (payload.page == 1) { %>
                         <li class="page-item disabled"><a class="page-link">First</a></li>
                     <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.id %>?page=1">First</a></li>
+                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=1">First</a></li>
                     <% } %>
                     <% var i = (Number(payload.page) > 5 ? Number(payload.page) - 4 : 1) %>
                     <% if (i !== 1) { %>
@@ -203,7 +203,7 @@
                         <% if (i == payload.page) { %>
                             <li class="page-item  active"><a class="page-link" ><%= i %></a></li>
                         <% } else { %>
-                            <li><a class="page-link" href="/category-courses/<%= payload.id %>?page=<%= i %>"><%= i %></a></li>
+                            <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= i %>"><%= i %></a></li>
                         <% } %>
                         <% if (i == Number(payload.page) + 4 && i < payload.pageCount) { %>
                             <li class="page-item disabled"><a class="page-link">...</a></li>
@@ -212,7 +212,7 @@
                     <% if (payload.page == payload.pageCount) { %>
                         <li class="page-item disabled"><a class="page-link">Last</a></li>
                     <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.id %>?page=<%= payload.pageCount %>">Last</a></li>
+                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.pageCount %>">Last</a></li>
                     <% } %>
                 </ul>
             <% } %>
