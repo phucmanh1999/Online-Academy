@@ -127,7 +127,7 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 const accessToken = jwt.sign(payload, 'secret')
                 if (data.Role.role_name === ROLE_STUDENT) {
                     payload.cartCount = await getUserCartNumber(data.Student.id)
-                    // console.log("payload ís: " +await JSON.stringify(payload))
+                    console.log("payload ís: " +await JSON.stringify(payload))
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
                     res.json({"msg": "Login success", "previousPage": req.session.previousPage})
                 }

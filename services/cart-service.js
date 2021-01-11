@@ -1,4 +1,5 @@
 const Cart = require("../Model/Cart");
+const Course = require("../Model/Course");
 
 const createCart = obj => {
     return Cart.create(obj);
@@ -15,6 +16,10 @@ const getCartsByStudentId = async studentId => {
         {
             where: {
                 student_id: studentId
+            },
+            include: {
+                model: Course,
+                attributes: ['course_name', 'id']
             }
         }
     )
