@@ -100,11 +100,8 @@ router.post('/addLesson', (req,res) => {
   res.send(req.body)
 });
 
-
-
-
-
 router.post('/addChapter', (req, res) => {
+    console.log(req.query.course_id)
     console.log(req.body)
     res.send(req.body)
 });
