@@ -7,6 +7,7 @@ const Chapter = database.define('Chapter', {
             type: sequelize.INTEGER,
             autoIncrement: true,
         },
+        chapter_name: sequelize.STRING(255),
         course_id: sequelize.INTEGER,
         lesson_number: sequelize.INTEGER,
         short_description: sequelize.TEXT,

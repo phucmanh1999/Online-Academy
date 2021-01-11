@@ -228,6 +228,18 @@ const getCourse = async obj => {
     return course;
 }
 
+const updateCourse = (_id, obj) => {
+    return Course.update(
+        obj
+        ,
+        {
+            where: {
+                id: _id
+            },
+        }
+    )
+}
+
 module.exports = {
     getAllCourses,
     getCourseByTopView,
@@ -238,4 +250,5 @@ module.exports = {
     createCourse,
     getTopBuyCourseByCategoryId,
     getCourseLessInfo,
+    updateCourse
 }

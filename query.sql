@@ -157,3 +157,6 @@ CREATE TABLE courseBought(-- khóa học đã đc mua:  nhiều - nhiều
 
 ALTER TABLE lessons
 ADD COLUMN is_free boolean;
+
+ALTER TABLE chapters
+ADD COLUMN chapter_name VARCHAR (255);
