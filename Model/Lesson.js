@@ -16,7 +16,8 @@ const Lesson = database.define('Lesson', {
         hour: sequelize.INTEGER,
         current_watch: sequelize.DATE,
         created_at: sequelize.DATE,
-        updated_at: sequelize.DATE
+        updated_at: sequelize.DATE,
+        is_free: sequelize.BOOLEAN
     },
     {
         timestamps: false,
