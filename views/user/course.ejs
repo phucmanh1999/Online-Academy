@@ -211,149 +211,39 @@
         </div>
         <div class="relate-courses">
           <div class="course-content-title">
-            Most Views Courses Related "<%= payload.Category.category_name %>"
+            Top Buy Courses Related "<%= payload.Category.category_name %>"
           </div>
           <div class="container-fluid">
-            <a href="#">
-              <div class="row row-cols-4">
-                <div class="col-6 d-flex">
-                  <div class="relate-course-img">
-                    <img src="/assets/images/Course3.jpg" width="70px" height="70px">
-                  </div>
-                  <div>
-                    <div class="relate-course-title">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, magni!
+            <% topBuyCourses.forEach((item) => { %>
+              <a href="/courses/<%= item.id %>">
+                <div class="row row-cols-4">
+                  <div class="col-6 d-flex">
+                    <div class="relate-course-img">
+                      <img src="<%= item.img_path %>" width="70px" height="70px">
                     </div>
-                    <div class="relate-course-detail">
-                      60.2 total hours. <span>Update 12/2020</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-2 ralate-course-star">
-                  4.8 <i class="fa fa-star"></i>
-                </div>
-                <div class="col-2">
-                  <i class="fas fa-user-friends"></i> 12321
-                </div>
-                <div class="col-2">
-                  9.99 USD
-                </div>
-                
-              </div>
-              <hr>
-            </a>
-            <a href="#">
-              <div class="row row-cols-4">
-                <div class="col-6 d-flex">
-                  <div class="relate-course-img">
-                    <img src="/assets/images/Course3.jpg" width="70px" height="70px">
-                  </div>
-                  <div>
-                    <div class="relate-course-title">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, magni!
-                    </div>
-                    <div class="relate-course-detail">
-                      60.2 total hours. <span>Update 12/2020</span>
+                    <div>
+                      <div class="relate-course-title">
+                        <%= item.course_name %>
+                      </div>
+                      <div class="relate-course-detail">
+                        60.2 total hours. <span>Update <%= item.updated_at %></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-2 ralate-course-star">
-                  4.8 <i class="fa fa-star"></i>
-                </div>
-                <div class="col-2">
-                  <i class="fas fa-user-friends"></i> 12321
-                </div>
-                <div class="col-2">
-                  9.99 USD
-                </div>
-                
-              </div>
-              <hr>
-            </a>
-            <a href="#">
-              <div class="row row-cols-4">
-                <div class="col-6 d-flex">
-                  <div class="relate-course-img">
-                    <img src="/assets/images/Course3.jpg" width="70px" height="70px">
+                  <div class="col-2 ralate-course-star">
+                    <%= item.rating %> <i class="fa fa-star"></i>
                   </div>
-                  <div>
-                    <div class="relate-course-title">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, magni!
-                    </div>
-                    <div class="relate-course-detail">
-                      60.2 total hours. <span>Update 12/2020</span>
-                    </div>
+                  <div class="col-2">
+                    <i class="fas fa-user-friends"></i> <%= item.view_number %>
                   </div>
-                </div>
-                <div class="col-2 ralate-course-star">
-                  4.8 <i class="fa fa-star"></i>
-                </div>
-                <div class="col-2">
-                  <i class="fas fa-user-friends"></i> 12321
-                </div>
-                <div class="col-2">
-                  9.99 USD
-                </div>
-                
-              </div>
-              <hr>
-            </a>
-            <a href="#">
-              <div class="row row-cols-4">
-                <div class="col-6 d-flex">
-                  <div class="relate-course-img">
-                    <img src="<%= payload.img_path %>" width="70px" height="70px">
+                  <div class="col-2">
+                    <%= item.price %> <%= item.concurrency %>
                   </div>
-                  <div>
-                    <div class="relate-course-title">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, magni!
-                    </div>
-                    <div class="relate-course-detail">
-                      60.2 total hours. <span>Update 12/2020</span>
-                    </div>
-                  </div>
+                  
                 </div>
-                <div class="col-2 ralate-course-star">
-                  4.8 <i class="fa fa-star"></i>
-                </div>
-                <div class="col-2">
-                  <i class="fas fa-user-friends"></i> 12321
-                </div>
-                <div class="col-2">
-                  9.99 USD
-                </div>
-                
-              </div>
-              <hr>
-            </a>
-            <a href="#">
-              <div class="row row-cols-4">
-                <div class="col-6 d-flex">
-                  <div class="relate-course-img">
-                    <img src="/assets/images/Course3.jpg" width="70px" height="70px">
-                  </div>
-                  <div>
-                    <div class="relate-course-title">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, magni!
-                    </div>
-                    <div class="relate-course-detail">
-                      60.2 total hours. <span>Update 12/2020</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-2 ralate-course-star">
-                  4.8 <i class="fa fa-star"></i>
-                </div>
-                <div class="col-2">
-                  <i class="fas fa-user-friends"></i> 12321
-                </div>
-                <div class="col-2">
-                  9.99 USD
-                </div>
-                
-              </div>
-              <hr>
-            </a>
+                <hr>
+              </a>
+            <%}) %>
           </div>
         </div>
         <div class="instructor">
@@ -391,7 +281,7 @@
           </div>
           <div class="course-rating">
             <div>
-              <%= payload.Instructor.rating %>
+              <%= payload.rating %>
             </div>
             <div>
               <% for(let j = 1; j <= Math.floor(payload.Instructor.rating); j++) { %>
@@ -412,7 +302,7 @@
         </div>
 
         <div class="reviews">
-          
+
         </div>
 
       </div>
@@ -506,8 +396,6 @@
 
     </div>
   </div>
-
-  
 
 
   <!-- jQuery library -->

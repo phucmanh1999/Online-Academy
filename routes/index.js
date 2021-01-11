@@ -21,12 +21,12 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/category-courses/:categoryid', (req, res) => {
+
     const id = req.params.categoryid
     const page = req.query.page ? req.query.page : 1
     const order_price = req.query.order_price ? req.query.order_price : "DESC"
     const order_rating = req.query.order_review ? req.query.order_review : "DESC"
 
-    console.log ( "New result: " + page + order_price + order_rating)
 
 
     getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {

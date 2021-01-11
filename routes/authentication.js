@@ -15,6 +15,12 @@ const {ROLE_ADMIN} = require("../constant/constant");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 const {ROLE_STUDENT} = require("../constant/constant");
 
+const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+
 router.post('/user', (req, res) => {
     UserService.getUser({
         id: 1,
@@ -39,11 +45,13 @@ router.post('/signup', urlencodedParser, (req, res) => {
 
     const type = req.body.type ? req.body.type : ROLE_STUDENT
 
+    if (validateEmail(user.email)){
+        res.status(400).json({'msg': 'Email not valid'})
+    }
+
     UserService.getUser({email: user.email}).then (user => {
         if (user) {
-            res.status(400)
-            res.json({'msg': 'Email existed'})
-            return
+            res.status(400).json({'msg': 'Email existed'})
         }
     })
 
@@ -85,7 +93,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
                 })
             }
         }).catch(() => {
-            res.json({'msg': 'Cannot create account, please check again'})
+            res.status(400).json({'msg': 'Cannot create account, please check again'})
         })
     })
 })
@@ -94,10 +102,14 @@ router.post('/login', urlencodedParser, (req, res)=>{
     const email = req.body.email
     const password = req.body.password
     if(!email || !password) {
-        // console.log(req.body)
-        res.json({'msg': 'Email or password must not be empty'})
-        return
+        console.log(req.body)
+        res.status(400).json({'msg': 'Email or password must not be empty'})
     }
+
+    if (!validateEmail(email)){
+        res.status(400).json({'msg': 'Email not valid'})
+    }
+
     UserService.getUser({
         email: email
     }).then( async (result) =>{
