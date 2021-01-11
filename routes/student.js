@@ -77,7 +77,11 @@ router.get('/allCart', (req, res) => {
     console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
         getCartsByStudentId(user.role_id).then(carts => {
-            res.status(200).json(carts)
+            let price_sum = 0;
+            carts.forEach(ca => {
+                price_sum += parseFloat(ca.Course.price)
+            })
+            res.status(200).json({payload: carts, price_sum: price_sum})
         }).catch(() => {
             res.status(400).json({'msg': 'Failed'})
         })
