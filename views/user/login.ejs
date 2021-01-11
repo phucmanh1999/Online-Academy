@@ -41,7 +41,7 @@
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -54,7 +54,7 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <a class="dropdown-item" href="#">Mobile</a>
+              <a class="dropdown-item" href="/">Mobile</a>
               <a class="dropdown-item" href="#">web</a>
             </div>
           </li>
@@ -216,7 +216,9 @@
         function(data, status){
           console.log(data.msg)
           if(data.msg === "Login success"){
-            window.location.href = "/"
+            let previousPage = data.previousPage || '/'
+            console.log(previousPage)
+            window.location.href = previousPage
           }
           else if(data.msg === 'Email is incorrect'){
             $("#msgEmail").text(data.msg).show()  

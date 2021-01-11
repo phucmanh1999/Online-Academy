@@ -30,7 +30,7 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
 
     getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {
-        console.log(payload)
+        // console.log(payload)
         res.render("user/category",
         {
             categories: [
@@ -63,7 +63,14 @@ router.get("/login", (req, res) => {
         res.render("user/login")
         return;
     }
-    res.redirect("/")
+    // console.log(req.previousPage)
+    if(req.session.previousPage)
+    {
+        res.redirect(req.session.previousPage)
+    }
+    else {
+        res.redirect("/")
+    }
 })
 
 router.get("/logout", (req, res) => {

@@ -65,7 +65,7 @@
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
               <a class="nav-link" href="/cart">
-                <i class="fas fa-shopping-cart"></i>
+                <i class="fas fa-shopping-cart"></i><span class="badge badge-danger"><%= user.cartCount %></span>
               </a>
             </li>
             <li class="nav-item">
@@ -279,22 +279,22 @@
           <div class="course-content-title">
             Student feedback
           </div>
-          <div class="course-rating">
+          <div class="course-rating text-center">
             <div>
               <%= payload.rating %>
             </div>
             <div>
-              <% for(let j = 1; j <= Math.floor(payload.Instructor.rating); j++) { %>
+              <% for(let j = 1; j <= Math.floor(payload.rating); j++) { %>
                 <i class="fa fa-star"></i>
               <% } %>
-              <% if(payload.Instructor.rating - Math.floor(payload.Instructor.rating) !== 0) { %>
+              <% if(payload.rating - Math.floor(payload.rating) !== 0) { %>
                 <i class="fa fa-star-half-alt"></i>
               <% } %>
-              <% for(let j = Math.ceil(payload.Instructor.rating); j < 5; j++) { %>
+              <% for(let j = Math.ceil(payload.rating); j < 5; j++) { %>
                 <i class="far fa-star"></i>
               <% } %>
             </div>
-            <div>
+            <div class="mb-3">
               Course Rating
             </div>
 
@@ -302,15 +302,42 @@
         </div>
 
         <div class="reviews">
-
+          <div class="course-content-title">
+            Reviews
+          </div>
+          <div class="container-fluid review-item">
+            <div class="row">
+              <div class="col-1">
+                <img class="rounded-circle" src="https://www.cogandhand.com.au/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" width="50px" height="50px">
+              </div>
+              <div class="col-11">
+                <div class="student-review">
+                  Nguyen Anh Nam
+                </div>
+                <div class="review-rating">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <span class="ml-2">12/1/2020</span>
+                </div>
+                <div class="review-content">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, mollitia dolores. Nobis repellat dicta perferendis sunt deserunt aliquid quam provident aperiam officia, sequi, nostrum nisi tempora, dolores voluptates quae labore.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
       <div id="scrollDiv" class="course-commerce">
+        <!-- Button trigger modal -->
+        
         <div class="course-commerce-img">
           <img src="<%= payload.img_path %>" width="100%">
           <div class="d-flex justify-content-center">
-            <i class="far fa-play-circle"></i>
+            <a href="#" data-toggle="modal" data-target="#previewCourse"><i class="far fa-play-circle"></i></a>
           </div>
         </div>
         <div>
@@ -336,6 +363,19 @@
       </div>
     </div>
     
+  </div>
+  <div class="modal fade" id="previewCourse">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>Course Preview</div>
+          <div><%= payload.course_name %></div>
+        </div>
+        <div class="modal-body">
+          <video width="100%" src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" controls type="video/mp4"></video>
+        </div>
+      </div>
+    </div>
   </div>
 
   <hr>
@@ -408,6 +448,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
   <script>
+    $().ready(function(){
+      $('#previewCourse').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
+    })
   </script>
 
 </body>
