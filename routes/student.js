@@ -81,12 +81,12 @@ router.get('/allCart', (req, res) => {
             carts.forEach(ca => {
                 price_sum += parseFloat(ca.Course.price)
             })
-            res.status(200).json({payload: carts, price_sum: price_sum})
+            res.json({payload: carts, price_sum: price_sum})
         }).catch(() => {
-            res.status(400).json({'msg': 'Failed'})
+            res.json({'msg': 'Failed'})
         })
     } else {
-        res.status(400).json({'msg': 'Unauthorized'})
+        res.json({'msg': 'Unauthorized'})
     }
 })
 
