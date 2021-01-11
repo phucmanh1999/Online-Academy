@@ -26,26 +26,30 @@ router.get('/category-courses/:categoryid', (req, res) => {
     const page = req.query.page ? req.query.page : 1
     const order_price = req.query.order_price ? req.query.order_price : "DESC"
     const order_rating = req.query.order_review ? req.query.order_review : "DESC"
+    const response = {
+        user: req.user ? req.user : undefined,
+    }
+    if (req.query.order_review) {
+        response.order_review = req.query.order_review
+    } else if (req.query.order_price) {
+        response.order_price = req.query.order_price
+    } else {
+        response.order_review = "DESC"
+    }
 
-
-
-    getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {
+    getCoursesByCategoryId(id, page, 5, order_price, order_rating).then((payload) => {
         payload.categoryId = id
         getAllCategories().then((cat) => {
+            response.categories = cat
+            response.payload = payload
             res.render("user/category",
-                {
-                    categories: cat,
-                    user: req.user ? req.user : undefined,
-                    payload,
-                    order_price: req.query.order_price,
-                    order_rating: req.query.order_rating
-                })
+                response)
         })
     });
 })
 
-router.get('/search', (req,res) => {
-    const query  = req.query;
+router.get('/search', (req, res) => {
+    const query = req.query;
     console.log(citeria)
 })
 
@@ -54,16 +58,14 @@ router.get("/signup", (req, res) => {
 })
 
 router.get("/login", (req, res) => {
-    if(!req.user) {
+    if (!req.user) {
         res.render("user/login")
         return;
     }
     // console.log(req.previousPage)
-    if(req.session.previousPage)
-    {
+    if (req.session.previousPage) {
         res.redirect(req.session.previousPage)
-    }
-    else {
+    } else {
         res.redirect("/")
     }
 })
