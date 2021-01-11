@@ -37,7 +37,11 @@ const getCartsByStudentId = async studentId => {
 }
 
 const deleteCart = obj => {
-    return Cart.destroy(obj)
+    return Cart.destroy(
+        {
+            where: obj
+        }
+    )
 }
 
 module.exports = {

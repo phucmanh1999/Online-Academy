@@ -99,7 +99,8 @@ router.delete('/cart/:courseId', (req, res) => {
             course_id: course_id
         }).then(() => {
             res.json({'msg': 'Delete success'})
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err)
             res.json({'msg': 'Failed'})
         })
     } else {
