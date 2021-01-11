@@ -154,3 +154,6 @@ CREATE TABLE courseBought(-- khóa học đã đc mua:  nhiều - nhiều
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP
 );
+
+ALTER TABLE lessons
+ADD COLUMN is_free boolean;
