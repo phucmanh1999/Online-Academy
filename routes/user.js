@@ -36,10 +36,10 @@ router.post('/update', urlencodedParser,async (req, res) => {
             }
             res.json({'msg': 'Update info success'})
         }).catch(() => {
-            res.status(400).json({'msg': 'Unknow error'})
+            res.json({'msg': 'Unknow error'})
         })
     } else {
-        res.status(400).json({'msg': 'Please login'})
+        res.json({'msg': 'Please login'})
     }
 })
 

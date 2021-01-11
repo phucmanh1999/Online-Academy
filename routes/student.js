@@ -55,6 +55,7 @@ router.post('/addCart/:courseId', (req, res) => {
             student_id: user.role_id,
         }).then(cart => {
             if (cart) {
+                // console.log('Cart already exist')
                 res.json({'msg': 'Cart already exist'})
             } else {
                 createCart({
@@ -62,14 +63,14 @@ router.post('/addCart/:courseId', (req, res) => {
                     student_id: user.role_id,
                     created_at: new Date(),
                 }).then(() => {
-                    res.status(200).json({'msg': 'Add cart success'})
+                    res.json({'msg': 'Add cart success'})
                 }).catch(() => {
-                    res.status(400).json({'msg': 'Failed'})
+                    res.json({'msg': 'Failed'})
                 })
             }
         })
     } else {
-        res.status(400).json({'msg': 'Unauthorized'})
+        res.json({'msg': 'Unauthorized'})
     }
 })
 
@@ -78,33 +79,36 @@ router.get('/cart', (req, res) => {
     // console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
         getCartsByStudentId(user.role_id).then(async carts => {
-            res.render("user/cart",{
-                user,
-                carts,
-                categories: await getAllCategories(),
+            let price_sum = 0;
+            carts.forEach(ca => {
+                price_sum += parseFloat(ca.Course.price)
             })
+            res.render("user/cart",{categories:await getAllCategories(),payload: carts, price_sum: price_sum, user})
         }).catch(() => {
-            res.json({'msg': 'Failed'})
+            res.redirect("/login")
+            return
         })
     } else {
-        res.json({'msg': 'Unauthorized'})
+        res.redirect("/login")
+        return
     }
 })
 
 router.delete('/cart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
+    console.log(course_id)
     if (user && user.type === ROLE_STUDENT) {
         deleteCart({
             student_id: user.role_id,
             course_id: course_id
         }).then(() => {
-            res.status(200).json({'msg': 'Delete success'})
+            res.json({'msg': 'Delete success'})
         }).catch(() => {
-            res.status(400).json({'msg': 'Failed'})
+            res.json({'msg': 'Failed'})
         })
     } else {
-        res.status(400).json({'msg': 'Unauthorized'})
+        res.json({'msg': 'Unauthorized'})
     }
 })
 

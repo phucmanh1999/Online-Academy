@@ -112,71 +112,39 @@
     </nav>
     <div class="row mt-3 cart">
       <div class="col-8 cart-body">
-        <% carts.forEach(cart => { %>
-          <a href="/courses/<%= cart.course_id %>">
+        <% payload.forEach((course,index) => { %>
+          <span>
             <div class="row p-2">
               <div class="col-3">
-                <img src="/assets/images/Course3.jpg" width="130px">
+                <a href="/courses/<%= course.course_id %>">
+                  <img src="<%= course.Course.img_path %>" width="130px">
+                </a>
               </div>
               <div class="col-9 d-flex justify-content-between">
-                <div>
-                  <div class="title">
-                    <%= cart.Course.course_name%>
+                <a href="/courses/<%= course.course_id %>">
+                  <div>
+                    <div class="title">
+                      <%= course.Course.course_name%>
+                    </div>
+                    <span>By: <%= course.Course.Instructor.User.user_name %></span>
                   </div>
-                  <span>By: Nguyen Anh Nam</span>
-                </div>
+                </a>
                 <div>
-                  <a class="remove-btn" data-course-id="<%= cart.Course.id %>">Remove</a>
+                  <button class="remove-btn" data-course-id="<%= course.Course.id %>">Remove</button>
                 </div>
               </div>
             </div>
-          </a>
+          </span>
           <hr>
         <% }) %>
-        <a href="#">
-          <div class="row p-2">
-            <div class="col-3">
-              <img src="/assets/images/Course3.jpg" width="130px">
-            </div>
-            <div class="col-9 d-flex justify-content-between">
-              <div>
-                <div class="title">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                </div>
-                <span>By: Nguyen Anh Nam</span>
-              </div>
-              <div>
-                <a class="remove-btn" href="#1">Remove</a>
-              </div>
-            </div>
-          </div>
-        </a>
-        <hr>
-        <a href="#">
-          <div class="row p-2">
-            <div class="col-3">
-              <img src="/assets/images/Course3.jpg" width="130px">
-            </div>
-            <div class="col-9 d-flex justify-content-between">
-              <div>
-                <div class="title">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                </div>
-                <span>By: Nguyen Anh Nam</span>
-              </div>
-              <div>
-                <a class="remove-btn" href="#1">Remove</a>
-              </div>
-            </div>
-          </div>
-        </a>
+        
       </div>
       <div class="col-3 ml-auto cart-checkout">
         <div class="total">
           Total:
         </div>
         <div class="total-price">
-          100 USD
+          <%= price_sum %> USD
         </div>
         <button class="btn btn-block btn-danger">Check out</button>
         <hr>
@@ -252,5 +220,26 @@
 
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script>
+    $(document).ready(function() {
+      $(".remove-btn").click(function() {
+        let courseId = $(this).attr("data-course-id")
+        $.ajax({
+          url: `/student/cart/${courseId}`,
+          type: "DELETE",
+          success: function(result) {
+            Swal.fire({
+              icon: 'success',
+              title: result.msg
+            })
+          }
+        })
+      })
+    })
+  </script>
+
 </body>
 </html>
