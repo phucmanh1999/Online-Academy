@@ -44,7 +44,7 @@ router.post('/favourite', (req, res) => {
     }
 })
 
-router.get('/addCart/:courseId', (req, res) => {
+router.post('/addCart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
     if (user && user.type === ROLE_STUDENT) {
@@ -73,6 +73,7 @@ router.get('/addCart/:courseId', (req, res) => {
 
 router.get('/allCart', (req, res) => {
     const user = req.user ? req.user : undefined
+    console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
         getCartsByStudentId(user.role_id).then(carts => {
             res.status(200).json(carts)

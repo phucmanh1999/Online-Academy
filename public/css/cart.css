@@ -1,0 +1,42 @@
+.cart-body, .cart-checkout {
+  background: #fff;
+  height: fit-content;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 1px gray;
+}
+
+.remove-btn {
+  color: #0f7c90 !important;
+  font-weight: 700;
+  border: 1px solid #0f7c90;
+  padding: 3px;
+  border-radius: 5px;
+  transition: 0.3s all;
+}
+
+.remove-btn:hover {
+  color: #fff !important;
+  background: #0f7c90;
+}
+
+
+.cart a {
+  color: #000;
+}
+
+.cart a:hover {
+  text-decoration: none;
+}
+
+.title {
+  font-weight: 700;
+}
+
+.total {
+  font-size: 1.5rem;
+}
+
+.total-price {
+  font-size: 3rem;
+}

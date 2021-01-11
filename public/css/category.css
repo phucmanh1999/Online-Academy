@@ -9,7 +9,11 @@
 }
 
 #coursesSection {
-  transition: ease all 0.2s;
+  /* transition: ease all 0.2s; */
+}
+
+#filterSection {
+  /* transition: ease all 0.2s; */
 }
 
 .switch {

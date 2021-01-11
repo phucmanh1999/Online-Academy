@@ -14,6 +14,7 @@
     crossorigin="anonymous"
   />
   <link rel="stylesheet" href="/css/index.css" />
+  <link rel="stylesheet" href="/css/cart.css">
   <title>
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
@@ -63,12 +64,12 @@
           </li>
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/cart">
+              <a class="nav-link" href="/user/cart">
                 <i class="fas fa-shopping-cart"></i><span class="badge badge-light">0</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/watchlist">
+              <a class="nav-link" href="/user/watchlist">
                 <i class="fa fa-heart" aria-hidden="true"></i>
               </a>
             </li>
@@ -100,6 +101,68 @@
   </nav>
   
   <!-- Main content -->
+  <div class="container mt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">
+          <img src="/assets/images/logo-images.svg" width="30px">
+        </a></li>
+        <li class="breadcrumb-item active">Cart</li>
+      </ol>
+    </nav>
+    <div class="row mt-3 cart">
+      <div class="col-8 cart-body">
+        <a href="#">
+          <div class="row p-2">
+            <div class="col-3">
+              <img src="/assets/images/Course3.jpg" width="130px">
+            </div>
+            <div class="col-9 d-flex justify-content-between">
+              <div>
+                <div class="title">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </div>
+                <span>By: Nguyen Anh Nam</span>
+              </div>
+              <div>
+                <a class="remove-btn" href="#1">Remove</a>
+              </div>
+            </div>
+          </div>
+        </a>
+        <hr>
+        <a href="#">
+          <div class="row p-2">
+            <div class="col-3">
+              <img src="/assets/images/Course3.jpg" width="130px">
+            </div>
+            <div class="col-9 d-flex justify-content-between">
+              <div>
+                <div class="title">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                </div>
+                <span>By: Nguyen Anh Nam</span>
+              </div>
+              <div>
+                <a class="remove-btn" href="#1">Remove</a>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-3 ml-auto cart-checkout">
+        <div class="total">
+          Total:
+        </div>
+        <div class="total-price">
+          100 USD
+        </div>
+        <button class="btn btn-block btn-danger">Check out</button>
+        <hr>
+
+      </div>
+    </div>
+  </div>
 
   <hr>
   <!-- Before footer -->
