@@ -10,6 +10,7 @@ const {ROLE_STUDENT} = require("../constant/constant");
 const {createCart} = require("../services/cart-service");
 const {createWatchList} = require("../services/watchlist-service");
 const {createReview} = require("../services/review-services");
+const {getAllCategories} = require("../services/category-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 router.post('/review', urlencodedParser, (req, res) => {
@@ -47,13 +48,14 @@ router.post('/favourite', (req, res) => {
 router.post('/addCart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
+    console.log(course_id)
     if (user && user.type === ROLE_STUDENT) {
         getCart({
             course_id: course_id,
             student_id: user.role_id,
         }).then(cart => {
             if (cart) {
-                console.log('Cart already exist')
+                // console.log('Cart already exist')
                 res.json({'msg': 'Cart already exist'})
             } else {
                 createCart({
@@ -72,27 +74,30 @@ router.post('/addCart/:courseId', (req, res) => {
     }
 })
 
-router.get('/allCart', (req, res) => {
+router.get('/cart', (req, res) => {
     const user = req.user ? req.user : undefined
-    console.log(JSON.stringify(user))
+    // console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
-        getCartsByStudentId(user.role_id).then(carts => {
+        getCartsByStudentId(user.role_id).then(async carts => {
             let price_sum = 0;
             carts.forEach(ca => {
                 price_sum += parseFloat(ca.Course.price)
             })
-            res.json({payload: carts, price_sum: price_sum})
+            res.render("user/cart",{categories:await getAllCategories(),payload: carts, price_sum: price_sum, user})
         }).catch(() => {
-            res.json({'msg': 'Failed'})
+            res.redirect("/login")
+            return
         })
     } else {
-        res.json({'msg': 'Unauthorized'})
+        res.redirect("/login")
+        return
     }
 })
 
 router.delete('/cart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
+    console.log(course_id)
     if (user && user.type === ROLE_STUDENT) {
         deleteCart({
             student_id: user.role_id,
