@@ -2,6 +2,11 @@ const jwt = require('jsonwebtoken')
 
 const decodeToken = (req, res, next) => {
   try {
+    // console.log("Url", req.originalUrl)
+    if(req.originalUrl !== "/login" && req.originalUrl !== "/authentication/login" && req.originalUrl !== "/signup" && req.originalUrl !== "/authentication/signup") {
+      req.session.previousPage = req.originalUrl;
+    }
+    // console.log(req.session.previousPage)
     const token = req.cookies.token;
     const decoded = jwt.verify(token, 'secret', { algorithms: ['HS256'] });
     req.user = decoded;
