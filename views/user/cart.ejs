@@ -64,7 +64,7 @@
           </li>
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/user/cart">
+              <a class="nav-link" href="/student/cart">
                 <i class="fas fa-shopping-cart"></i><span class="badge badge-light">0</span>
               </a>
             </li>
@@ -111,45 +111,55 @@
       </ol>
     </nav>
     <div class="row mt-3 cart">
-      <div class="col-8 cart-body">
-        <% payload.forEach((course,index) => { %>
-          <span>
-            <div class="row p-2">
-              <div class="col-3">
-                <a href="/courses/<%= course.course_id %>">
-                  <img src="<%= course.Course.img_path %>" width="130px">
-                </a>
-              </div>
-              <div class="col-9 d-flex justify-content-between">
-                <a href="/courses/<%= course.course_id %>">
-                  <div>
-                    <div class="title">
-                      <%= course.Course.course_name%>
+      <% if(payload.length > 0) { %>
+        <div class="col-8 cart-body">
+          <% payload.forEach((course,index) => { %>
+            <span>
+              <div class="row p-2">
+                <div class="col-3">
+                  <a href="/courses/<%= course.course_id %>">
+                    <img src="<%= course.Course.img_path %>" width="130px">
+                  </a>
+                </div>
+                <div class="col-9 d-flex justify-content-between">
+                  <a href="/courses/<%= course.course_id %>">
+                    <div>
+                      <div class="title">
+                        <%= course.Course.course_name%>
+                      </div>
+                      <span>By: <%= course.Course.Instructor.User.user_name %></span>
                     </div>
-                    <span>By: <%= course.Course.Instructor.User.user_name %></span>
+                  </a>
+                  <div>
+                    <button class="remove-btn" data-course-id="<%= course.Course.id %>">Remove</button>
                   </div>
-                </a>
-                <div>
-                  <button class="remove-btn" data-course-id="<%= course.Course.id %>">Remove</button>
                 </div>
               </div>
-            </div>
-          </span>
+            </span>
+            <hr>
+          <% }) %>  
+        </div>
+        <div class="col-3 ml-auto cart-checkout">
+          <div class="total">
+            Total:
+          </div>
+          <div class="total-price">
+            <%= price_sum %> USD
+          </div>
+          <button class="btn btn-block btn-danger">Check out</button>
           <hr>
-        <% }) %>
-        
-      </div>
-      <div class="col-3 ml-auto cart-checkout">
-        <div class="total">
-          Total:
         </div>
-        <div class="total-price">
-          <%= price_sum %> USD
+      <% } else { %>
+        <div class="col-12 cart-body d-flex justify-content-center">
+          <div class="text-center">
+            <i style="color: #ccc;" class="fas fa-shopping-cart fa-5x p-3"></i>
+            <div>
+              Your cart is empty. Keep shopping to find a course!
+            </div>
+            <a href="/" class="btn btn-danger pt-2 pb-2 mt-2 mb-2">Keep Shopping</a>
+          </div>
         </div>
-        <button class="btn btn-block btn-danger">Check out</button>
-        <hr>
-
-      </div>
+      <% } %>
     </div>
   </div>
 
@@ -225,16 +235,22 @@
 
   <script>
     $(document).ready(function() {
+
+      function refresh() {
+        $("")
+      }
+
       $(".remove-btn").click(function() {
         let courseId = $(this).attr("data-course-id")
         $.ajax({
           url: `/student/cart/${courseId}`,
           type: "DELETE",
-          success: function(result) {
-            Swal.fire({
+          success: async function(result) {
+            await Swal.fire({
               icon: 'success',
               title: result.msg
             })
+            location.reload()
           }
         })
       })
