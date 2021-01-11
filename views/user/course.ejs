@@ -465,7 +465,12 @@
             })
             let cartCount = Number(document.getElementById("cartCount").innerHTML)
             document.getElementById("cartCount").innerHTML = cartCount + 1
-          } 
+          } else if(data.msg === "Cart already exist") {
+            Swal.fire({
+              icon: 'error',
+              title: data.msg
+            })
+          }
         })
       })
     })

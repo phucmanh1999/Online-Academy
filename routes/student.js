@@ -54,7 +54,7 @@ router.post('/addCart/:courseId', (req, res) => {
         }).then(cart => {
             if (cart) {
                 res.status(400).json({'msg': 'Cart already exist'})
-                return
+                return;
             }
         })
         createCart({
@@ -63,11 +63,14 @@ router.post('/addCart/:courseId', (req, res) => {
             created_at: new Date(),
         }).then(() => {
             res.status(200).json({'msg': 'Add cart sucess'})
+            return;
         }).catch(() => {
             res.status(400).json({'msg': 'Failed'})
+            return;
         })
     } else {
         res.status(400).json({'msg': 'Unauthorized'})
+        return;
     }
 })
 
