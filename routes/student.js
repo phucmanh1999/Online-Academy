@@ -63,6 +63,7 @@ router.post('/addCart/:courseId', (req, res) => {
 
 router.get('/allCart', (req, res) => {
     const user = req.user ? req.user : undefined
+    console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
         getCartsByStudentId(user.role_id).then(carts => {
             res.status(200).json(carts)
