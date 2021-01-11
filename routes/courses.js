@@ -1,4 +1,5 @@
 const express = require("express")
+const {isOwn} = require("../services/bought-service");
 const {getTopBuyCourseByCategoryId} = require("../services/course-service");
 const {getAllCategories} = require("../services/category-service");
 const {getCourse} = require("../services/course-service");
@@ -8,12 +9,21 @@ router.get('/:id', async (req, res) => {
     getCourse({id: req.params.id}).then(async course => {
         // console.log("User is: " + JSON.stringify(req.user) )
 
-        res.render("user/course",{
+        res.json({
             user: req.user ? req.user : undefined,
             payload: course,
             categories: await getAllCategories(),
-            topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id)
+            topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id),
+            isOwn: req.user ? await isOwn(req.user.role_id, req.params.id) : false
         })
+
+        // res.render("user/course",{
+        //     user: req.user ? req.user : undefined,
+        //     payload: course,
+        //     categories: await getAllCategories(),
+        //     topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id),
+        //     isOwn: req.user ? isOwn(req.user.role_id) : false
+        // })
     })
 })
 

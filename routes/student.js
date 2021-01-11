@@ -3,6 +3,8 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {getBought} = require("../services/bought-service");
+const {createBought} = require("../services/bought-service");
 const {getCart} = require("../services/cart-service");
 const {deleteCart} = require("../services/cart-service");
 const {getCartsByStudentId} = require("../services/cart-service");
@@ -83,7 +85,7 @@ router.get('/cart', (req, res) => {
             carts.forEach(ca => {
                 price_sum += parseFloat(ca.Course.price)
             })
-            res.render("user/cart",{categories:await getAllCategories(),payload: carts, price_sum: price_sum, user})
+            res.render("user/cart", {categories: await getAllCategories(), payload: carts, price_sum: price_sum, user})
         }).catch(() => {
             res.redirect("/login")
             return
@@ -107,6 +109,35 @@ router.delete('/cart/:courseId', (req, res) => {
         }).catch((err) => {
             console.log(err)
             res.json({'msg': 'Failed'})
+        })
+    } else {
+        res.json({'msg': 'Unauthorized'})
+    }
+})
+
+router.post('/buy', (req, res) => {
+    const courses = req.body.courses
+    const user = req.user ? req.user : undefined
+    if (user && user.type === ROLE_STUDENT) {
+        courses.forEach((courseId => {
+            createBought({
+                student_id: user.role_id,
+                course_id: courseId,
+                created_at: new Date(),
+            })
+        }))
+        res.json({'msg': 'ok'})
+    } else {
+        res.json({'msg': 'Unauthorized'})
+    }
+})
+
+router.get('/buy', (req, res) => {
+    const user = req.user ? req.user : undefined
+
+    if (user && user.type === ROLE_STUDENT) {
+        getBought({student_id: user.role_id}).then((bought) => {
+            console.info(bought)
         })
     } else {
         res.json({'msg': 'Unauthorized'})

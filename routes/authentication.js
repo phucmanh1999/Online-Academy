@@ -36,6 +36,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
         email: req.body.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
+        avatar_url: "/assets/images/default_avt.png",
         // gender: req.body.gender,
         // birthday: req.body.birthday,
         // avatar_url: req.body.avatar,

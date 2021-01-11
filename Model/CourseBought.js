@@ -15,7 +15,7 @@ const CourseBought = database.define('CourseBought', {
     {
         timestamps: false,
         paranoid: true,
-        tableName: 'courseBought',
+        tableName: 'coursebought',
     }
 )
 
