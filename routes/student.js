@@ -53,6 +53,7 @@ router.post('/addCart/:courseId', (req, res) => {
             student_id: user.role_id,
         }).then(cart => {
             if (cart) {
+                console.log('Cart already exist')
                 res.status(400).json({'msg': 'Cart already exist'})
             } else {
                 createCart({
@@ -60,14 +61,14 @@ router.post('/addCart/:courseId', (req, res) => {
                     student_id: user.role_id,
                     created_at: new Date(),
                 }).then(() => {
-                    res.status(200).json({'msg': 'Add cart success'})
+                    res.json({'msg': 'Add cart success'})
                 }).catch(() => {
-                    res.status(400).json({'msg': 'Failed'})
+                    res.json({'msg': 'Failed'})
                 })
             }
         })
     } else {
-        res.status(400).json({'msg': 'Unauthorized'})
+        res.json({'msg': 'Unauthorized'})
     }
 })
 
