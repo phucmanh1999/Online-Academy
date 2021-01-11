@@ -16,7 +16,7 @@ router.post('/review', urlencodedParser,  (req, res) => {
         star: star,
         comment: comment,
         course_id: course_id,
-        student_id: user.Student.id,
+        student_id: user.role_id,
         created_at:  new Date(),
     }).then(() => {
         res.json({'msg': 'Comment success'})

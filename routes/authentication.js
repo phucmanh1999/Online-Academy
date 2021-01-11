@@ -6,6 +6,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcrypt = require("bcrypt");
+const {getUserCartNumber} = require("../services/user-service");
 const {deleteUser} = require("../services/user-service");
 const {createAdministrator} = require("../services/admin-service");
 const {createInstructor} = require("../services/instructor-service");
@@ -15,9 +16,8 @@ const {ROLE_ADMIN} = require("../constant/constant");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 const {ROLE_STUDENT} = require("../constant/constant");
 
-const validateEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+function emailIsValid (email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
 
@@ -45,13 +45,16 @@ router.post('/signup', urlencodedParser, (req, res) => {
 
     const type = req.body.type ? req.body.type : ROLE_STUDENT
 
-    if (validateEmail(user.email)){
-        res.status(400).json({'msg': 'Email not valid'})
-    }
+    // if (emailIsValid(user.email)){
+    //     console.log(user.email)
+    //     res.status(400).json({'msg': 'Email not valid'})
+    //     return
+    // }
 
     UserService.getUser({email: user.email}).then (user => {
         if (user) {
             res.status(400).json({'msg': 'Email existed'})
+            return
         }
     })
 
@@ -106,29 +109,35 @@ router.post('/login', urlencodedParser, (req, res)=>{
         res.status(400).json({'msg': 'Email or password must not be empty'})
     }
 
-    if (!validateEmail(email)){
-        res.status(400).json({'msg': 'Email not valid'})
-    }
+    // if (!validateEmail(email)){
+    //     res.status(400).json({'msg': 'Email not valid'})
+    // }
 
     UserService.getUser({
         email: email
     }).then( async (result) =>{
         if(result) {
             if (await UserService.isValidPassword(result, password)){
-                const data = result.dataValues
+                const data = result
                 delete data.user_password
-                // console.log("data", data)
-                const payload = { id: data.id, username: data.user_name, type: data.Role.role_name }
+                console.log("data", data)
+                const role_id = data.Student ? data.Student.id : data.Instructor ? data.Instructor.id : data.Administrator ? data.Administrator.id : null
+                const cartCount = 0;
+                const payload = { id: data.id, username: data.user_name, type: data.Role.role_name , role_id: role_id, cartCount: cartCount}
                 const accessToken = jwt.sign(payload, 'secret')
                 if (data.Role.role_name === ROLE_STUDENT) {
+                    payload.cartCount = await getUserCartNumber(data.Student.id)
+                    console.log("payload ís: " +await JSON.stringify(payload))
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
                     res.json({"msg": "Login success"})
                 }
                 else if (data.Role.role_name === ROLE_INSTRUCTOR) {
-                    res.json({token: accessToken, user: data})
+                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                    res.json({"msg": "Login success"})
                 }
                 else if (data.Role.role_name === ROLE_ADMIN) {
-                    res.json({token: accessToken, user: data})
+                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                    // res.json({token: accessToken, user: data})
                 }
                 UserService.updateUser(result.id, {last_login: new Date()})
             }

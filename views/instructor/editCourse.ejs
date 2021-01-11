@@ -109,8 +109,7 @@
 
 		<!-- Courses -->
     <div class="container mt-5 mb-5">
-      <!-- <form action="/instructor/addCourse" method="post" enctype="multipart/form-data"> -->
-      <form action="/instructor/addCourse?id=<%=course.id%>" method="post">
+      <form action="/instructor/addCourse?id=<%=course.id%>" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label for="courseName">Course name</label>
             <input type="text" class="form-control" id="courseName"  name="courseName" value="<%=course.course_name%>" >
@@ -141,23 +140,14 @@
           </div>
           <div class="form-group">
             <label for="fdcontent">Full description</label>
-            <!-- <textarea class="form-control" id="fullDescription" rows="3" name = "fullDescription" ><%=course.full_description%></textarea> -->
-            <!-- Create the toolbar container -->
-            <!-- <div id="toolbar">
-              <button class="ql-bold">Bold</button>
-              <button class="ql-italic">Italic</button>
-            </div> -->
-
-
-
             <!-- Create the editor container -->
             <div id="editor" class="form-control" ></div>
             <input type="text" id="fdcontent" name='fullDescription' hidden>
-           
+
           </div>
           <div class="form-group">
 						<label for="price">Price</label>
-						<input type="text" class="form-control" id="price"  name = "price" value = "<%=course.price%>">
+						<input type="number" class="form-control" id="price"  name = "price" value = "<%=course.price%>">
           </div>
           <div class="form-group">
             <label for="concurency">Concurency</label>
@@ -176,26 +166,31 @@
 				<div class="course-content">
 					<div class="course-content-title">
 						Course Content
-				</div>
-				<div class="accordion" id="accordionExample">
+          </div>
+          <div class="accordion" id="accordionExample">
+          <%for(i=0;i<course.Chapters.length;i++) {%>
 					<div class="card">
 						<div class="card-header" id="headingOne">
 							<h2 class="mb-0">
 								<button class="btn  btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									Chapter 1
+									Chapter <%=i%>: <%=course.Chapters[i].short_description%>
 								</button>
 							</h2>
 						</div>
-	
 						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-							<div class="card-body">
-								<ul class="list-group">
-									<li class="list-group-item">Course Introduction</li>
-									<li class="list-group-item">Course Curriculum Overview</li>
+              <div class="card-body">
+                <ul class="list-group">
+                  <%for(j=0;j<course.Chapters[i].Lessons.length;j++) {%>
+									<li class="list-group-item"><%=course.Chapters[i].Lessons[j].lesson_name%></li>
+									<!-- <li class="list-group-item">Course Curriculum Overview</li> -->
+                  <%}%>
 								</ul>
 							</div>
-						</div>
-					</div>
+            </div>
+            
+          </div>
+          <%}%>
+
 					<div class="card">
 						<div class="card-header" id="headingTwo">
 							<h2 class="mb-0">
@@ -234,7 +229,9 @@
 				</div>
 				<div class="form-group">
 					<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
-				</div>
+        </div>
+            <!-- <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson?chapter_id=<%=//chapter_id%>');" >Add Lesson</button> -->
+
     </div>
     <!-- Footer -->
     <div class="container-fluid footer">
@@ -284,8 +281,8 @@
             reader.onload = function (e) {
                 $('#image')
                     .attr('src', e.target.result)
-                    .width(150)
-                    .height(200);
+                    .width('60%')
+                    .height('60%');
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -296,7 +293,7 @@
     <% if (course) { %>
 
      <script>
-      let course = <%- course.full_description.replace('&#34;','"') %>            
+      let content = <%- course.full_description?course.full_description.replace('&#34;','"'):'""'%>;            
 
       let toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -323,7 +320,6 @@
         theme: 'snow'
       });
       //load content from db
-      let content = course
       editor.setContents(content);
 
       let delta = JSON.stringify(editor.getContents()).replace('\"','"')

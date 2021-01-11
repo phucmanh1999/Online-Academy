@@ -4,6 +4,17 @@ const Instructor = require("../Model/Instructor");
 const bcrypt = require("bcrypt");
 const Administrator = require("../Model/Administrator");
 const Student = require("../Model/Student");
+const Cart = require("../Model/Cart");
+
+const convertDate = (dateObj) => {
+    if (!dateObj)
+        return null
+    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
+
+    return day + "/" + month + "/" + year;
+}
 
 const getAllUsers = async () => {
     const users = await User.findAll({
@@ -14,8 +25,8 @@ const getAllUsers = async () => {
     return users;
 }
 
-const getUser =  obj => {
-    return User.findOne({
+const getUser = async obj => {
+    let user = await User.findOne({
         where: obj,
         include: [{
             model: Role,
@@ -27,6 +38,10 @@ const getUser =  obj => {
             model: Student,
         }]
     });
+    user = user.toJSON()
+    user.created_at = convertDate(user.created_at)
+    user.updated_at = convertDate(user.updated_at)
+    return user;
 }
 
 const createUser = async obj => {
@@ -39,6 +54,15 @@ const deleteUser = obj => {
 
 const isValidPassword = async (user, password) => {
     return await bcrypt.compare(password, user.user_password);
+}
+
+const getUserCartNumber = async studentId => {
+    const result = await Cart.count({
+        where: {
+            student_id: studentId
+        }
+    })
+    return result
 }
 
 const updateUser = (_id, obj) => {
@@ -60,4 +84,5 @@ module.exports = {
     isValidPassword,
     deleteUser,
     updateUser,
+    getUserCartNumber,
 }
