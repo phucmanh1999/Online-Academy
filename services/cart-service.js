@@ -4,6 +4,12 @@ const createCart = obj => {
     return Cart.create(obj);
 }
 
+const getCart = obj => {
+    return Cart.findOne({
+        where: obj
+    })
+}
+
 const getCartsByStudentId = async studentId => {
     const carts = await Cart.findAll(
         {
@@ -22,5 +28,6 @@ const deleteCart = obj => {
 module.exports = {
     createCart,
     getCartsByStudentId,
-    deleteCart
+    deleteCart,
+    getCart
 }

@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {getCart} = require("../services/cart-service");
 const {deleteCart} = require("../services/cart-service");
 const {getCartsByStudentId} = require("../services/cart-service");
 const {ROLE_STUDENT} = require("../constant/constant");
@@ -47,6 +48,15 @@ router.post('/addCart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
     if (user && user.type === ROLE_STUDENT) {
+        getCart({
+            course_id: course_id,
+            student_id: user.role_id,
+        }).then(cart => {
+            if (cart) {
+                res.status(400).json({'msg': 'Cart already exist'})
+                return
+            }
+        })
         createCart({
             course_id: course_id,
             student_id: user.role_id,
