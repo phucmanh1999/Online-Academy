@@ -36,7 +36,9 @@ router.get('/category-courses/:categoryid', (req, res) => {
                 {
                     categories: cat,
                     user: req.user ? req.user : undefined,
-                    payload
+                    payload,
+                    order_price: req.query.order_price,
+                    order_rating: req.query.order_rating
                 })
         })
     });
