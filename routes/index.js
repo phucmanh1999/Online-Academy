@@ -31,21 +31,13 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
     getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {
         payload.categoryId = id
-        console.log(payload)
-        res.render("user/category",
-        {
-            categories: [
+        getAllCategories().then((cat) => {
+            res.render("user/category",
                 {
-                    id: 2,
-                    category_name: "Mobile"
-                },
-                {
-                    id: 3,
-                    category_name: "Web"
-                }
-            ],
-            user: req.user ? req.user : undefined,
-            payload
+                    categories: cat,
+                    user: req.user ? req.user : undefined,
+                    payload
+                })
         })
     });
 })
