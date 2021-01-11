@@ -53,7 +53,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
 
     UserService.getUser({email: user.email}).then (user => {
         if (user) {
-            res.status(400).json({'msg': 'Email existed'})
+            res.json({'msg': 'Email existed'})
             return
         }
     })
@@ -96,7 +96,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
                 })
             }
         }).catch(() => {
-            res.status(400).json({'msg': 'Cannot create account, please check again'})
+            res.json({'msg': 'Cannot create account, please check again'})
         })
     })
 })
@@ -106,7 +106,7 @@ router.post('/login', urlencodedParser, (req, res)=>{
     const password = req.body.password
     if(!email || !password) {
         // console.log(req.body)
-        res.status(400).json({'msg': 'Email or password must not be empty'})
+        res.json({'msg': 'Email or password must not be empty'})
     }
 
     // if (!validateEmail(email)){

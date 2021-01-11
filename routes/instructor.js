@@ -86,13 +86,13 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 res.status(200).json({msg: "ok"})
             }).catch((err) => {
                 console.log(err)
-                res.status(400).json({msg: "Unknow error"})
+                res.json({msg: "Unknow error"})
             })
         } else {
-            res.status(400).json({msg: "Unauthorized"})
+            res.json({msg: "Unauthorized"})
         }
     } else {
-        res.status(400).json({msg: "Unauthorized"})
+        res.json({msg: "Unauthorized"})
     }
 });
 router.post('/addLesson', (req,res) => {
@@ -112,7 +112,7 @@ router.post('/addChapter', (req, res) => {
 router.post('/addLesson', (req, res) => {
     console.log(req.body)
     if (!req.file) {
-        res.status(401).json({error: 'Please provide an image'});
+        res.json({error: 'Please provide an image'});
     }
     res.send(req.body)
 });
