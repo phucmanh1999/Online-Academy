@@ -44,7 +44,7 @@ router.post('/favourite', (req, res) => {
     }
 })
 
-router.post('/addCart/:courseId', (req, res) => {
+router.get('/addCart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
     if (user && user.type === ROLE_STUDENT) {
@@ -54,17 +54,17 @@ router.post('/addCart/:courseId', (req, res) => {
         }).then(cart => {
             if (cart) {
                 res.status(400).json({'msg': 'Cart already exist'})
-                return
+            } else {
+                createCart({
+                    course_id: course_id,
+                    student_id: user.role_id,
+                    created_at: new Date(),
+                }).then(() => {
+                    res.status(200).json({'msg': 'Add cart success'})
+                }).catch(() => {
+                    res.status(400).json({'msg': 'Failed'})
+                })
             }
-        })
-        createCart({
-            course_id: course_id,
-            student_id: user.role_id,
-            created_at: new Date(),
-        }).then(() => {
-            res.status(200).json({'msg': 'Add cart sucess'})
-        }).catch(() => {
-            res.status(400).json({'msg': 'Failed'})
         })
     } else {
         res.status(400).json({'msg': 'Unauthorized'})
