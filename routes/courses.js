@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.get('/:id', async (req, res) => {
     getCourse({id: req.params.id}).then(async course => {
-        console.log("User is: " + JSON.stringify(req.user) )
         res.send({
             user: req.user ? req.user : undefined,
             payload: course,
