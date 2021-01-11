@@ -457,8 +457,8 @@
 
       $("#btnAdd").click(function(){
         let courseId =$(this).attr("data-course-id")
-        $.post(`/student/addCart`,{courseId}, function(data, status){
-          if(data.msg === "Add cart sucess") {
+        $.post(`/student/addCart/${courseId}`, function(data, status){
+          if(data.msg === "Add cart success") {
             Swal.fire({
               icon: 'success',
               title: data.msg

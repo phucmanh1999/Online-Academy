@@ -10,6 +10,7 @@ const {ROLE_STUDENT} = require("../constant/constant");
 const {createCart} = require("../services/cart-service");
 const {createWatchList} = require("../services/watchlist-service");
 const {createReview} = require("../services/review-services");
+const {getAllCategories} = require("../services/category-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 router.post('/review', urlencodedParser, (req, res) => {
@@ -44,9 +45,9 @@ router.post('/favourite', (req, res) => {
     }
 })
 
-router.post('/addCart', (req, res) => {
+router.post('/addCart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
-    const course_id = req.body.courseId
+    const course_id = req.params.courseId
     console.log(course_id)
     if (user && user.type === ROLE_STUDENT) {
         getCart({
@@ -54,7 +55,7 @@ router.post('/addCart', (req, res) => {
             student_id: user.role_id,
         }).then(cart => {
             if (cart) {
-                res.status(400).json({'msg': 'Cart already exist'})
+                res.json({'msg': 'Cart already exist'})
             } else {
                 createCart({
                     course_id: course_id,
@@ -69,21 +70,24 @@ router.post('/addCart', (req, res) => {
         })
     } else {
         res.status(400).json({'msg': 'Unauthorized'})
-        return;
     }
 })
 
-router.get('/allCart', (req, res) => {
+router.get('/cart', (req, res) => {
     const user = req.user ? req.user : undefined
-    console.log(JSON.stringify(user))
+    // console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
-        getCartsByStudentId(user.role_id).then(carts => {
-            res.status(200).json(carts)
+        getCartsByStudentId(user.role_id).then(async carts => {
+            res.render("user/cart",{
+                user,
+                carts,
+                categories: await getAllCategories(),
+            })
         }).catch(() => {
-            res.status(400).json({'msg': 'Failed'})
+            res.json({'msg': 'Failed'})
         })
     } else {
-        res.status(400).json({'msg': 'Unauthorized'})
+        res.json({'msg': 'Unauthorized'})
     }
 })
 
