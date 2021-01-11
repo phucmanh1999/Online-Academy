@@ -30,7 +30,8 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
 
     getCoursesByCategoryId(id, page,5, order_price, order_rating).then((payload) => {
-        // console.log(payload)
+        payload.categoryId = id
+        console.log(payload)
         res.render("user/category",
         {
             categories: [
