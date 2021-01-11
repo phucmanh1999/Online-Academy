@@ -5,6 +5,7 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {getCourseLessInfo} = require("../services/course-service");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 const {getCategory} = require("../services/category-service");
 const {createCourse} = require("../services/course-service");
@@ -42,7 +43,7 @@ router.post('/editCourse', (req,res) => {
   // if (!req.file) {
   //   res.status(401).json({error: 'Please provide an image'});
   // }
-  res.send(req.body)  
+  res.send(req.body)
 
 });
 //post form
@@ -59,6 +60,9 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
             const instructorId = req.user.role_id
             const categoryId = await getCategory({category_name: req.body.category}).then(ca => {
                 return ca.id
+            })
+            getCourseLessInfo({
+
             })
             createCourse({
                 course_name: req.body.courseName,
@@ -85,6 +89,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 res.status(400).json({msg: "Unknow error"})
             })
         } else {
+            res.status(400).json({msg: "Unauthorized"})
         }
     } else {
         res.status(400).json({msg: "Unauthorized"})

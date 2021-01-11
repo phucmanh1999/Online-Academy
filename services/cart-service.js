@@ -18,7 +18,7 @@ const getCartsByStudentId = async studentId => {
             }
         }
     )
-    return carts.toJSON()
+    return carts.map(ca => ca.toJSON())
 }
 
 const deleteCart = obj => {
