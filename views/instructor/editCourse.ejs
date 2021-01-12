@@ -16,6 +16,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/instructor.css" />
     <title>
       Online Courses - Learn Anything On Your Schedule | MNP Courses
     </title>
@@ -114,10 +115,10 @@
             <label for="courseName">Course name</label>
             <input type="text" class="form-control" id="courseName"  name="courseName" value="<%=course.course_name%>" >
           </div>
-          <div class="form-group">
+          <div id="courseImagediv" class="form-group">
             <label for="courseImage">Course image</label>
-						<div class="">
-							<img id = "image" src=<%=course.img_path%> alt="Image" width="60%" height="60%">
+						<div id="img-container" >
+							<img id = "image" src=<%=course.img_path%> alt="Image">
 						</div>
 						<input type="file" class="form-control-file" id="courseImage" name = "image" onchange="readURL(this);">
           </div>
@@ -170,67 +171,34 @@
           <div class="accordion" id="accordionExample">
           <%for(i=0;i<course.Chapters.length;i++) {%>
 					<div class="card">
-						<div class="card-header" id="headingOne">
+						<div class="card-header" id="<%=course.Chapters[i].id%>">
 							<h2 class="mb-0">
-								<button class="btn  btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<button class="btn  btn-block text-left" type="button" data-toggle="collapse" data-target="#collap_<%=course.Chapters[i].id%>" aria-expanded="true" aria-controls="collap_<%=course.Chapters[i].id%>">
 									Chapter <%=i%>: <%=course.Chapters[i].short_description%>
 								</button>
 							</h2>
 						</div>
-						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+						<div id="collap_<%=course.Chapters[i].id%>" class="collapse show" aria-labelledby="<%=course.Chapters[i].id%>" data-parent="#accordionExample">
               <div class="card-body">
                 <ul class="list-group">
                   <%for(j=0;j<course.Chapters[i].Lessons.length;j++) {%>
 									<li class="list-group-item"><%=course.Chapters[i].Lessons[j].lesson_name%></li>
 									<!-- <li class="list-group-item">Course Curriculum Overview</li> -->
                   <%}%>
+                  <li class="list-group-item">
+                    <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>');" >Add Lesson</button>
+                  </li>
 								</ul>
 							</div>
             </div>
             
           </div>
           <%}%>
-
-					<div class="card">
-						<div class="card-header" id="headingTwo">
-							<h2 class="mb-0">
-								<button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									Chapter 2
-								</button>
-							</h2>
-						</div>
-						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-							<div class="card-body">
-								<ul class="list-group">
-									<li class="list-group-item">Lesson 3</li>
-									<li class="list-group-item">Lesson 4</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-header" id="headingThree">
-							<h2 class="mb-0">
-								<button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									Chapter 3
-								</button>
-							</h2>
-						</div>
-						<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-							<div class="card-body">
-								<ul class="list-group">
-									<li class="list-group-item">Lesson 5</li>
-									<li class="list-group-item">Lesson 6</li>
-								</ul>
-							</div>
-						</div>
-					</div>
 				</div>
 				</div>
 				<div class="form-group">
 					<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
         </div>
-            <!-- <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson?chapter_id=<%=//chapter_id%>');" >Add Lesson</button> -->
 
     </div>
     <!-- Footer -->
