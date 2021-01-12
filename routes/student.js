@@ -117,6 +117,7 @@ router.delete('/cart/:courseId', (req, res) => {
 
 router.post('/buy', (req, res) => {
     const courses = req.body.courses
+    console.log(req.body)
     const user = req.user ? req.user : undefined
     if (user && user.type === ROLE_STUDENT) {
         courses.forEach((courseId => {
@@ -126,7 +127,7 @@ router.post('/buy', (req, res) => {
                 created_at: new Date(),
             })
         }))
-        res.json({'msg': 'ok'})
+        res.json({'msg': 'Buy success'})
     } else {
         res.json({'msg': 'Unauthorized'})
     }

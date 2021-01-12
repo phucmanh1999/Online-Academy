@@ -345,8 +345,8 @@
             <%= payload.price %> <%= payload.concurrency %>
           </div>
           <div class="course-controls">
-            <button id="btnAdd" data-course-id="<%= payload.id %>" class="btn btn-danger w-100">Add To Cart</button>
-            <a href="#" class="btn btn-outline-primary w-100">Buy</a>
+            <button id="btnAdd" data-course-id="<%= payload.id %>" class="btn btn-danger btn-block">Add To Cart</button>
+            <button id="btnBuy" data-course-id="<%= payload.id %>" class="btn btn-outline-primary btn-block">Buy</button>
             <div>
               30-Day Money-Back Guarantee
             </div>
@@ -468,9 +468,21 @@
           } else if(data.msg === "Cart already exist") {
             Swal.fire({
               icon: 'error',
-              title: data.msg
+              title: "Course already exist"
             })
           }
+        })
+      })
+
+      $("#btnBuy").click(function(){
+        let courses =[$(this).attr("data-course-id")]
+        console.log(courses)
+        $.post(`/student/buy`,
+         {
+           courses: courses
+         }, 
+         function(data, status) {
+          console.log(data.msg)
         })
       })
     })
