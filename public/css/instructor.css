@@ -1,7 +1,21 @@
-#image{
-    width:auto;
+.course-image{
+    width:100%;
     height:auto;
 } 
 #img-container{
     text-align: center;
+}
+.edit-btn {
+    text-align: right;
+    margin:5px;
+}
+
+#addChapter{
+    display: none;
+}
+.addLesson{
+    display: none;
+}
+#add-chapter-btn{
+    margin: 5px;
 }

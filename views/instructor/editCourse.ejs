@@ -115,11 +115,13 @@
             <label for="courseName">Course name</label>
             <input type="text" class="form-control" id="courseName"  name="courseName" value="<%=course.course_name%>" >
           </div>
-          <div id="courseImagediv" class="form-group">
+          <div class="form-group ">
             <label for="courseImage">Course image</label>
-						<div id="img-container" >
-							<img id = "image" src=<%=course.img_path%> alt="Image">
-						</div>
+						<div class="row ">
+              <div class="col-md-6 offset-md-3"  >
+                <img id="image" class = "course-image" src=<%=course.img_path%> alt="Image">
+              </div>
+            </div>
 						<input type="file" class="form-control-file" id="courseImage" name = "image" onchange="readURL(this);">
           </div>
           <div class="form-group">
@@ -186,20 +188,74 @@
 									<!-- <li class="list-group-item">Course Curriculum Overview</li> -->
                   <%}%>
                   <li class="list-group-item">
-                    <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick="window.open('/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>');" >Add Lesson</button>
+                    <button id="add-lesson-btn" type="button" class="btn btn-primary" onClick='add("addLesson<%= i %>")' >Add Lesson</button>
+                    <!-- add Lesson -->
+                    <div id="addLesson<%= i %>" class="container mt-5 mb-5 addLesson"> 
+                      <form action="/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>" method="post" id="formLesson">
+                        <div class="form-group">
+                          <label for="lessonName">Lesson name</label>
+                          <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?" name ="lessonName">
+                        </div>
+                        <div class="form-group">
+                          <label for="shortDescription">Short description</label>
+                          <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="uploadVideo">Upload video</label>
+                          <input type="file" class="form-control-file" id="uploadVideo" name="video">
+                        </div>
+                        <div class="form-group">
+                          <label for="fdcontent<%= i %>">Full description</label>
+                          <!-- Create the editor container -->
+                          <div id="editor<%= i %>" class="form-control" > </div>
+                          <input type="text" id="fdcontent<%= i %>" name='fullDescription' hidden>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit this lesson">
+                        <button class="btn-cancel btn btn-danger" data-form-id="addLesson<%= i %>" type="button" >Cancle</button>
+
+                      </form>
+                    </div>
+
                   </li>
 								</ul>
-							</div>
+              </div>
+              <div class="edit-btn">
+                <button id="edit-chapter-btn" type="button" class="btn btn-primary edit-btn" onClick="window.open('/instructor/editChapter?chapter_id=<%=course.Chapters[i].id%>');" >Edit Chapter</button>
+                
+              </div>
+
+              <div class="edit-btn">
+
+                <button id="delete-chapter-btn" type="button" class="btn btn-primary edit-btn" onClick="/instructor/deleteChapter?chapter_id=<%=course.Chapters[i].id%>" >Delete Chapter</button>
+              </div>
             </div>
-            
+
           </div>
           <%}%>
 				</div>
 				</div>
 				<div class="form-group">
-					<button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button>
+					<!-- <button id="add-chapter-btn" class="btn btn-primary" onClick="window.open('/instructor/addChapter?course_id=<%=course.id%>');" >Add Chapter</button> -->
+					<button id="add-chapter-btn" class="btn btn-primary " onClick='add("addChapter")' >Add Chapter</button>
         </div>
 
+            <!-- add chapter -->
+        <div id="addChapter"class="container mt-5 mb-5" >
+          <!-- <form action="/instructor/addChapter/?course_id=<%=course.id%>" method="post" id="formChapter"> -->
+          <form method="post" id="formChapter" action="/instructor/addChapter/?course_id=<%=course.id%>">
+            <div class="form-group">
+              <label for="chapterName">Chapter name</label>
+              <input type="text" class="form-control" id="chapterName" placeholder="How to carry daxua 0/8/1?" name = "chapterName">
+            </div>
+            <div class="form-group">
+              <label for="shortDescription">Short description</label>
+              <textarea class="form-control" id="shortDescription" rows="3" name = "shortDescription"></textarea>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit this chapter">
+            <button class="btn-cancel btn btn-danger" data-form-id="addChapter" type="button">Cancle</button>
+
+          </form>
+        </div>
     </div>
     <!-- Footer -->
     <div class="container-fluid footer">
@@ -242,23 +298,97 @@
     <!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script>
-			function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#image')
-                    .attr('src', e.target.result)
-                    .width('60%')
-                    .height('60%');
-            };
+      function add(formId){
+          document.getElementById(formId).style.display = 'block';
+          $(this).off('click');
 
-            reader.readAsDataURL(input.files[0]);
+          let id = formId.slice(9)
+          if(formId.slice(0,9)==='addLesson') {
+            // let content = <%- course.full_description?course.full_description.replace('&#34;','"'):'""'%>; 
+            let content = ""           
+
+            let toolbarOptions = [
+              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+              ['blockquote', 'code-block'],
+
+              [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+              [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+              [{ 'direction': 'rtl' }],                         // text direction
+
+              [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+              [{ 'font': [] }],
+              [{ 'align': [] }],
+
+              ['clean']                                         // remove formatting button
+            ];
+
+            var editor = new Quill(`#editor${id}`, { 
+              modules: { toolbar: toolbarOptions },
+              theme: 'snow'
+            });
+            //load content from db
+            // editor.setContents(content);
+
+            let delta = JSON.stringify(editor.getContents()).replace('\"','"')
+            document.getElementById(`fdcontent${id}`).value = delta
+            
+            editor.on('text-change', function() {
+              let delta = JSON.stringify(editor.getContents()).replace('\"','"')
+              document.getElementById(`fdcontent${id}`).value = delta
+            }); 
+          }
+
+        } 
+      $(document).ready(function() {
+
+
+        $(".btn-cancel").click(function(){
+          let formId = $(this).attr("data-form-id")
+          console.log(formId)
+          $(`#${formId}`).hide()
+        })
+        
+        $("#addChapter").submit(function(e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var url = form.attr('action');
+            
+            $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: form.serialize(), // serializes the form's elements.
+                  success: function(data)
+                  {
+                      alert(data); // show response from the php script.
+                  }
+                }); 
+        });
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#image')
+                      .attr('src', e.target.result)
+                      // .width('60%')
+                      // .height('60%');
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
         }
-			}
+      })
     </script>
 
     <% if (course) { %>
+     <!-- Initialize Quill editor -->
 
      <script>
       let content = <%- course.full_description?course.full_description.replace('&#34;','"'):'""'%>;            
@@ -288,7 +418,7 @@
         theme: 'snow'
       });
       //load content from db
-      editor.setContents(content);
+      editor.setContents(content); 
 
       let delta = JSON.stringify(editor.getContents()).replace('\"','"')
       document.getElementById('fdcontent').value = delta
@@ -300,7 +430,6 @@
 
     </script>
     <% } %>
-     <!-- Initialize Quill editor -->
 
   </body>
 </html>

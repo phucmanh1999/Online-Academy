@@ -40,6 +40,22 @@ router.get('/editCourse', async (req, res) => {
     res.render("instructor/editCourse", {category, course})
 })
 
+router.get('/editChapter', (req,res) =>{
+    res.send("edit chapter: " + req.query.chapter_id)
+})
+
+router.get('/editLesson', (req,res) =>{
+    res.send("edit lesson: " + req.query.lesson_id)
+})
+
+router.get('/deleteChapter', (req,res) => {
+    res.send("delete chapter: " + req.query.chapter_id)
+})
+
+router.get('/deleteChapter', (req,res) => {
+    res.send("delete lesson: " + req.query.lesson_id)
+})
+
 router.post('/editCourse', (req, res) => {
     console.log(req.body)
     // if (!req.file) {
@@ -153,5 +169,7 @@ router.post('/addLesson', (req, res) => {
     }
     res.send(req.body)
 });
+
+
 
 module.exports = router
