@@ -116,21 +116,24 @@ router.delete('/cart/:courseId', (req, res) => {
 })
 
 router.post('/buy', (req, res) => {
-    const courses = req.body.courses
-    console.log(req.body)
+    const courses = req.body.courses.split("+")
+    console.log(courses)
     const user = req.user ? req.user : undefined
     if (user && user.type === ROLE_STUDENT) {
-        courses.forEach((courseId => {
+        for (let id in courses)
+        {
+            if (courses.hasOwnProperty(id))
             createBought({
                 student_id: user.role_id,
-                course_id: courseId,
+                course_id: courses[id],
                 created_at: new Date(),
             })
-        }))
+        }
         res.json({'msg': 'Buy success'})
     } else {
-        res.json({'msg': 'Unauthorized'})
+        res.redirect("/login")
     }
+
 })
 
 router.get('/buy', (req, res) => {
