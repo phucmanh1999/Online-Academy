@@ -5,6 +5,8 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {getChapter} = require("../services/chapter-service");
+const {createLesson} = require("../services/lesson-service");
 const {updateCourse} = require("../services/course-service");
 const {createChapter} = require("../services/chapter-service");
 const {getCourseLessInfo} = require("../services/course-service");
@@ -96,30 +98,30 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
     }
 });
 
-router.post('/addLesson', (req, res) => {
-        console.log(req.body)
-        res.send(req.body)
-        // const user = req.user ? req.user : undefined
-        // const course_id = req.params.courseId
-        // if (user && user.type === ROLE_INSTRUCTOR) {
-        //     const instructor_id = user.role_id
-        //     createChapter({
-        //         course_id: course_id,
-        //         lesson_number: 0,
-        //         short_description: req.body.shortDescription,
-        //         chapter_name: req.body.chapterName,
-        //         created_at: new Date()
-        //     }).then(() => {
-        //         res.json({msg: 'ok'})
-        //     }).catch((err) => {
-        //         console.log(err)
-        //         res.json({msg: 'Unknown error'})
-        //     })
-        // } else {
-        //     res.json({msg: "Unauthorized"})
-        // }
-    }
-);
+// router.post('/addLesson', (req, res) => {
+//         console.log(req.body)
+//         res.send(req.body)
+//         // const user = req.user ? req.user : undefined
+//         // const course_id = req.params.courseId
+//         // if (user && user.type === ROLE_INSTRUCTOR) {
+//         //     const instructor_id = user.role_id
+//         //     createChapter({
+//         //         course_id: course_id,
+//         //         lesson_number: 0,
+//         //         short_description: req.body.shortDescription,
+//         //         chapter_name: req.body.chapterName,
+//         //         created_at: new Date()
+//         //     }).then(() => {
+//         //         res.json({msg: 'ok'})
+//         //     }).catch((err) => {
+//         //         console.log(err)
+//         //         res.json({msg: 'Unknown error'})
+//         //     })
+//         // } else {
+//         //     res.json({msg: "Unauthorized"})
+//         // }
+//     }
+// );
 
 router.post('/addChapter', (req, res) => {
     const user = req.user ? req.user : undefined
@@ -148,10 +150,38 @@ router.post('/addChapter', (req, res) => {
 
 router.post('/addLesson', (req, res) => {
     console.log(req.body)
-    if (!req.file) {
-        res.json({error: 'Please provide an image'});
+    const user = req.user ? req.user : undefined
+    const chapter_id = req.query.chapter_id
+    let videoFile = null
+    let vidPath = null
+    if (user && user.type === ROLE_INSTRUCTOR) {
+        if (req.files) {
+            videoFile = req.files.video
+            vidPath = "/assets/video/" + videoFile.name
+        }
+        createLesson({
+            chapter_id: chapter_id,
+            is_free: false,
+            short_description: req.body.shortDescription,
+            full_description: req.body.fullDescription,
+            lesson_name: req.body.lessonName,
+            created_at: new Date(),
+            video_url: vidPath
+        }).then(() => {
+            getChapter({id: chapter_id}).then(chapter => {
+                const lessonNum = chapter.lesson_number ? chapter.lesson_number : 0
+                updateCourse(chapter_id, {lesson_number : lessonNum+1})
+            })
+            if (videoFile)
+                videoFile.mv("./public" + vidPath)
+            res.json({msg: "ok"})
+        }).catch((err) => {
+            console.log(err)
+            res.json({msg: 'Unknown error'})
+        })
+    } else {
+        res.json({msg: "Unauthorized"})
     }
-    res.send(req.body)
 });
 
 module.exports = router

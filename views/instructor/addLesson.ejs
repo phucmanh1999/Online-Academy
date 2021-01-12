@@ -103,8 +103,8 @@
                 </a>
               </li>
             <% } %>
-            
-            
+
+
           </ul>
         </div>
       </div>
@@ -112,8 +112,8 @@
 
 
 
-    <div id="addLesson" class="container mt-5 mb-5"> 
-      <form action="/instructor/addLesson?chapter_id=<%=chapter_id%>" method="post" id="formLesson">
+    <div id="addLesson" class="container mt-5 mb-5">
+      <form action="/instructor/addLesson?chapter_id=<%=chapter_id%>" method="post" id="formLesson" enctype="multipart/form-data">
         <div class="form-group">
           <label for="lessonName">Lesson name</label>
           <input type="text" class="form-control" id="lessonName" placeholder="How to carry daxua 0/8/1?" name ="lessonName">
@@ -161,7 +161,7 @@
         <ul class="col list-group">
           <li class="list-group"><a href="#">
             Terms</a></li>
-          <li class="list-group"><a href="#">           
+          <li class="list-group"><a href="#">
             Privacy policy and cookie policy</a></li>
           <li class="list-group"><a href="#">
             Sitemap</a></li>
@@ -209,14 +209,14 @@
         ['clean']                                         // remove formatting button
       ];
 
-      var editor = new Quill('#editor', { 
+      var editor = new Quill('#editor', {
         modules: { toolbar: toolbarOptions },
         theme: 'snow'
       });
 
 
       editor.setContents("");
-      
+
       editor.on('text-change', function() {
         let delta = JSON.stringify(editor.getContents()).replace('\"','"')
         document.getElementById('fdcontent').value = delta
