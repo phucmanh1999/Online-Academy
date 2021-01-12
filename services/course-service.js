@@ -6,7 +6,8 @@ const Lesson = require("../Model/Lesson");
 const User = require("../Model/User");
 const Review = require("../Model/Review");
 const Student = require("../Model/Student");
-const sequelize = require('sequelize')
+const QueryTypes = require('sequelize')
+const database = require("../database");
 
 const convertDate = (dateObj) => {
     if (!dateObj)
@@ -240,6 +241,18 @@ const updateCourse = (_id, obj) => {
     )
 }
 
+const searchCourse = async searchText => {
+    let splitResult = searchText.replace(/[^a-zA-Z ]/g, "").split(" ").join(' & ')
+    splitResult = "'" + splitResult + "'"
+    const courses = await database.query(`Select * from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title) @@ to_tsquery(${splitResult})`, {
+            type: QueryTypes.SELECT
+        }
+    ).catch((err) => {
+        console.log(err)
+    })
+    return courses
+}
+
 module.exports = {
     getAllCourses,
     getCourseByTopView,
@@ -250,5 +263,6 @@ module.exports = {
     createCourse,
     getTopBuyCourseByCategoryId,
     getCourseLessInfo,
-    updateCourse
+    updateCourse,
+    searchCourse,
 }

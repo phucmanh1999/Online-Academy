@@ -1,5 +1,6 @@
 const express = require("express")
 const jwt = require('jsonwebtoken')
+const {searchCourse} = require("../services/course-service");
 const {getCoursesByCategoryId} = require("../services/course-service");
 const {getNewestCourses} = require("../services/course-service");
 const {getHighLightCourses} = require("../services/course-service");
@@ -49,8 +50,11 @@ router.get('/category-courses/:categoryid', (req, res) => {
 })
 
 router.get('/search', (req, res) => {
-    const query = req.query;
-    console.log(citeria)
+    const query = req.query.query;
+    console.log(query)
+    searchCourse(query).then(courses => {
+        console.log(courses)
+    })
 })
 
 router.get("/signup", (req, res) => {
