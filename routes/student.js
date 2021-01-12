@@ -78,7 +78,6 @@ router.post('/addCart/:courseId', (req, res) => {
 
 router.get('/cart', (req, res) => {
     const user = req.user ? req.user : undefined
-    // console.log(JSON.stringify(user))
     if (user && user.type === ROLE_STUDENT) {
         getCartsByStudentId(user.role_id).then(async carts => {
             let price_sum = 0;
@@ -124,6 +123,11 @@ router.post('/buy', (req, res) => {
                 student_id: user.role_id,
                 course_id: parseInt(id),
                 created_at: new Date(),
+            }).then(() => {
+                deleteCart({
+                    student_id: user.role_id,
+                    course_id: parseInt(id)
+                })
             })
         })
         res.json({'msg': 'ok'})
