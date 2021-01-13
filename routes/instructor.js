@@ -77,7 +77,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 chapter_number: 0,
                 view_number: 0,
                 rating: 0,
-                price: req.body.price + 0,
+                price: Number(((req.body.price + 0)).toFixed(1)),
                 concurrency: req.body.concurrency,
                 course_language: 'vi',
                 course_state: 'U',
@@ -99,31 +99,6 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
         res.json({msg: "Unauthorized"})
     }
 });
-
-// router.post('/addLesson', (req, res) => {
-//         console.log(req.body)
-//         res.send(req.body)
-//         // const user = req.user ? req.user : undefined
-//         // const course_id = req.params.courseId
-//         // if (user && user.type === ROLE_INSTRUCTOR) {
-//         //     const instructor_id = user.role_id
-//         //     createChapter({
-//         //         course_id: course_id,
-//         //         lesson_number: 0,
-//         //         short_description: req.body.shortDescription,
-//         //         chapter_name: req.body.chapterName,
-//         //         created_at: new Date()
-//         //     }).then(() => {
-//         //         res.json({msg: 'ok'})
-//         //     }).catch((err) => {
-//         //         console.log(err)
-//         //         res.json({msg: 'Unknown error'})
-//         //     })
-//         // } else {
-//         //     res.json({msg: "Unauthorized"})
-//         // }
-//     }
-// );
 
 router.post('/addChapter', (req, res) => {
     const user = req.user ? req.user : undefined
