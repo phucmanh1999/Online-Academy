@@ -15,6 +15,7 @@
   />
   <link rel="stylesheet" href="/css/course.css">
   <link rel="stylesheet" href="/css/index.css" />
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.3/plyr.css" />
   <title>
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
@@ -154,7 +155,41 @@
           <div class="course-content-title">
             Course Content
           </div>
-          <div class="accordion" id="accordionExample">
+          <div class="accordion" id="accordionChapter">
+            <% payload.Chapters.forEach((chapter, iChapter) => { %>
+              <div class="card">
+                <div class="card-header" id="heading<%= iChapter %>">
+                  <h2 class="mb-0">
+                    <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<%= iChapter %>" aria-expanded="true" aria-controls="collapse<%= iChapter %>">
+                      <%= chapter.chapter_name %>
+                    </button>
+                  </h2>
+                </div>
+  
+                <div id="collapse<%= iChapter %>" class="collapse show" aria-labelledby="heading<%= iChapter %>" data-parent="#accordionChapter">
+                  <div class="card-body">
+                    <ul class="list-group">
+                      <% chapter.Lessons.forEach((lesson, iLesson) => { %>
+                        <li class="list-group-item">
+                          <div class="d-flex justify-content-center">
+                            <div>
+                              <%= lesson.lesson_name %>
+                            </div>
+                            <div>
+                              <% if(isOwn || lesson.is_free) { %>
+                                <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
+                              <% } %>
+                            </div>
+                          </div>
+                        </li>
+                      <% }) %>
+                      <li class="list-group-item">Course Introduction</li>
+                      <li class="list-group-item">Course Curriculum Overview</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
             <div class="card">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
@@ -164,7 +199,7 @@
                 </h2>
               </div>
 
-              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionChapter">
                 <div class="card-body">
                   <ul class="list-group">
                     <li class="list-group-item">Course Introduction</li>
@@ -181,7 +216,7 @@
                   </button>
                 </h2>
               </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionChapter">
                 <div class="card-body">
                   <ul class="list-group">
                     <li class="list-group-item">Lesson 3</li>
@@ -198,7 +233,7 @@
                   </button>
                 </h2>
               </div>
-              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionChapter">
                 <div class="card-body">
                   <ul class="list-group">
                     <li class="list-group-item">Lesson 5</li>
@@ -334,7 +369,7 @@
               </div>
               <hr>
             <% }) %>
-            <% if(user) { %>
+            <% if(isOwn) { %>
               <div class="add-review">
                 <div class="text-center">
                   <div id="starCount" class="review-star">
@@ -397,7 +432,9 @@
           <div><%= payload.course_name %></div>
         </div>
         <div class="modal-body">
-          <video width="100%" src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" controls type="video/mp4"></video>
+          <video data-poster="/assets/images/Course3.jpg" crossorigin playsinline width="100%" controls id="player">
+            <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576"/>
+          </video>
         </div>
       </div> 
     </div>
@@ -436,6 +473,28 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="watchVideo">
+    <% payload.Chapters.forEach((chapter, iChapter) => { %>
+      <% chapter.Lessons.forEach((lesson, iLesson) => { %>
+        <div class="modal fade" id="chapter<%= iChapter %>Lesson<%= iLesson %>">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div>Course Preview</div>
+                <div><%= lesson.lesson_name %></div>
+              </div>
+              <div class="modal-body">
+                <video data-poster="<%= payload.img_path %>" crossorigin playsinline width="100%" controls class="js-player">
+                  <source src="<%= lesson.video_url %>" type="video/mp4"/>
+                </video>
+              </div>
+            </div> 
+          </div>
+        </div>
+      <% }) %>
+    <% }) %>
   </div>
 
 
@@ -509,10 +568,14 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
   
   <script>
     $(".add-review span").hide()
     $().ready(function(){
+      const player = new Plyr("#player")
+
       $('#previewCourse').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
       })
