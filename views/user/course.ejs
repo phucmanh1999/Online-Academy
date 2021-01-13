@@ -171,14 +171,12 @@
                     <ul class="list-group">
                       <% chapter.Lessons.forEach((lesson, iLesson) => { %>
                         <li class="list-group-item">
-                          <div class="d-flex justify-content-center">
+                          <div class="d-flex justify-content-between">
                             <div>
                               <%= lesson.lesson_name %>
                             </div>
                             <div>
-                              <% if(isOwn || lesson.is_free) { %>
-                                <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
-                              <% } %>
+                              <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
                             </div>
                           </div>
                         </li>
