@@ -3,6 +3,8 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {updateCourse} = require("../services/course-service");
+const {getCourse} = require("../services/course-service");
 const {getBought} = require("../services/bought-service");
 const {createBought} = require("../services/bought-service");
 const {getCart} = require("../services/cart-service");
@@ -27,6 +29,14 @@ router.post('/review', urlencodedParser, (req, res) => {
         student_id: user.role_id,
         created_at: new Date(),
     }).then(() => {
+        getCourse({id: course_id}).then(course => {
+            if (course) {
+                const rating = course.rating ? course.rating : 0
+                const rating_number = course.rating_number ? course.rating_number : 0
+                const aveRating = (rating * rating_number + star) / (rating_number + 1)
+                updateCourse(course_id, {rating_number : rating_number+1, rating : aveRating})
+            }
+        })
         res.json({'msg': 'Comment success'})
     })
 })

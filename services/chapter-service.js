@@ -10,7 +10,20 @@ const getChapter = async obj => {
     return chapter.toJSON()
 }
 
+const updateChapter = (_id, obj) => {
+    return Chapter.update(
+        obj
+        ,
+        {
+            where: {
+                id: _id
+            },
+        }
+    )
+}
+
 module.exports = {
     createChapter,
-    getChapter
+    getChapter,
+    updateChapter
 }
