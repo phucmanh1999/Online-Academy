@@ -115,7 +115,7 @@
   <hr>
   <div class="container course">
     <div class="course-profile">
-      <div>
+      <div class="course-all">
         <div class="course-header">
           <div class="course-title">
             <%= payload.course_name %>
@@ -306,27 +306,50 @@
             Reviews
           </div>
           <div class="container-fluid review-item">
-            <div class="row">
-              <div class="col-1">
-                <img class="rounded-circle" src="https://www.cogandhand.com.au/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" width="50px" height="50px">
+            <% payload.Reviews.forEach(item => { %>
+              <div class="row">
+                <div class="col-1">
+                  <img class="rounded-circle" src="https://www.cogandhand.com.au/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" width="50px" height="50px">
+                </div>
+                <div class="col-11">
+                  <div class="student-review">
+                    <%= item.Student.User.first_name %> <%= item.Student.User.last_name %>
+                  </div>
+                  <div class="review-rating">
+                    <% for(let j = 1; j <= Math.floor(item.star); j++) { %>
+                      <i class="fa fa-star"></i>
+                    <% } %>
+                    <% if(item.star - Math.floor(item.star) !== 0) { %>
+                      <i class="fa fa-star-half-alt"></i>
+                    <% } %>
+                    <% for(let j = Math.ceil(item.star); j < 5; j++) { %>
+                      <i class="far fa-star"></i>
+                    <% } %>
+                    <span class="ml-2"><%= item.created_at %></span>
+                  </div>
+                  <div class="review-content">
+                    <%= item.comment %>
+                  </div>
+                </div>
               </div>
-              <div class="col-11">
-                <div class="student-review">
-                  Nguyen Anh Nam
+              <hr>
+            <% }) %>
+            <% if(user) { %>
+              <div class="add-review">
+                <div class="text-center">
+                  <div id="starCount" class="review-star">
+                    <i data-star='1' class="far fa-star"></i>
+                    <i data-star='2' class="far fa-star"></i>
+                    <i data-star='3' class="far fa-star"></i>
+                    <i data-star='4' class="far fa-star"></i>
+                    <i data-star='5' class="far fa-star"></i>
+                  </div>
+                  <span  style="color: red;">Please rating !</span>
                 </div>
-                <div class="review-rating">
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="far fa-star"></i>
-                  <span class="ml-2">12/1/2020</span>
-                </div>
-                <div class="review-content">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, mollitia dolores. Nobis repellat dicta perferendis sunt deserunt aliquid quam provident aperiam officia, sequi, nostrum nisi tempora, dolores voluptates quae labore.
-                </div>
+                <input class="w-100 d-block mb-2" type="text" name="comment" placeholder="Add comment..">
+                <button data-course-id="<%= payload.courseId %>" class="btn btn-primary" id="addReview">Add</button>
               </div>
-            </div>
+            <% } %>
           </div>
         </div>
 
@@ -488,11 +511,11 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   
   <script>
+    $(".add-review span").hide()
     $().ready(function(){
       $('#previewCourse').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
       })
-
       $("#btnAdd").click(function(){
         let courseId =$(this).attr("data-course-id")
         $.post(`/student/addCart/${courseId}`, function(data, status){
@@ -511,7 +534,6 @@
           }
         })
       })
-
       $("#btnBuy").click(function(){
         let courses = Array($(this).attr("data-course-id"))
         console.log(courses.join("+"))
@@ -528,6 +550,43 @@
             location.reload()
           }
         })
+      })
+      let star = 0;
+      $("#starCount i").click(function(){
+        star = $(this).data("star")
+        $("#starCount i").each(function(index) {
+          if(index < star) {
+            $(this).removeClass("far").addClass("fa")
+          } else {
+            $(this).removeClass("fa").addClass("far")
+          }
+        })
+        $(".add-review span").hide()
+      })
+      $("#addReview").click(function() {
+        if(star === 0) {
+          $(".add-review span").show()
+        } else {
+          let comment = $(".add-review input").val()
+          let course_id = $(this).data("course-id")
+          console.log(course_id, comment, star)
+          $.post("/student/review",
+            {
+              star,
+              comment,
+              course_id
+            },
+            async function(data, status) {
+              if(data.msg === "Add comment success") {
+                await Swal.fire({
+                  icon: 'success',
+                  title: data.msg
+                })
+                location.reload()
+              }
+            }
+          )
+        }
       })
     })
   </script>
