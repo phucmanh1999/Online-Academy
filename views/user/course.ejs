@@ -65,7 +65,7 @@
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
               <a class="nav-link" href="/student/cart">
-                <i class="fas fa-shopping-cart"></i><span class="badge badge-danger" id="cartCount"><%= user.cartCount %></span>
+                <i class="fas fa-shopping-cart"></i>
               </a>
             </li>
             <li class="nav-item">
@@ -364,7 +364,6 @@
         </div>
       </div>
     </div>
-    <%= isOwn %>
     
   </div>
   <div class="modal fade" id="previewCourse">
@@ -502,8 +501,8 @@
               icon: 'success',
               title: data.msg
             })
-            let cartCount = Number(document.getElementById("cartCount").innerHTML)
-            document.getElementById("cartCount").innerHTML = cartCount + 1
+            // let cartCount = Number(document.getElementById("cartCount").innerHTML)
+            // document.getElementById("cartCount").innerHTML = cartCount + 1
           } else if(data.msg === "Cart already exist") {
             Swal.fire({
               icon: 'error',

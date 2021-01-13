@@ -23,7 +23,7 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container">
-      <a href="#" class="navbar-branch">
+      <a href="/" class="navbar-branch">
         <img src="/assets/images/logo.svg" width="160px" />
       </a>
       <button
@@ -40,7 +40,7 @@
           <input type="text" placeholder="Search..." class="rounded-pill" />
         </form>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item dropdown">
@@ -63,9 +63,9 @@
             <a class="nav-link" href="/about">About</a>
           </li>
           <% if(typeof user !== 'undefined' ) { %>
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="/student/cart">
-                <i class="fas fa-shopping-cart"></i><span class="badge badge-light">0</span>
+                <i class="fas fa-shopping-cart"></i>
               </a>
             </li>
             <li class="nav-item">
@@ -201,7 +201,7 @@
   <!-- Before footer -->
   <div class="container-fluid">
     <div class="row">
-      <div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career skills.</div>
+      <div class="col-6 footer-text">Top companies choose <a href="/">MNP Courses</a> to build in-demand career skills.</div>
       <ul class="col-6 d-flex justify-content-between mb-0 logo">
         <li><img src="https://s.udemycdn.com/partner-logos/lyft-logo.svg" alt=""></li>
         <li><img src="https://s.udemycdn.com/partner-logos/adidas-logo.svg" alt=""></li>

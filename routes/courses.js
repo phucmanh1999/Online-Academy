@@ -16,7 +16,6 @@ router.get('/:id', async (req, res) => {
         //     topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id),
         //     isOwn: req.user ? await isOwn(req.user.role_id, req.params.id) : false
         // })
-        
         res.render("user/course",{
             user: req.user ? req.user : undefined,
             payload: course,

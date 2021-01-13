@@ -125,19 +125,22 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 const role_id = data.Student ? data.Student.id : data.Instructor ? data.Instructor.id : data.Administrator ? data.Administrator.id : null
                 const cartCount = 0;
                 const payload = { id: data.id, username: data.user_name, type: data.Role.role_name , role_id: role_id, cartCount: cartCount}
-                const accessToken = jwt.sign(payload, 'secret')
                 if (data.Role.role_name === ROLE_STUDENT) {
                     payload.cartCount = await getUserCartNumber(data.Student.id)
                     console.log("payload ís: " +await JSON.stringify(payload))
+                    const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success", "previousPage": req.session.previousPage})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                 }
                 else if (data.Role.role_name === ROLE_INSTRUCTOR) {
+                    const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success"})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                 }
                 else if (data.Role.role_name === ROLE_ADMIN) {
+                    const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                     // res.json({token: accessToken, user: data})
                 }
                 UserService.updateUser(result.id, {last_login: new Date()})
