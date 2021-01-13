@@ -54,7 +54,9 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <!-- Category item -->
+              <% for(const category of categories) { %>
+                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
@@ -100,7 +102,7 @@
   <!-- Main -->
   <div class="container">
     <div class="category-title mb-3">
-      All Development Courses
+      <%= payload.count%> results for "<%= payload.query %>"
     </div>
     <div class="category-content">
       <div class="row">
@@ -114,34 +116,26 @@
           </div>
         </div>
         <div class="col-9 text-right">
-          <%= count%> results
+          <%= payload.count%> results
         </div>
       </div>
       <div class="row">
-        <div id="filterSection" class="col-3">
-          <div class="dropdown mb-3">
-            <button class="btn btn-warning btn-block dropdown-toggle" type="button" id="dropdownRating" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <div class="d-flex justify-content-between">
-                <span>Rating</span> <i class="fas fa-sort"></i>
-              </div>
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownRating">
-              <!-- Rating order -->
-            </div>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-info btn-block dropdown-toggle" type="button" id="dropdownPrice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <div class="d-flex justify-content-between">
-                <span>Price</span> <i class="fas fa-sort"></i>
-              </div>
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownPrice">
-             <!-- Price order -->
-            </div>
-          </div>
+        <div id="filterSection" data-query="<%= payload.query %>" class="col-3">
+          <select id="orderBy" class="form-select w-100 mb-2">
+            <option selected disabled>Order by</option>
+            <option value="order_price">Order by price</option>
+            <option value="order_review">Order by rating</option>
+          </select>
+
+          <select id="sortBy" class="form-select w-100 mb-2">
+            <option selected disabled>Sort by</option>
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending </option>
+          </select>
+          
         </div>
         <div id="coursesSection"  class="col-9">    
-          <% courses.forEach((item) => { %>
+          <% payload.courses.forEach((item) => { %>
             <a href="/courses/<%= item.id %>" class="d-block mb-3">
               <div class="row courses-item">
                 <div class="col-4">
@@ -181,7 +175,39 @@
               </div>
             </a>
           <% }) %>
-    
+          <div class="row d-flex justify-content-center">
+            <nav aria-label="Page navigation category">
+
+              <% if (payload.pageCount > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (payload.page == 1) { %>
+                        <li class="page-item disabled"><a class="page-link">First</a></li>
+                    <% } else { %>
+                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=1">First</a></li>
+                    <% } %>
+                    <% var i = (Number(payload.page) > 5 ? Number(payload.page) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                    <% for (; i <= (Number(payload.page) + 4) && i <= payload.pageCount; i++) { %>
+                        <% if (i == payload.page) { %>
+                            <li class="page-item  active"><a class="page-link" ><%= i %></a></li>
+                        <% } else { %>
+                            <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                        <% if (i == Number(payload.page) + 4 && i < payload.pageCount) { %>
+                            <li class="page-item disabled"><a class="page-link">...</a></li>
+                        <% } %>
+                    <% } %>
+                    <% if (payload.page == payload.pageCount) { %>
+                        <li class="page-item disabled"><a class="page-link">Last</a></li>
+                    <% } else { %>
+                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.pageCount %>">Last</a></li>
+                    <% } %>
+                </ul>
+            <% } %>
+            </nav>
+          </div>      
         </div>
       </div>
     </div>
@@ -285,6 +311,14 @@
           $("#btnFilter").css("background", "#f8f9fa")
         }
         filterFlag = !filterFlag
+      })
+
+      $("#sortBy").change(function(){
+        let order_by = $("#orderBy").val()
+        let sort_by = $("#sortBy").val()
+        let query = $("#filterSection").data("query")
+        let orderStr = order_by ? `${order_by}=${sort_by}` : `order_review=${sort_by}`
+        window.location.href = `/search?query=${query}&${orderStr}`
       })
     })
   </script>

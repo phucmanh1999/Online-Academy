@@ -100,9 +100,15 @@
     </div>
   </nav>
   <!-- Main -->
+  <% var course_name %>
+  <% categories.forEach(item => { %>
+    <% if(item.id == payload.categoryId) { %>
+      <% course_name = item.category_name %>
+    <% } %>
+  <% }) %>
   <div class="container">
     <div class="category-title mb-3">
-      All Development Courses
+      All <%= course_name %> Development Courses:
     </div>
     <div class="category-content">
       <div class="row">
@@ -120,29 +126,21 @@
         </div>
       </div>
       <div class="row">
-        <div id="filterSection" class="col-3">
-          <div class="dropdown mb-3">
-            <button class="btn btn-warning btn-block dropdown-toggle" type="button" id="dropdownRating" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <div class="d-flex justify-content-between">
-                <span>Rating</span> <i class="fas fa-sort"></i>
-              </div>
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownRating">
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=ASC&order_price=<%= payload.order_price %>">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=DESC&order_price=<%= payload.order_price %>">Descending</a>
-            </div>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-info btn-block dropdown-toggle" type="button" id="dropdownPrice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <div class="d-flex justify-content-between">
-                <span>Price</span> <i class="fas fa-sort"></i>
-              </div>
-            </button>
-            <div class="dropdown-menu w-100" aria-labelledby="dropdownPrice">
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=ASC&order_review=<%= payload.order_review%>">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=DESC&order_review=<%= payload.order_review%>">Descending</a>
-            </div>
-          </div>
+        <div id="filterSection" data-course-id="<%= payload.categoryId  %>" class="col-3">
+          
+          <select id="orderBy" class="form-select w-100 mb-2">
+            <option selected disabled>Order by</option>
+            <option value="order_price">Order by price</option>
+            <option value="order_review">Order by rating</option>
+          </select>
+
+          <select id="sortBy" class="form-select w-100 mb-2">
+            <option selected disabled>Sort by</option>
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending </option>
+          </select>
+          
+          
         </div>
         <div id="coursesSection"  class="col-9">    
           <% payload.courses.forEach((item) => { %>
@@ -322,6 +320,16 @@
         }
         filterFlag = !filterFlag
       })
+
+      let page = $(".pagination").find("li.active").text();
+      $("#sortBy").change(function(){
+        let order_by = $("#orderBy").val()
+        let sort_by = $("#sortBy").val()
+        let category_id = $("#filterSection").data("course-id")
+        let orderStr = order_by ? `${order_by}=${sort_by}` : `order_review=${sort_by}`
+        window.location.href = `/category-courses/${category_id}?${orderStr}`
+      })
+      
     })
   </script>
 </body>
