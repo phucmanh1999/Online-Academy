@@ -52,10 +52,11 @@ router.get('/category-courses/:categoryid', (req, res) => {
 router.get('/search', (req, res) => {
     const query = req.query.query;
     console.log(query)
+    const user = req.user ? req.user : undefined
     searchCourse(query).then(courses => {
         // delete courses.Result
         console.log(courses)
-        res.json({courses})
+        res.json({courses, user})
     })
 })
 
