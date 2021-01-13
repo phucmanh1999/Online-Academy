@@ -130,16 +130,17 @@ router.post('/login', urlencodedParser, (req, res)=>{
                     console.log("payload ís: " +await JSON.stringify(payload))
                     const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success", "previousPage": req.session.previousPage})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                 }
                 else if (data.Role.role_name === ROLE_INSTRUCTOR) {
                     const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success"})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                 }
                 else if (data.Role.role_name === ROLE_ADMIN) {
                     const accessToken = jwt.sign(payload, 'secret')
                     res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
                     // res.json({token: accessToken, user: data})
                 }
                 UserService.updateUser(result.id, {last_login: new Date()})

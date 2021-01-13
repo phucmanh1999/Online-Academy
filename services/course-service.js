@@ -250,7 +250,7 @@ const searchCourse = async searchText => {
     ).catch((err) => {
         console.log(err)
     })
-    return courses
+    return courses[0]
 }
 
 module.exports = {
