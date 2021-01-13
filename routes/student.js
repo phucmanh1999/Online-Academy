@@ -33,7 +33,7 @@ router.post('/review', urlencodedParser, (req, res) => {
             if (course) {
                 const rating = course.rating ? course.rating : 0
                 const rating_number = course.rating_number ? course.rating_number : 0
-                const aveRating = (rating * rating_number + star) / (rating_number + 1)
+                const aveRating = Number(((rating * rating_number + star) / (rating_number + 1)).toFixed(1))
                 updateCourse(course_id, {rating_number : rating_number+1, rating : aveRating})
             }
         })
