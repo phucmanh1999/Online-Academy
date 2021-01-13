@@ -31,13 +31,15 @@ router.get('/category-courses/:categoryid', (req, res) => {
         user: req.user ? req.user : undefined,
     }
     if (req.query.order_review) {
-        response.order_review = req.query.order_review
+        response.order_by = 'order_review'
+        response.sort_by = req.query.order_review
     } else if (req.query.order_price) {
-        response.order_price = req.query.order_price
+        response.order_by = 'order_price'
+        response.sort_by = req.query.order_price
     } else {
-        response.order_review = "DESC"
+        response.order_by = "order_review"
+        response.sort_by = "DESC"
     }
-
     getCoursesByCategoryId(id, page, 5, order_price, order_rating).then((payload) => {
         payload.categoryId = id
         getAllCategories().then((cat) => {
@@ -60,20 +62,23 @@ router.get('/search', (req, res) => {
         user: user
     }
     if (req.query.order_review) {
-        response.order_review = req.query.order_review
+        response.order_by = 'order_review'
+        response.sort_by = req.query.order_review
     } else if (req.query.order_price) {
-        response.order_price = req.query.order_price
+        response.order_by = 'order_price'
+        response.sort_by = req.query.order_price
     } else {
-        response.order_review = "DESC"
+        response.order_by = "order_review"
+        response.sort_by = "DESC"
     }
-    searchCourse(query,page,5, order_rating, order_price).then(payload => {
+    searchCourse(query, page, 5, order_rating, order_price).then(payload => {
         // delete courses.Result
         // console.log(payload)
         payload.query = query
         getAllCategories().then((cat) => {
             response.categories = cat
             response.payload = payload
-            res.render("user/search",response)
+            res.render("user/search", response)
         })
     })
 })
