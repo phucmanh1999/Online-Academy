@@ -208,7 +208,7 @@ const getCourse = async obj => {
         }, {
             model: Chapter,
             order: [
-                ["id", "ASC"]
+                [Chapter, "id", "ASC"]
             ],
             include: [{
                 model: Lesson,
