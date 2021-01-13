@@ -241,10 +241,10 @@ const updateCourse = (_id, obj) => {
     )
 }
 
-const searchCourse = async searchText => {
-    let splitResult = searchText.replace(/[^a-zA-Z ]/g, "").split(" ").join(' & ')
+const searchCourse = async (searchText, page, size, order_rating, order_price) => {
+    let splitResult = searchText.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").join(' & ')
     splitResult = "'" + splitResult + "'"
-    const courses = await database.query(`Select * from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title) @@ to_tsquery(${splitResult})`, {
+    const courses = await database.query(`Select courses.id, courses.course_name, courses.short_description, courses.full_description, courses.rating, courses.rating_number, courses.enroll_number, courses.chapter_number, courses.view_number, courses.price, courses.concurrency, courses.created_at, instructor.job_title, users.user_name from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title) @@ to_tsquery(${splitResult}) ORDER BY courses.rating ${order_rating}, courses.price ${order_price}`, {
             type: QueryTypes.SELECT
         }
     ).catch((err) => {
