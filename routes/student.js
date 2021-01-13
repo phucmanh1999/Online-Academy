@@ -37,7 +37,7 @@ router.post('/review', urlencodedParser, (req, res) => {
                 updateCourse(course_id, {rating_number : rating_number+1, rating : aveRating})
             }
         })
-        res.json({'msg': 'Comment success'})
+        res.json({'msg': 'Add comment success'})
     })
 })
 

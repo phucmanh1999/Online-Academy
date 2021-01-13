@@ -7,6 +7,10 @@ a:hover{
   text-decoration: none;
 }
 
+.course-all {
+  width: 100%;
+}
+
 .course {
   min-height: 80vh;
 }
@@ -212,6 +216,28 @@ a:hover{
 #buyCourse .modal-header div:first-child {
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+.add-review {
+  border: 1px solid #ccc;
+  padding: 5px 20px;
+}
+
+.student-review {
+  font-weight: 700;
+}
+
+.review-rating i{
+  color: #be5a0e;
+}
+
+.review-content {
+  width: 100%;
+}
+
+.review-star {
+  color:#be5a0e;
+  font-size: 1.2rem;
 }
 
 
