@@ -191,6 +191,9 @@ const getCourseLessInfo = async obj => {
 const getCourse = async obj => {
     let course = await Course.findOne({
         where: obj,
+        order: [
+            [Chapter,'id', 'ASC']
+        ],
         include: [{
             model: Instructor,
             include: [{
@@ -207,9 +210,6 @@ const getCourse = async obj => {
             model: Category,
         }, {
             model: Chapter,
-            order: [
-                [Chapter, "id", "ASC"]
-            ],
             include: [{
                 model: Lesson,
             }
