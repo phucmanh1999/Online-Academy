@@ -143,7 +143,7 @@ const getCoursesByCategoryId = async (categoryId, page, size, order_price, order
         offset: pagination.offset,
         order: [
             order_rating ? ["rating", order_rating] :
-                order_price ? ["price", order_price] : []
+                order_price ? ["price", order_price] : ["rating", "DESC"]
         ],
         include: [{
             model: Instructor,
