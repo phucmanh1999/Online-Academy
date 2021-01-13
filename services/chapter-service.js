@@ -5,7 +5,10 @@ const createChapter = obj => {
 
 const getChapter = async obj => {
     let chapter = await Chapter.findOne({
-        where: obj
+        where: obj,
+        order: [
+            ["id", "ASC"]
+        ],
     })
     return chapter.toJSON()
 }
