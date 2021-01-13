@@ -176,70 +176,18 @@
                               <%= lesson.lesson_name %>
                             </div>
                             <div>
-                              <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
+                              <% if(isOwn || lesson.is_free) { %>
+                                <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
+                              <% } %>
                             </div>
                           </div>
                         </li>
                       <% }) %>
-                      <li class="list-group-item">Course Introduction</li>
-                      <li class="list-group-item">Course Curriculum Overview</li>
                     </ul>
                   </div>
                 </div>
               </div>
             <% }) %>
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                  <button class="btn  btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Chapter 1
-                  </button>
-                </h2>
-              </div>
-
-              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionChapter">
-                <div class="card-body">
-                  <ul class="list-group">
-                    <li class="list-group-item">Course Introduction</li>
-                    <li class="list-group-item">Course Curriculum Overview</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                <h2 class="mb-0">
-                  <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Chapter 2
-                  </button>
-                </h2>
-              </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionChapter">
-                <div class="card-body">
-                  <ul class="list-group">
-                    <li class="list-group-item">Lesson 3</li>
-                    <li class="list-group-item">Lesson 4</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingThree">
-                <h2 class="mb-0">
-                  <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Chapter 3
-                  </button>
-                </h2>
-              </div>
-              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionChapter">
-                <div class="card-body">
-                  <ul class="list-group">
-                    <li class="list-group-item">Lesson 5</li>
-                    <li class="list-group-item">Lesson 6</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="relate-courses">
@@ -272,7 +220,6 @@
                   <div class="col-2">
                     <%= item.price %> <%= item.concurrency %>
                   </div>
-
                 </div>
                 <hr>
               </a>
@@ -572,7 +519,7 @@
   <script>
     $(".add-review span").hide()
     $().ready(function(){
-      const player = new Plyr("#player")
+      const players = Plyr.setup('.js-player');
 
       $('#previewCourse').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
