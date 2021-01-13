@@ -5,6 +5,7 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {updateChapter} = require("../services/chapter-service");
 const {getChapter} = require("../services/chapter-service");
 const {createLesson} = require("../services/lesson-service");
 const {updateCourse} = require("../services/course-service");
@@ -171,7 +172,7 @@ router.post('/addLesson', (req, res) => {
         }).then(() => {
             getChapter({id: chapter_id}).then(chapter => {
                 const lessonNum = chapter.lesson_number ? chapter.lesson_number : 0
-                updateCourse(chapter_id, {lesson_number : lessonNum+1})
+                updateChapter(chapter_id, {lesson_number : lessonNum+1})
             })
             if (videoFile)
                 videoFile.mv("./public" + vidPath)
