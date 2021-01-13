@@ -75,6 +75,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 enroll_number: 0,
                 chapter_number: 0,
                 view_number: 0,
+                rating: 0,
                 price: req.body.price + 0,
                 concurrency: req.body.concurrency,
                 course_language: 'vi',

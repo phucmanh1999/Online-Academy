@@ -35,9 +35,9 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <form id="formSearch" class="ml-1">
+        <form id="formSearch" method="GET" action="/search" class="ml-1">
           <span><i class="fas fa-search"></i></span>
-          <input type="text" placeholder="Search..." class="rounded-pill" />
+          <input type="text" name="query" placeholder="Search..." class="rounded-pill" />
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
@@ -54,9 +54,7 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
-              <%} %>
+              <!-- Category item -->
             </div>
           </li>
           <li class="nav-item">
@@ -116,7 +114,7 @@
           </div>
         </div>
         <div class="col-9 text-right">
-          <%= payload.count%> results
+          <%= count%> results
         </div>
       </div>
       <div class="row">
@@ -128,8 +126,7 @@
               </div>
             </button>
             <div class="dropdown-menu w-100" aria-labelledby="dropdownRating">
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=ASC&order_price=<%= payload.order_price %>">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_review=DESC&order_price=<%= payload.order_price %>">Descending</a>
+              <!-- Rating order -->
             </div>
           </div>
           <div class="dropdown">
@@ -139,13 +136,12 @@
               </div>
             </button>
             <div class="dropdown-menu w-100" aria-labelledby="dropdownPrice">
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=ASC&order_review=<%= payload.order_review%>">Ascending</a>
-              <a class="dropdown-item" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.page %>&order_price=DESC&order_review=<%= payload.order_review%>">Descending</a>
+             <!-- Price order -->
             </div>
           </div>
         </div>
         <div id="coursesSection"  class="col-9">    
-          <% payload.courses.forEach((item) => { %>
+          <% courses.forEach((item) => { %>
             <a href="/courses/<%= item.id %>" class="d-block mb-3">
               <div class="row courses-item">
                 <div class="col-4">
@@ -161,7 +157,7 @@
                         <%= item.course_name %>
                       </div>
                       <div class="courses-item-lectures">
-                        <%= item.Instructor.User.first_name %> <%= item.Instructor.User.last_name %>
+                        <%= item.first_name %> <%= item.last_name %>
                       </div>
                       <div class="courses-item-star">
                         <%= item.rating %>
@@ -185,39 +181,7 @@
               </div>
             </a>
           <% }) %>
-          <div class="row d-flex justify-content-center">
-            <nav aria-label="Page navigation category">
-
-              <% if (payload.pageCount > 0) { %>
-                <ul class="pagination text-center">
-                    <% if (payload.page == 1) { %>
-                        <li class="page-item disabled"><a class="page-link">First</a></li>
-                    <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=1">First</a></li>
-                    <% } %>
-                    <% var i = (Number(payload.page) > 5 ? Number(payload.page) - 4 : 1) %>
-                    <% if (i !== 1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                    <% for (; i <= (Number(payload.page) + 4) && i <= payload.pageCount; i++) { %>
-                        <% if (i == payload.page) { %>
-                            <li class="page-item  active"><a class="page-link" ><%= i %></a></li>
-                        <% } else { %>
-                            <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= i %>"><%= i %></a></li>
-                        <% } %>
-                        <% if (i == Number(payload.page) + 4 && i < payload.pageCount) { %>
-                            <li class="page-item disabled"><a class="page-link">...</a></li>
-                        <% } %>
-                    <% } %>
-                    <% if (payload.page == payload.pageCount) { %>
-                        <li class="page-item disabled"><a class="page-link">Last</a></li>
-                    <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.pageCount %>">Last</a></li>
-                    <% } %>
-                </ul>
-            <% } %>
-            </nav>
-          </div>      
+    
         </div>
       </div>
     </div>

@@ -51,9 +51,28 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
 router.get('/search', (req, res) => {
     const query = req.query.query;
-    console.log(query)
-    searchCourse(query).then(courses => {
-        res.json({courses})
+    const page = req.query.page ? req.query.page : 1
+    const order_price = req.query.order_price ? req.query.order_price : "DESC"
+    const order_rating = req.query.order_review ? req.query.order_review : "DESC"
+    const user = req.user ? req.user : undefined
+    const response = {
+        user: user
+    }
+    if (req.query.order_review) {
+        response.order_review = req.query.order_review
+    } else if (req.query.order_price) {
+        response.order_price = req.query.order_price
+    } else {
+        response.order_review = "DESC"
+    }
+    searchCourse(query,page,5, order_rating, order_price).then(payload => {
+        // delete courses.Result
+        console.log(payload)
+        getAllCategories().then((cat) => {
+            response.categories = cat
+            response.payload = payload
+            res.json(response)
+        })
     })
 })
 
