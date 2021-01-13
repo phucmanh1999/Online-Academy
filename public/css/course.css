@@ -207,6 +207,11 @@ a:hover{
 
 #previewCourse .modal-header div:first-child {
   font-size: 1.5rem;
-
 }
+
+#buyCourse .modal-header div:first-child {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
 

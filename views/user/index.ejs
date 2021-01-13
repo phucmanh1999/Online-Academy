@@ -35,9 +35,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <form id="formSearch" class="ml-1">
+          <form id="formSearch" method="GET" action="/search" class="ml-1">
             <span><i class="fas fa-search"></i></span>
-            <input type="text" placeholder="Search..." class="rounded-pill" />
+            <input type="text" name="query" placeholder="Search..." class="rounded-pill" />
           </form>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
@@ -64,7 +64,7 @@
             <% if(typeof user !== 'undefined' ) { %>
               <li class="nav-item">
                 <a class="nav-link" href="/student/cart">
-                  <i class="fas fa-shopping-cart"></i><span class="badge badge-danger"><%= user.cartCount %></span>
+                  <i class="fas fa-shopping-cart"></i>
                 </a>
               </li>
               <li class="nav-item">
@@ -300,8 +300,5 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-      
-    </script>
   </body>
 </html>

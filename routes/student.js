@@ -140,9 +140,9 @@ router.post('/buy', (req, res) => {
                 })
             })
         })
-        res.json({'msg': 'ok'})
+        res.json({'msg': 'Buy success'})
     } else {
-        res.json({'msg': 'Unauthorized'})
+        res.redirect("/login")
     }
 })
 

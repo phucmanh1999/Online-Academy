@@ -41,3 +41,8 @@
 .total-price {
   font-size: 3rem;
 }
+
+#buyCourse .modal-header div:first-child {
+  font-size: 1.5rem;
+  font-weight: 700;
+}

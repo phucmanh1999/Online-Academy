@@ -100,15 +100,9 @@
     </div>
   </nav>
   <!-- Main -->
-  <% var course_name %>
-  <% categories.forEach(item => { %>
-    <% if(item.id == payload.categoryId) { %>
-      <% course_name = item.category_name %>
-    <% } %>
-  <% }) %>
   <div class="container">
     <div class="category-title mb-3">
-      All <%= course_name %> Development Courses:
+      <%= payload.count%> results for "<%= payload.query %>"
     </div>
     <div class="category-content">
       <div class="row">
@@ -126,8 +120,7 @@
         </div>
       </div>
       <div class="row">
-        <div id="filterSection" data-course-id="<%= payload.categoryId  %>" class="col-3">
-          
+        <div id="filterSection" data-query="<%= payload.query %>" class="col-3">
           <select id="orderBy" class="form-select w-100 mb-2">
             <option selected disabled>Order by</option>
             <option value="order_price">Order by price</option>
@@ -139,7 +132,6 @@
             <option value="ASC">Ascending</option>
             <option value="DESC">Descending </option>
           </select>
-          
           
         </div>
         <div id="coursesSection"  class="col-9">    
@@ -159,7 +151,7 @@
                         <%= item.course_name %>
                       </div>
                       <div class="courses-item-lectures">
-                        <%= item.Instructor.User.first_name %> <%= item.Instructor.User.last_name %>
+                        <%= item.first_name %> <%= item.last_name %>
                       </div>
                       <div class="courses-item-star">
                         <%= item.rating %>
@@ -321,15 +313,13 @@
         filterFlag = !filterFlag
       })
 
-      let page = $(".pagination").find("li.active").text();
       $("#sortBy").change(function(){
         let order_by = $("#orderBy").val()
         let sort_by = $("#sortBy").val()
-        let category_id = $("#filterSection").data("course-id")
+        let query = $("#filterSection").data("query")
         let orderStr = order_by ? `${order_by}=${sort_by}` : `order_review=${sort_by}`
-        window.location.href = `/category-courses/${category_id}?${orderStr}`
+        window.location.href = `/search?query=${query}&${orderStr}`
       })
-      
     })
   </script>
 </body>

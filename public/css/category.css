@@ -81,3 +81,7 @@ input:checked + .slider:before {
 .filter-title {
   font-size: 1.5rem;
 }
+
+#orderBy, #sortBy {
+  font-size: 1.2rem;
+}
