@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken')
 
+const domainBlock = ["/login", "/authentication/login", "/signup", "/authentication/signup", "/student/review", "/student/favourite", "/student/buy"]
+
 const decodeToken = (req, res, next) => {
   try {
     // console.log("Url", req.originalUrl)
-    if(req.originalUrl !== "/login" && req.originalUrl !== "/authentication/login" && req.originalUrl !== "/signup" && req.originalUrl !== "/authentication/signup") {
+    if(!domainBlock.includes(req.originalUrl)) {
       req.session.previousPage = req.originalUrl;
     }
     // console.log(req.session.previousPage)
