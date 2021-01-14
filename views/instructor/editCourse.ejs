@@ -30,58 +30,65 @@
 	<!-- Header -->
 	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
 		<div class="container">
-			<a href="#" class="navbar-branch">
+			<a href="/" class="navbar-branch">
 				<img src="/assets/images/logo.svg" width="160px" />
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<form id="formSearch" class="ml-1">
+				<form id="formSearch" method="GET" action="/search" class="ml-1">
 					<span><i class="fas fa-search"></i></span>
-					<input type="text" placeholder="Search..." class="rounded-pill" />
+					<input type="text" name="query" placeholder="Search..." class="rounded-pill" />
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active">
-						<a class="nav-link" href="#">Home</a>
+						<a class="nav-link" href="/">Home</a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Categories</a>
+						<a class="nav-link dropdown-toggle" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">Categories</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownCategory">
-							<a class="dropdown-item" href="#">Mobile</a>
-							<a class="dropdown-item" href="#">web</a>
+							<% for(const cat of category) { %>
+								<a class="dropdown-item" href="/category-courses/<%= cat.id %>?page=1">
+									<%= cat.category_name %>
+								</a>
+								<%} %>
 						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">About</a>
+						<a class="nav-link" href="/about">About</a>
 					</li>
 					<% if(typeof user !=='undefined' ) { %>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a class="nav-link" href="/student/cart">
 								<i class="fas fa-shopping-cart"></i>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a class="nav-link" href="/user/watchlist">
 								<i class="fa fa-heart" aria-hidden="true"></i>
 							</a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
+							<a class="nav-link dropdown-toggle" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">
 								<%= user.username %>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownUser">
-								<a class="dropdown-item" href="#">My Profile</a>
-								<a class="dropdown-item" href="#">Log out</a>
+								<a class="dropdown-item" href="/profile">My Profile</a>
+								<a class="dropdown-item" href="/logout">Log out</a>
 							</div>
 						</li>
 						<% } else { %>
 							<li class="nav-item">
-								<a class="nav-link" href="#"> Login </a>
+								<a class="nav-link" href="/login">
+									Login
+								</a>
 							</li>
 							<% } %>
+
+
 				</ul>
 			</div>
 		</div>
@@ -90,7 +97,7 @@
 	<!-- Courses -->
 	<div class="container mt-5 mb-5">
 		<h1>Course Information</h1>
-		<form id="formCourse" action="/instructor/addCourse?id=<%=course.id%>" method="post" enctype="multipart/form-data">
+		<form id="formEditCourse<%=course.id%>" action="/instructor/addCourse?id=<%=course.id%>" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="courseName">Course name</label>
 				<input type="text" class="form-control" id="courseName" name="courseName" value="<%=course.course_name%>">
@@ -144,8 +151,8 @@
 				<input type="text" class="form-control" id="language" name="language" value="<%=course.course_language%>">
 			</div>
 			<div class="center">
-				<input type="submit" class="btn btn-primary" value="Save" />
-				<button class="btn-cancel btn btn-danger" data-form-id="formCourse" type="button">Cancle</button>
+				<input type="submit" class="btn btn-primary btn-save" data-form-id="formEditCourse<%=course.id%>" value="Save" />
+				<button class="btn-cancel btn btn-danger" data-form-id="formEditCourse<%=course.id%>" type="button">Cancle</button>
 			</div>
 		</form>
 
@@ -216,7 +223,7 @@
 											<!-- edit lesson -->
 											<div id="editLesson<%=course.Chapters[i].Lessons[j].id%>" class="container mt-5 mb-5 edit">
 												<form action="/instructor/editLesson?lesson_id=<%=course.Chapters[i].Lessons[j].id%>"
-													id="formEditLesson<%=j%>" enctype="multipart/form-data" method="post">
+													id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" enctype="multipart/form-data" method="post">
 													<div class="form-group">
 														<label for="lessonName">Lesson name</label>
 														<input type="text" class="form-control" id="lessonName" name="lessonName"
@@ -239,7 +246,7 @@
 														<input type="text" id="fdLessonContent<%=course.Chapters[i].Lessons[j].id%>"
 															name='fullDescription' hidden>
 													</div>
-													<input class="btn btn-primary" type="submit" value="Save">
+													<input class="btn btn-primary btn-save" data-form-id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" type="submit" value="Save">
 													<button class="btn-cancel btn btn-danger"
 														data-form-id="editLesson<%=course.Chapters[i].Lessons[j].id%>" type="button">Cancle</button>
 												</form>
@@ -292,7 +299,7 @@
 												<!-- <div id="editChapter<%=i%>" class="container mt-5 mb-5 edit"> -->
 												<div id="editChapter<%=i%>" class="container mt-5 mb-5 edit">
 													<form action="/instructor/editChapter/?chapter_id=<%=course.Chapters[i].id%>" method="post"
-														id="formEditChapter<%=i%>">
+														id="formEditChapter<%=course.Chapters[i].id%>">
 														<div class="form-group">
 															<label for="chapterName">Chapter name</label>
 															<input type="text" class="form-control" name="chapterName"
@@ -303,11 +310,9 @@
 															<textarea class="form-control" rows="3"
 																name="shortDescription"><%=course.Chapters[i].short_description %></textarea>
 														</div>
-														<input class="btn btn-primary" type="submit" value="Save">
+														<input class="btn btn-primary btn-save" data-form-id="formEditChapter<%=course.Chapters[i].id%>" type="submit" value="Save">
 														<button class="btn-cancel btn btn-danger" data-form-id="editChapter<%=i%>"
 															type="button">Cancle</button>
-														<!-- <button class="btn-cancel btn btn-danger" data-form-id="formEditChapter<%=i%>"
-															type="button">Cancle</button> -->
 													</form>
 												</div>
 											</li>
@@ -407,7 +412,7 @@
 			<%};%>
 
 
-			let stateEdit = new Object();
+			stateEdit = new Object();
 			console.log('number of lesson:' + numLesson)
 			for (t = 0; t < numLesson; t++) {
 				stateEdit[t] = true;
@@ -461,8 +466,6 @@
 
 			}
 
-			
-
 			$(document).ready(function () {
 				$("#addChapter").submit(function (e) {
 					e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -475,7 +478,7 @@
 						url: url,
 						data: form.serialize(), // serializes the form's elements.
 						success: function (data) {
-							alert('Add' + data + 'success!'); // show response from the php script.
+							alert('Add' + data + 'success!'); // show response from the  script.
 						}
 					});
 				});
@@ -490,10 +493,13 @@
 						url: url,
 						data: form.serialize(), // serializes the form's elements.
 						success: function (data) {
-							alert('Add' + data + 'success!'); // show response from the php script.
+							alert('Add' + data + 'success!'); // show response from the  script.
 						}
 					});
 				});
+
+
+
 
 				$(".btn-cancel").click(function () {
 					let formId = $(this).attr("data-form-id")
@@ -501,6 +507,33 @@
 						let id = formId.slice(9)
 					}
 					$(`#${formId}`).toggle()
+				})
+
+				$(".btn-save").click(function (e) {
+					e.preventDefault();
+					formEditCourse
+					formEditChapter
+					formEditLesson
+
+
+
+
+					var form = $(this).attr("data-form-id");
+					var url = form.attr('action');
+
+					// let formId = $(this).attr("data-form-id")
+					// if (formId.slice(0, 9) === 'addLesson') {
+					// 	let id = formId.slice(9)
+					// }
+
+					$.ajax({
+						type: "PUT",
+						url: url,
+						data: form.serialize(), // serializes the form's elements.
+						success: function (data) {
+							alert('Save' + data + 'success!'); // show response from the  script.
+						}
+					});
 				})
 
 				//state for create editor in edit lesson
@@ -590,21 +623,21 @@
 
 
 
-				function readURL(input) {
-					if (input.files && input.files[0]) {
-						var reader = new FileReader();
-
-						reader.onload = function (e) {
-							$('#image')
-								.attr('src', e.target.result)
-							// .width('60%')
-							// .height('60%');
-						};
-
-						reader.readAsDataURL(input.files[0]);
-					}
-				}
 			})
+			function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+
+					reader.onload = function (e) {
+						$('#image')
+							.attr('src', e.target.result)
+						// .width('60%')
+						// .height('60%');
+					};
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
 		</script>
 
 
@@ -615,7 +648,9 @@
 
 		<script>
 			// let content = <%- course.full_description ? course.full_description.replace('&#34;', '"') : '""' %>;
-			let content = JSON.parse(document.getElementById('fdcontent').value)
+			content = document.getElementById('fdcontent').value
+			ent = content ? con t ent: '"  " '
+			content = JSON.parse(content)
 			console.log(content)
 
 			let toolbarOptions = [
