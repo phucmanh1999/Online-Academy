@@ -97,7 +97,7 @@
 	<!-- Courses -->
 	<div class="container mt-5 mb-5">
 		<h1>Course Information</h1>
-		<form id="formEditCourse<%=course.id%>" action="/instructor/addCourse?id=<%=course.id%>" method="post" enctype="multipart/form-data">
+		<form id="formEditCourse<%=course.id%>" action="/instructor/editCourse?id=<%=course.id%>" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="courseName">Course name</label>
 				<input type="text" class="form-control" id="courseName" name="courseName" value="<%=course.course_name%>">
