@@ -5,7 +5,7 @@ const app = require("express")
 const {getAllCategories} = require("../services/category-service");
 const {getCourse} = require("../services/course-service");
 
-const router = app.Router()
+// const router = app.Router()
 const bodyParser = require("body-parser")
 const {updateChapter} = require("../services/chapter-service");
 const {getChapter} = require("../services/chapter-service");
@@ -18,8 +18,8 @@ const {getCategory} = require("../services/category-service");
 const {createCourse} = require("../services/course-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
-router.get('/', (req,res) => {
-    res.render('admin/index')
-})
+// router.get('/', (req,res) => {
+//     res.render('admin/index')
+// })
 
 module.exports = router

@@ -14,6 +14,7 @@ const {getCourseLessInfo} = require("../services/course-service");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 const {getCategory} = require("../services/category-service");
 const {createCourse} = require("../services/course-service");
+
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // get render page
@@ -43,12 +44,9 @@ router.get('/editCourse', async (req, res) => {
     res.render("instructor/editCourse", {category, course})
 })
 
-router.get('/editChapter', (req,res) =>{
-    res.send("edit chapter: " + req.query.chapter_id)
-})
-
-router.get('/editLesson', (req,res) =>{
-    res.send("edit lesson: " + req.query.lesson_id)
+router.get('/profile', async (req,res) =>{
+    let categories = await getAllCategories();
+    res.render("instructor/profile",{categories})
 })
 
 router.delete('/deleteChapter', (req,res) => {
