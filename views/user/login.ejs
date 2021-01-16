@@ -214,11 +214,15 @@
           email, password
         },
         function(data, status){
-          console.log(data.msg)
           if(data.msg === "Login success"){
-            let previousPage = data.previousPage || '/'
-            console.log(previousPage)
-            window.location.href = previousPage
+            if(data.role === "Student") {
+              let previousPage = data.previousPage || '/'
+              window.location.href = previousPage
+            } else if(data.role === "Administrator") {
+              window.location.href = "/admin"
+            } else {
+              window.location.href = "/instructor"
+            }
           }
           else if(data.msg === 'Email is incorrect'){
             $("#msgEmail").text(data.msg).show()  

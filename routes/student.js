@@ -158,4 +158,9 @@ router.get('/buy', (req, res) => {
     }
 })
 
+router.get("/watchlist", (req, res) => {
+    const user = req.user ? req.user : undefined
+    res.render("user/watch", {user,categories: [], payload: []})
+})
+
 module.exports = router

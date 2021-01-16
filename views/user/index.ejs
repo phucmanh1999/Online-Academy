@@ -68,7 +68,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/user/watchlist">
+                <a class="nav-link" href="/student/watchlist">
                   <i class="fa fa-heart" aria-hidden="true"></i>
                 </a>
               </li>
@@ -219,6 +219,53 @@
                 <%= topNewCourses[i].price %><%= topNewCourses[i].concurrency %> <span></span>
               </div>
               <% if(topNewCourses[i].view_number > 1000) { %>
+                  <div class="best-seller">
+                    Bestseller
+                  </div>
+              <% } %>
+            </a> 
+          </div>
+          
+        <% } %>
+        %>
+      </div>
+    </div>
+
+    <div class="courses-group container mt-5 mb-5">
+      <div class="courses-group-title row">
+        <span>Top Enroll Courses</span>
+      </div>
+      <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
+        <% for(let i = 0; i < topEnroll.length; i++){ %>
+          <div class="courses-item col mb-3">
+            <a href="/courses/<%= topEnroll[i].id %>">
+              <div class="courses-item-img">
+                <img src="<%= topEnroll[i].img_path %>" alt="" width="100%">
+                <div></div>
+              </div>
+              <div class="courses-item-title">
+                <%= topEnroll[i].course_name %>
+              </div>
+              <div class="courses-item-lectures">
+                <%= topEnroll[i].Instructor.User.first_name %> <%= topEnroll[i].Instructor.User.last_name %>
+              </div>
+              <div class="courses-item-star">
+                <%= topEnroll[i].rating %>
+                <% for(let j = 1; j <= Math.floor(topEnroll[i].rating); j++) { %>
+                  <i class="fa fa-star"></i>
+                <% } %>
+                <% if(topEnroll[i].rating - Math.floor(topEnroll[i].rating) !== 0) { %>
+                  <i class="fa fa-star-half-alt"></i>
+                <% } %>
+                <% for(let j = Math.ceil(topEnroll[i].rating); j < 5; j++) { %>
+                  <i class="far fa-star"></i>
+                <% } %>
+                 (<%= topEnroll[i].view_number %>)
+              </div>
+              <div class="courses-item-price">
+                <%= topEnroll[i].price %><%= topEnroll[i].concurrency %> <span></span>
+              </div>
+              <% if(topEnroll[i].view_number > 1000) { %>
                   <div class="best-seller">
                     Bestseller
                   </div>

@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     //     topEnroll: await getTopEnrollCourse(),
     //     topNewCourses: await getNewestCourses(),
     // });
-    res.json( {
+    res.render("user/index", {
         user: req.user ? req.user : undefined,
         categories: await getAllCategories(),
         topTenViewCourses: await getCourseByTopView(),

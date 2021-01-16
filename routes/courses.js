@@ -19,6 +19,7 @@ router.get('/:id', async (req, res) => {
         course.courseId = req.params.id
         res.render("user/course",{
             user: req.user ? req.user : undefined,
+            isLog: req.user ? true : false,
             payload: course,
             categories: await getAllCategories(),
             topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id),
