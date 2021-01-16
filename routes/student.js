@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {deleteWatchlist} = require("../services/watchlist-service");
 const {getWatchList} = require("../services/watchlist-service");
 const {getWatchListByStudentId} = require("../services/watchlist-service");
 const {updateCourse} = require("../services/course-service");
@@ -150,6 +151,25 @@ router.delete('/cart/:courseId', (req, res) => {
         })
     } else {
         res.json({'msg': 'Unauthorized'})
+    }
+})
+
+router.delete('/watchlist/:courseId', (req, res) => {
+    const user = req.user ? req.user : undefined
+    const courseId = req.params.courseId
+    console.log(watchlist_id)
+    if (user && user.type === ROLE_STUDENT) {
+        deleteWatchlist({
+            student_id: user.role_id,
+            course_id: courseId
+        }).then(() => {
+            res.json({'msg': 'Delete success'})
+        }).catch((err) => {
+            console.log(err)
+            res.json({'msg': 'Failed'})
+        })
+    } else {
+        res.redirect('/login')
     }
 })
 

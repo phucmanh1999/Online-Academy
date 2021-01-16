@@ -36,8 +36,17 @@ const getWatchList = obj => {
     })
 }
 
+const deleteWatchlist = obj => {
+    return WatchList.destroy(
+        {
+            where: obj
+        }
+    )
+}
+
 module.exports = {
     createWatchList,
     getWatchListByStudentId,
-    getWatchList
+    getWatchList,
+    deleteWatchlist
 }
