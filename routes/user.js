@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt");
+const {getUser} = require("../services/user-service");
 const {updateAdministrator} = require("../services/admin-service");
 const {updateInstructor} = require("../services/instructor-service");
 const {updateUser} = require("../services/user-service");
@@ -43,6 +44,15 @@ router.post('/update', urlencodedParser,async (req, res) => {
     }
 })
 
+router.get('', (req, res) => {
+    if (req.user){
+        getUser({id: req.user.id}).then(user => {
+            res.json(user)
+        })
 
+    } else {
+        res.redirect('/login')
+    }
+})
 
 module.exports = router
