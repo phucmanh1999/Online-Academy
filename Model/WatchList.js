@@ -15,7 +15,7 @@ const WatchList = database.define('WatchList', {
     {
         timestamps: false,
         paranoid: true,
-        tableName: 'watchList',
+        tableName: 'watchlist',
     }
 )
 

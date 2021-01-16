@@ -10,14 +10,6 @@ const {getAllCategories} = require("../services/category-service");
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    // res.render("user/index", {
-    //     user: req.user ? req.user : undefined,
-    //     categories: await getAllCategories(),
-    //     topTenViewCourses: await getCourseByTopView(),
-    //     highLightCourses: await getHighLightCourses(),
-    //     topEnroll: await getTopEnrollCourse(),
-    //     topNewCourses: await getNewestCourses(),
-    // });
     res.render("user/index", {
         user: req.user ? req.user : undefined,
         categories: await getAllCategories(),

@@ -117,12 +117,12 @@
           <% payload.forEach((course,index) => { %>
             <span>
               <div data-course-id="<%= course.course_id %>" class="course-item row p-2">
-                <div class="col-3">
+                <div class="col-2">
                   <a href="/courses/<%= course.course_id %>">
                     <img src="<%= course.Course.img_path %>" width="130px">
                   </a>
                 </div>
-                <div class="col-9 d-flex justify-content-between">
+                <div class="col-10 d-flex justify-content-between">
                   <a href="/courses/<%= course.course_id %>">
                     <div>
                       <div class="title">

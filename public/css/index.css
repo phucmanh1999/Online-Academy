@@ -119,6 +119,32 @@ body {
   transition: 0.3s;
   border-radius: 5px;
 }
+.courses-item:hover .btn-watch {
+  visibility: visible;
+}
+
+.courses-item {
+  position: relative;
+}
+
+.btn-watch {
+  position: absolute;
+  top: 0;
+  left: 90%;
+  transform: translateX(-100%);
+  font-size: 1.3rem;
+  z-index: 1000;
+  color: #ea5252;
+  cursor: pointer;
+  visibility: hidden;
+  transition: 0.2s;
+}
+
+.btn-watch:hover {
+  color: #e72828;
+  font-size: 1.5rem;
+}
+
 
 .courses-item:hover .courses-item-img div{
   opacity: 0.3;
@@ -188,4 +214,8 @@ body {
   padding: 5px;
   border-radius: 5px;
   width: fit-content;
+}
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
 }
