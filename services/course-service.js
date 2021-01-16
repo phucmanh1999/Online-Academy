@@ -118,7 +118,7 @@ const getTopEnrollCourse = async () => {
                 model: User,
             }]
         },],
-        limit: 10,
+        limit: 5,
         order: [
             ['enroll_number', 'DESC']
         ]
