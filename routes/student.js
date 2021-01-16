@@ -157,7 +157,7 @@ router.delete('/cart/:courseId', (req, res) => {
 router.delete('/watchlist/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const courseId = req.params.courseId
-    console.log(watchlist_id)
+    // console.log(watchlist_id)
     if (user && user.type === ROLE_STUDENT) {
         deleteWatchlist({
             student_id: user.role_id,

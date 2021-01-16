@@ -230,7 +230,7 @@
       $(".remove-btn").click(function() {
         let courseId = $(this).attr("data-course-id")
         $.ajax({
-          url: `/student/cart/${courseId}`,
+          url: `/student/watchlist/${courseId}`,
           type: "DELETE",
           success: async function(result) {
             await Swal.fire({
