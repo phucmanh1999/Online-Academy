@@ -1,5 +1,6 @@
 const express = require("express")
 const jwt = require('jsonwebtoken')
+const {getTopEnrollCourse} = require("../services/course-service");
 const {searchCourse} = require("../services/course-service");
 const {getCoursesByCategoryId} = require("../services/course-service");
 const {getNewestCourses} = require("../services/course-service");
@@ -9,14 +10,20 @@ const {getAllCategories} = require("../services/category-service");
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    getNewestCourses().then(rs => {
-        // console.log(rs)
-    })
-    res.render("user/index", {
+    // res.render("user/index", {
+    //     user: req.user ? req.user : undefined,
+    //     categories: await getAllCategories(),
+    //     topTenViewCourses: await getCourseByTopView(),
+    //     highLightCourses: await getHighLightCourses(),
+    //     topEnroll: await getTopEnrollCourse(),
+    //     topNewCourses: await getNewestCourses(),
+    // });
+    res.json( {
         user: req.user ? req.user : undefined,
         categories: await getAllCategories(),
         topTenViewCourses: await getCourseByTopView(),
         highLightCourses: await getHighLightCourses(),
+        topEnroll: await getTopEnrollCourse(),
         topNewCourses: await getNewestCourses(),
     });
 })

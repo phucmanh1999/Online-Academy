@@ -37,6 +37,7 @@ router.get('/addLesson', async (req, res) => {
 router.get('/editCourse', async (req, res) => {
     // res.render("instructor/addLesson",await getAllCategories())
     let category = await getAllCategories();
+
     let course = await getCourse({id: req.query.id})
     console.log("course data: " + JSON.stringify(course))
     // console.log("full description: " + course.full_description)
@@ -59,17 +60,65 @@ router.delete('/deleteLesson', (req,res) => {
     res.send("delete lesson: " + req.query.lesson_id)
 })
 
-router.post('/editCourse', (req, res) => {
-    console.log(req.body)
-    // if (!req.file) {
-    //   res.status(401).json({error: 'Please provide an image'});
-    // }
-    res.send(req.body)
+router.post('/editCourse', async (req, res) => {
+    console.log(req.user)
+    console.log(
+        req.body)
+    console.log(
+        req.files.image)
+    if (req.user) {
+        if (req.user.type === ROLE_INSTRUCTOR) {
+            let imgPath = null
+            let imageFile = null
+            if (req.files) {
+                imageFile = req.files.image
+                imgPath = "/assets/images/" + imageFile.name
+            }
+            const categoryId = await getCategory({category_name: req.body.category}).then(ca => {
+                return ca.id
+            })
+
+            const response = {
+                course_name: req.body.courseName,
+                short_description: req.body.shortDescription,
+                full_description: req.body.fullDescription,
+                price: Number(((req.body.price + 0)).toFixed(1)),
+                concurrency: req.body.concurrency ? req.body.concurrency : "USD",
+                updated_at: new Date(),
+                category_id: categoryId,
+            }
+
+            console.log(response)
+
+            if (imgPath){
+                response.img_path = imgPath
+            }
+
+            updateCourse(req.query.id,response).then(() => {
+                if (imageFile)
+                    imageFile.mv("./public/assets/images/" + imageFile.name)
+                res.json({msg: "ok"})
+            }).catch((err) => {
+                console.log(err)
+                res.json({msg: "Unknow error"})
+            })
+        } else {
+            console.log("Unauthorized")
+            res.json({msg: "Unauthorized"})
+            res.redirect("/login")
+        }
+    } else {
+        console.log("Unauthorized")
+        res.json({msg: "Unauthorized"})
+        res.redirect("/login")
+    }
+
 
 });
 //post form
 router.post('/addCourse', urlencodedParser, async (req, res) => {
     console.log(await JSON.stringify(req.user))
+    console.log(req.body)
     if (req.user) {
         if (req.user.type === ROLE_INSTRUCTOR) {
             let imageFile = null
@@ -143,6 +192,7 @@ router.post('/addChapter', (req, res) => {
 
 router.post('/addLesson', (req, res) => {
     console.log(req.body)
+    console.log(req.files.video)
     const user = req.user ? req.user : undefined
     const chapter_id = req.query.chapter_id
     let videoFile = null

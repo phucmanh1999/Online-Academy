@@ -399,7 +399,7 @@
 
 	<% if (course) { %>
 		<script>
-			let state = new Object(); // state for add new Lesson, do no allow create more than 1 fulldescription 
+			let state = new Object(); // state for add new Lesson, do no allow create more than 1 fulldescription
 			for (k = 0; k < <%= course.Chapters.length %>; k++) {
 				state[k] = true;
 			}
@@ -425,7 +425,7 @@
 				alert('add lesson of chapter' + id + '\n state of this chapter: ' + state[id])
 				if (formId.slice(0, 9) === 'addLesson' && state[id]) {
 					state[id] = !state[id];
-					// let content = <%- course.full_description?course.full_description.replace('&#34;','"'):'""'%>; 
+					// let content = <%- course.full_description?course.full_description.replace('&#34;','"'):'""'%>;
 					let content = ""
 
 					let toolbarOptions = [
@@ -465,6 +465,8 @@
 				}
 
 			}
+
+
 
 			$(document).ready(function () {
 				$("#addChapter").submit(function (e) {
@@ -511,6 +513,10 @@
 
 				$(".btn-save").click(function (e) {
 					e.preventDefault();
+
+
+
+					// var form = $(this).attr("data-form-id");
 					var form = $('#'+$(this).attr("data-form-id"));
 					var url = form.attr('action');
 
@@ -520,7 +526,7 @@
 					// }
 
 					$.ajax({
-						type: "PUT",
+						type: "POST",
 						url: url,
 						data: form.serialize(), // serializes the form's elements.
 						success: function (data) {
