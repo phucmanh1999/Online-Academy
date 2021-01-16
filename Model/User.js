@@ -20,6 +20,7 @@ const User = database.define('User', {
         updated_at: sequelize.DATE,
         last_login: sequelize.DATE,
         role_id: sequelize.INTEGER,
+        is_active: sequelize.BOOLEAN,
     },
     {
         timestamps: false,

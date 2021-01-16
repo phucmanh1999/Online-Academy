@@ -107,6 +107,20 @@ const updateUser = (_id, obj) => {
     )
 }
 
+const setActive = (_id, isActive) => {
+    return User.update(
+        {
+            is_active: isActive
+        }
+        ,
+        {
+            where: {
+                id: _id
+            },
+        }
+    )
+}
+
 module.exports = {
     getAllUsers,
     getUser,
@@ -117,4 +131,5 @@ module.exports = {
     getUserCartNumber,
     getAllInstructor,
     getAllStudent,
+    setActive,
 }

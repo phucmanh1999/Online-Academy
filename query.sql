@@ -160,3 +160,6 @@ ADD COLUMN is_free boolean;
 
 ALTER TABLE chapters
 ADD COLUMN chapter_name VARCHAR (255);
+
+ALTER TABLE users
+ADD COLUMN is_active boolean;
