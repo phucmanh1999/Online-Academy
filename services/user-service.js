@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const Administrator = require("../Model/Administrator");
 const Student = require("../Model/Student");
 const Cart = require("../Model/Cart");
+const {ROLE_STUDENT} = require("../constant/constant");
+const {ROLE_INSTRUCTOR} = require("../constant/constant");
 
 const convertDate = (dateObj) => {
     if (!dateObj)
@@ -20,6 +22,34 @@ const getAllUsers = async () => {
     const users = await User.findAll({
         include: [{
             model: Role,
+        }]
+    });
+    return users;
+}
+
+const getAllInstructor = async () => {
+    const users = await User.findAll({
+        include: [{
+            model: Role,
+            where: {
+                role_name: ROLE_INSTRUCTOR
+            }
+        }, {
+            model: Instructor,
+        }]
+    });
+    return users;
+}
+
+const getAllStudent = async () => {
+    const users = await User.findAll({
+        include: [{
+            model: Role,
+            where: {
+                role_name: ROLE_STUDENT
+            }
+        }, {
+            model: Student,
         }]
     });
     return users;
@@ -85,4 +115,6 @@ module.exports = {
     deleteUser,
     updateUser,
     getUserCartNumber,
+    getAllInstructor,
+    getAllStudent,
 }

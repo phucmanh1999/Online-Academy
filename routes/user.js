@@ -44,7 +44,7 @@ router.post('/update', urlencodedParser,async (req, res) => {
     }
 })
 
-router.get('', (req, res) => {
+router.get('/', (req, res) => {
     if (req.user){
         getUser({id: req.user.id}).then(user => {
             res.json(user)

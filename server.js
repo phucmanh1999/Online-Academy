@@ -27,7 +27,6 @@ app.use("/authentication",require('./routes/authentication'))
 app.use("/student", decodeToken, require('./routes/student'))
 app.use("/user", decodeToken, require('./routes/user'))
 app.use("/instructor",decodeToken ,require('./routes/instructor'))
-
-// app.use("/admin",decodeToken, require('./routes/admin'))
+app.use("/admin",decodeToken, require('./routes/admin'))
 
 app.listen(port,() => console.log(`App listen on ${port}`))
