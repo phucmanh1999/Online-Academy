@@ -5,6 +5,8 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {updateInstructor} = require("../services/instructor-service");
+const {updateUser} = require("../services/user-service");
 const {deleteChapter} = require("../services/chapter-service");
 const {deleteLessonByChapterID} = require("../services/lesson-service");
 const {deleteLesson} = require("../services/lesson-service");
@@ -44,10 +46,11 @@ router.get('/editCourse', async (req, res) => {
     // res.render("instructor/addLesson",await getAllCategories())
     let category = await getAllCategories();
 
+    const user = req.user ? req.user : undefined
     let course = await getCourse({id: req.query.id})
     // console.log("course data: " + JSON.stringify(course))
     // console.log("full description: " + course.full_description)
-    res.render("instructor/editCourse", {category, course})
+    res.render("instructor/editCourse", {category, course, user})
 })
 
 router.get('/profile', async (req,res) =>{
@@ -55,11 +58,49 @@ router.get('/profile', async (req,res) =>{
     if (userInf && userInf.type === ROLE_INSTRUCTOR) {
         let categories = await getAllCategories();
         let user = await getUser({id: userInf.id});
-        console.log(user)
         res.render("instructor/profile",{categories,user})
     } else {
         res.redirect("/login")
     }
+})
+
+router.post('/profile', (req, res) => {
+    console.log(req.body)
+    const user = req.user ? req.user : undefined
+    const responseUser = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        gender: req.body.gender,
+        birthday: req.body.birthday,
+        email: req.body.email,
+        job_title: req.body.job_title,
+        address: req.body.address,
+    }
+    let imageFile = null
+    let imgPath = null
+    if (user && user.type === ROLE_INSTRUCTOR) {
+        if (req.files) {
+            imageFile = req.files.image
+            imgPath = "/assets/image/" + imageFile.name
+            responseUser.avatar_url = imgPath
+        }
+        updateUser(user.id, responseUser).then(() => {
+            if (imageFile)
+                imageFile.mv("./public" + imgPath)
+            updateInstructor(user.role_id, {
+                job_title: req.body.job_title,
+                short_description: req.body.short_description,
+                full_description: req.body.full_description
+            }).then(() => {
+                res.json({msg: "ok"})
+            })
+        }).catch((err) => {
+            res.redirect("/login")
+        })
+    } else {
+        res.redirect("/login")
+    }
+
 })
 
 router.delete('/deleteChapter', (req, res) => {
