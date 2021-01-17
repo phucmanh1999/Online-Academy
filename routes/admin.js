@@ -1,4 +1,5 @@
 const express = require("express")
+const {getAllRootCategory} = require("../services/root-category-service");
 const {setActive} = require("../services/user-service");
 const {ROLE_ADMIN} = require("../constant/constant");
 const {getAllStudent} = require("../services/user-service");
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
         res.json({
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
+            rootCategories: await getAllRootCategory(),
         });
     } else {
         res.redirect('/login')

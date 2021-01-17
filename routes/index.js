@@ -1,5 +1,6 @@
 const express = require("express")
 const jwt = require('jsonwebtoken')
+const {getAllRootCategory} = require("../services/root-category-service");
 const {getTopEnrollCourse} = require("../services/course-service");
 const {searchCourse} = require("../services/course-service");
 const {getCoursesByCategoryId} = require("../services/course-service");
@@ -13,6 +14,7 @@ router.get('/', async (req, res) => {
     res.render("user/index", {
         user: req.user ? req.user : undefined,
         categories: await getAllCategories(),
+        rootCategories: await getAllRootCategory(),
         topTenViewCourses: await getCourseByTopView(),
         highLightCourses: await getHighLightCourses(),
         topEnroll: await getTopEnrollCourse(),

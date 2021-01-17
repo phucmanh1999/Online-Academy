@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {getAllRootCategory} = require("../services/root-category-service");
 const {deleteWatchlist} = require("../services/watchlist-service");
 const {getWatchList} = require("../services/watchlist-service");
 const {getWatchListByStudentId} = require("../services/watchlist-service");
@@ -109,7 +110,11 @@ router.get('/cart', (req, res) => {
             carts.forEach(ca => {
                 price_sum += parseFloat(ca.Course.price)
             })
-            res.render("user/cart", {categories: await getAllCategories(), payload: carts, price_sum: price_sum, user})
+            res.render("user/cart", {
+                categories: await getAllCategories(),
+                rootCategories: await getAllRootCategory(),
+                payload: carts,
+                price_sum: price_sum, user})
         }).catch(() => {
             res.redirect("/login")
             return
@@ -124,7 +129,11 @@ router.get('/watchlist', (req, res) => {
     const user = req.user ? req.user : undefined
     if (user && user.type === ROLE_STUDENT) {
         getWatchListByStudentId(user.role_id).then(async watchlist => {
-            res.render("user/watch", {user, categories: await getAllCategories(), payload: watchlist})
+            res.render("user/watch", {
+                user,
+                categories: await getAllCategories(),
+                rootCategories: await getAllRootCategory(),
+                payload: watchlist})
         }).catch(() => {
             res.redirect("/login")
             return
