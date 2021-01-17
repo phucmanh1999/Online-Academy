@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Piazzolla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Potta+One&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Piazzolla', serif;
+}
+
+.main-container {
+  /* min-height: 100vh; */
+  background: #f1f1f1;
+  display: flex;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+}
+
+.side-bar {
+  width: 300px;
+  min-height: 100vh;
+  background: #2c3e4e;
+  color: #fff;
+}
+
+.side-bar-logo {
+  font-family: 'Potta One', cursive;
+  font-size: 1.5rem;
+  /* color: #fff; */
+  width: 100%;
+  text-align: center;
+}
+
+.main-side-bar .list-group li{
+  background-color: #2c3e4e !important;
+}
+
+.main-side-bar .list-group .active {
+  background-color: #3a5d7e !important;
+  border: inherit !important;
+}
+
+.icon {
+  width: 40px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #000;
+}
+
+th {
+  border-bottom: 1px solid #000 ;
+}
+
+td, th {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.item-table {
+  background: #fff;
+  padding: 50px 30px;
+  min-height: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 20px 1px gray;
+}
+
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.home a {
+  color: #fff;
+}
+
+#instructorTable {
+  display: none;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
