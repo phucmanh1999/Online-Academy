@@ -41,6 +41,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
         // birthday: req.body.birthday,
         // avatar_url: req.body.avatar,
         // user_address: req.body.address,
+        is_active: true,
         created_at: new Date(),
     }
 
