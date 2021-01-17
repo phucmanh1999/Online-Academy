@@ -5,6 +5,7 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {getAllCoursesBy} = require("../services/course-service");
 const {updateInstructor} = require("../services/instructor-service");
 const {updateUser} = require("../services/user-service");
 const {deleteChapter} = require("../services/chapter-service");
@@ -23,6 +24,17 @@ const {createCourse} = require("../services/course-service");
 const {getUser} = require("../services/user-service");
 
 const urlencodedParser = bodyParser.urlencoded({extended: false})
+
+router.get('/', async (req, res) => {
+    const user = req.user ? req.user : undefined
+    if (user && user.type === ROLE_INSTRUCTOR) {
+        let category = await getAllCategories();
+        const courses = await getAllCoursesBy({instructor_id: user.role_id})
+        res.json( {category, courses, user})
+    } else {
+        res.redirect("/login")
+    }
+})
 
 // get render page
 router.get('/addCourse', async (req, res) => {
