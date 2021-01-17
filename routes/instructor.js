@@ -5,6 +5,9 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {deleteChapter} = require("../services/chapter-service");
+const {deleteLessonByChapterID} = require("../services/lesson-service");
+const {deleteLesson} = require("../services/lesson-service");
 const {updateLesson} = require("../services/lesson-service");
 const {updateChapter} = require("../services/chapter-service");
 const {getChapter} = require("../services/chapter-service");
@@ -54,11 +57,29 @@ router.get('/editLesson', (req, res) => {
 })
 
 router.delete('/deleteChapter', (req, res) => {
-    res.send("delete chapter: " + req.query.chapter_id)
+    const user = req.user ? req.user : undefined
+    if (user && user.type === ROLE_INSTRUCTOR) {
+        res.send("delete chapter: " + req.query.chapter_id)
+        deleteLessonByChapterID(req.query.chapter_id).then(() => {
+            deleteChapter(req.query.chapter_id).then(() => {
+                res.send('delete success')
+            })
+        }).catch(() => res.send('unknown error'))
+    } else {
+        res.redirect("/login")
+    }
 })
 
 router.delete('/deleteLesson', (req, res) => {
-    res.send("delete lesson: " + req.query.lesson_id)
+    const user = req.user ? req.user : undefined
+    if (user && user.type === ROLE_INSTRUCTOR) {
+        deleteLesson(req.query.lesson_id).then(() => {
+                res.send('delete success')
+            }
+        ).catch(() => res.send('unknown error'))
+    } else {
+        res.redirect("/login")
+    }
 })
 
 router.post('/editLesson', (req, res) => {
