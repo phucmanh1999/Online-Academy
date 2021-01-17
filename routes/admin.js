@@ -1,4 +1,5 @@
 const express = require("express")
+const {getAllCourses} = require("../services/course-service");
 const {getAllRootCategory} = require("../services/root-category-service");
 const {setActive} = require("../services/user-service");
 const {ROLE_ADMIN} = require("../constant/constant");
@@ -13,6 +14,7 @@ router.get('/', async (req, res) => {
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
             rootCategories: await getAllRootCategory(),
+            courses: await getAllCourses(),
         });
     } else {
         res.redirect('/login')
