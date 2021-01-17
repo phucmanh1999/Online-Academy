@@ -1,4 +1,6 @@
 const express = require("express")
+const {getAllCourses} = require("../services/course-service");
+const {getAllRootCategory} = require("../services/root-category-service");
 const {setActive} = require("../services/user-service");
 const {ROLE_ADMIN} = require("../constant/constant");
 const {getAllStudent} = require("../services/user-service");
@@ -12,7 +14,8 @@ router.get('/', async (req, res) => {
             user: req.user,
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
-            
+            // rootCategories: await getAllRootCategory(),
+            courses: await getAllCourses(),
         });
     } else {
         res.redirect('/')
@@ -20,7 +23,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/active/:userId', (req, res) => {
-    if (req.user && req.uesr.typ === ROLE_ADMIN) {
+    if (req.user && req.user.type === ROLE_ADMIN) {
         const userId = req.params.userId
         const isActive = req.query.isActive
         if (userId && isActive){

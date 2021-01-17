@@ -11,6 +11,7 @@ const WatchList = require("./WatchList");
 const CourseBought = require("./CourseBought");
 const Review = require("./Review");
 const Cart = require("./Cart");
+const RootCategory = require("./RootCategory");
 
 Category.hasMany(Course, {foreignKey: 'category_id'})
 Instructor.hasMany(Course, {foreignKey: 'instructor_id'})
@@ -44,3 +45,5 @@ Cart.belongsTo(Student, {foreignKey: 'student_id'})
 Cart.belongsTo(Course, {foreignKey: 'course_id'})
 Student.hasMany(Cart, {foreignKey: 'student_id'})
 Course.hasMany(Cart, {foreignKey: 'course_id'})
+RootCategory.hasMany(Category, {foreignKey: 'parent_category'})
+Category.belongsTo(RootCategory, {foreignKey: 'parent_category'})

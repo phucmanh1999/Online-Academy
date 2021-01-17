@@ -86,10 +86,23 @@ tr:nth-child(even) {
   color: #fff;
 }
 
-#instructorTable {
+#instructorTable, #courseTable{
   display: none;
 }
 
 .list-group-item {
   cursor: pointer;
+}
+
+.course-description {
+  color: #555;
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.course-item {
+  width: 40%;
 }

@@ -163,3 +163,17 @@ ADD COLUMN chapter_name VARCHAR (255);
 
 ALTER TABLE users
 ADD COLUMN is_active boolean;
+
+CREATE TABLE rootcategory(
+    id serial PRIMARY KEY,
+	root_category_name VARCHAR (255) UNIQUE NOT NULL,
+);
+
+ALTER TABLE rootcategory
+ADD COLUMN created_at TIMESTAMP;
+
+ALTER TABLE categories
+ADD COLUMN parent_category INTEGER;
+
+ALTER TABLE categories
+    ADD CONSTRAINT categories_rootcategory_id_fkey FOREIGN KEY (parent_category) REFERENCES rootcategory(id)

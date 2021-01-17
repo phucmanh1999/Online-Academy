@@ -41,6 +41,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
         // birthday: req.body.birthday,
         // avatar_url: req.body.avatar,
         // user_address: req.body.address,
+        is_active: true,
         created_at: new Date(),
     }
 
@@ -73,7 +74,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
                 }
                 // console.log(instructor)
                 createInstructor(instructor).then(
-                    res.redirect("/login")
+                    res.json({msg: "Created success"})
                 ).catch(() => {
                     deleteUser(user_created)
                 })
@@ -125,25 +126,30 @@ router.post('/login', urlencodedParser, (req, res)=>{
                 const role_id = data.Student ? data.Student.id : data.Instructor ? data.Instructor.id : data.Administrator ? data.Administrator.id : null
                 const cartCount = 0;
                 const payload = { id: data.id, username: data.user_name, type: data.Role.role_name , role_id: role_id, cartCount: cartCount}
-                if (data.Role.role_name === ROLE_STUDENT) {
-                    payload.cartCount = await getUserCartNumber(data.Student.id)
-                    console.log("payload ís: " +await JSON.stringify(payload))
-                    const accessToken = jwt.sign(payload, 'secret')
-                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
+                if (data.is_active){
+                    if (data.Role.role_name === ROLE_STUDENT) {
+                        payload.cartCount = await getUserCartNumber(data.Student.id)
+                        console.log("payload ís: " +await JSON.stringify(payload))
+                        const accessToken = jwt.sign(payload, 'secret')
+                        res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                        res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
+                    }
+                    else if (data.Role.role_name === ROLE_INSTRUCTOR) {
+                        const accessToken = jwt.sign(payload, 'secret')
+                        res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                        res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
+                    }
+                    else if (data.Role.role_name === ROLE_ADMIN) {
+                        const accessToken = jwt.sign(payload, 'secret')
+                        res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
+                        res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
+                        // res.json({token: accessToken, user: data})
+                    }
+                    UserService.updateUser(result.id, {last_login: new Date()})
+                } else {
+                    console.log('Account is deactived')
+                    res.json({'msg': 'Account is deactived'})
                 }
-                else if (data.Role.role_name === ROLE_INSTRUCTOR) {
-                    const accessToken = jwt.sign(payload, 'secret')
-                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
-                }
-                else if (data.Role.role_name === ROLE_ADMIN) {
-                    const accessToken = jwt.sign(payload, 'secret')
-                    res.cookie('token', accessToken, {expires: new Date(Date.now()+60*60*1000),httpOnly: true})
-                    res.json({"msg": "Login success", "previousPage": req.session.previousPage, "role": data.Role.role_name})
-                    // res.json({token: accessToken, user: data})
-                }
-                UserService.updateUser(result.id, {last_login: new Date()})
             }
             else
                 res.json({'msg': 'Password is incorrect'})

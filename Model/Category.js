@@ -14,6 +14,7 @@ const Category = database.define('Category', {
         },
         created_at: sequelize.DATE,
         updated_at: sequelize.DATE,
+        parent_category: sequelize.INTEGER
     },
     {
         timestamps: false,
