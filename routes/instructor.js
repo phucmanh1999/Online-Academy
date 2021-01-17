@@ -51,11 +51,15 @@ router.get('/editCourse', async (req, res) => {
 })
 
 router.get('/profile', async (req,res) =>{
-    let id = req.query.user_id
-    let categories = await getAllCategories();
-    let user = await getUser({id: id});
-    console.log(user)
-    res.render("instructor/profile",{categories,user})
+    const userInf = req.user ? req.user : undefined
+    if (userInf && userInf.type === ROLE_INSTRUCTOR) {
+        let categories = await getAllCategories();
+        let user = await getUser({id: userInf.id});
+        console.log(user)
+        res.render("instructor/profile",{categories,user})
+    } else {
+        res.redirect("/login")
+    }
 })
 
 router.delete('/deleteChapter', (req, res) => {
