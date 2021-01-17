@@ -54,9 +54,7 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
-              <%} %>
+              <!-- Category item -->
             </div>
           </li>
           <li class="nav-item">
@@ -69,7 +67,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/user/watchlist">
+              <a class="nav-link" href="/student/watchlist">
                 <i class="fa fa-heart" aria-hidden="true"></i>
               </a>
             </li>
@@ -175,39 +173,7 @@
               </div>
             </a>
           <% }) %>
-          <div class="row d-flex justify-content-center">
-            <nav aria-label="Page navigation category">
-
-              <% if (payload.pageCount > 0) { %>
-                <ul class="pagination text-center">
-                    <% if (payload.page == 1) { %>
-                        <li class="page-item disabled"><a class="page-link">First</a></li>
-                    <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=1">First</a></li>
-                    <% } %>
-                    <% var i = (Number(payload.page) > 5 ? Number(payload.page) - 4 : 1) %>
-                    <% if (i !== 1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                    <% for (; i <= (Number(payload.page) + 4) && i <= payload.pageCount; i++) { %>
-                        <% if (i == payload.page) { %>
-                            <li class="page-item  active"><a class="page-link" ><%= i %></a></li>
-                        <% } else { %>
-                            <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= i %>"><%= i %></a></li>
-                        <% } %>
-                        <% if (i == Number(payload.page) + 4 && i < payload.pageCount) { %>
-                            <li class="page-item disabled"><a class="page-link">...</a></li>
-                        <% } %>
-                    <% } %>
-                    <% if (payload.page == payload.pageCount) { %>
-                        <li class="page-item disabled"><a class="page-link">Last</a></li>
-                    <% } else { %>
-                        <li><a class="page-link" href="/category-courses/<%= payload.categoryId %>?page=<%= payload.pageCount %>">Last</a></li>
-                    <% } %>
-                </ul>
-            <% } %>
-            </nav>
-          </div>      
+    
         </div>
       </div>
     </div>

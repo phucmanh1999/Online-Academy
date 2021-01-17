@@ -14,7 +14,7 @@
     crossorigin="anonymous"
   />
   <link rel="stylesheet" href="/css/index.css" />
-  <link rel="stylesheet" href="/css/signup.css">
+  <link rel="stylesheet" href="/css/watchlist.css">
   <title>
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
@@ -54,21 +54,22 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <a class="dropdown-item" href="/">Mobile</a>
-              <a class="dropdown-item" href="#">web</a>
+              <% for(const category of categories) { %>
+                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="/about">About</a>
           </li>
           <% if(typeof user !== 'undefined' ) { %>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="/student/cart">
                 <i class="fas fa-shopping-cart"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="/student/watchlist">
                 <i class="fa fa-heart" aria-hidden="true"></i>
               </a>
             </li>
@@ -83,8 +84,8 @@
                 ><%= user.username %></a
               >
               <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                <a class="dropdown-item" href="#">My Profile</a>
-                <a class="dropdown-item" href="#">Log out</a>
+                <a class="dropdown-item" href="/profile">My Profile</a>
+                <a class="dropdown-item" href="/logout">Log out</a>
               </div>
             </li>
           <% } else { %>
@@ -100,22 +101,58 @@
   </nav>
   
   <!-- Main content -->
-  <div class="container signup-container d-flex justify-content-center">
-    <div class="signup text-center">
-      <div>Login</div>
-      <span>Not a memeber? <a href="/signup">Sign Up</a></span>
-      <form id="signUpForm">
-        <div class="form-group">
-          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          <span id="msgEmail"></span>
+  <div class="container mt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">
+          <img src="/assets/images/logo-images.svg" width="30px">
+        </a></li>
+        <li class="breadcrumb-item active">Watch List</li>
+      </ol>
+    </nav>
+
+    <div class="row mt-3 watch-list">
+      <% if(payload.length > 0) { %>
+        <div class="col-12 watch-list-body">
+          <% payload.forEach((course,index) => { %>
+            <span>
+              <div data-course-id="<%= course.course_id %>" class="course-item row p-2">
+                <div class="col-2">
+                  <a href="/courses/<%= course.course_id %>">
+                    <img src="<%= course.Course.img_path %>" width="130px">
+                  </a>
+                </div>
+                <div class="col-10 d-flex justify-content-between">
+                  <a href="/courses/<%= course.course_id %>">
+                    <div>
+                      <div class="title">
+                        <%= course.Course.course_name%>
+                      </div>
+                      <span>By: <%= course.Course.Instructor.User.user_name %></span>
+                    </div>
+                  </a>
+                  <div>
+                    <button class="remove-btn" data-course-id="<%= course.Course.id %>">Remove</button>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <hr>
+          <% }) %>  
         </div>
-        <div class="form-group">
-          <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-          <span id="msgPass"></span>
+      <% } else { %>
+        <div class="col-12 watch-list-body d-flex justify-content-center">
+          <div class="text-center">
+            <i style="color: #ccc;" class="fas fa-heart fa-5x p-3"></i>
+            <div>
+              Your watch list is empty.
+            </div>
+            <a href="/" class="btn btn-danger pt-2 pb-2 mt-2 mb-2">Browse courses now</a>
+          </div>
         </div>
-        <button type="button" id="submitBtn" class="btn btn-primary w-50 rounded-pill">Login</button>
-      </form>
+      <% } %>
     </div>
+
   </div>
 
   <hr>
@@ -186,54 +223,25 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
   <script>
-    $().ready(function(){
-      $("#signUpForm").validate({
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        rules: {
-          "email": {
-            required: true,
-            email: true
-          },
-          "password": {
-            required: true,
-          }
-        }
-      })
-
-      $("#submitBtn").click(function(){
-        let email = $("#email").val()
-        let password = $("#password").val()
-        $.post("/authentication/login",
-        {
-          email, password
-        },
-        function(data, status){
-          if(data.msg === "Login success"){
-            if(data.role === "Student") {
-              let previousPage = data.previousPage || '/'
-              window.location.href = previousPage
-            } else if(data.role === "Administrator") {
-              window.location.href = "/admin"
-            } else {
-              window.location.href = "/instructor"
-            }
-          }
-          else if(data.msg === 'Email is incorrect'){
-            $("#msgEmail").text(data.msg).show()  
-          }
-          else if(data.msg === 'Password is incorrect'){
-            $("#msgPass").text(data.msg).show()  
+    $(document).ready(function() {
+      $(".remove-btn").click(function() {
+        let courseId = $(this).attr("data-course-id")
+        $.ajax({
+          url: `/student/watchlist/${courseId}`,
+          type: "DELETE",
+          success: async function(result) {
+            await Swal.fire({
+              icon: 'success',
+              title: result.msg
+            })
+            location.reload()
           }
         })
       })
     })
   </script>
-
 </body>
 </html>

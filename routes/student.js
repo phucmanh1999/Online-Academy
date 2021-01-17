@@ -3,6 +3,9 @@ const passport = require("passport");
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
+const {deleteWatchlist} = require("../services/watchlist-service");
+const {getWatchList} = require("../services/watchlist-service");
+const {getWatchListByStudentId} = require("../services/watchlist-service");
 const {updateCourse} = require("../services/course-service");
 const {getCourse} = require("../services/course-service");
 const {getBought} = require("../services/bought-service");
@@ -42,18 +45,30 @@ router.post('/review', urlencodedParser, (req, res) => {
 })
 
 router.post('/favourite', (req, res) => {
-    const course_id = req.query.course_id
-    if (req.user.Student) {
-        createWatchList({
-            student_id: req.user.Student.id,
+    const course_id = req.body.course_id
+    const user = req.user
+
+    if (user && user.type === ROLE_STUDENT) {
+        getWatchList({
             course_id: course_id,
-            created_at: new Date(),
-        }).then(() => {
-            res.json({'msg': 'Add favourite success'})
-        }).catch((err) => {
-            console.log(err)
-            res.status(400)
+            student_id: user.role_id,
+        }).then(watchlist => {
+            if (watchlist) {
+                res.json({'msg': 'Item already exist'})
+            } else {
+                createWatchList({
+                    student_id: user.role_id,
+                    course_id: course_id,
+                    created_at: new Date(),
+                }).then(() => {
+                    res.json({'msg': 'Add favourite success'})
+                }).catch((err) => {
+                    res.status(400)
+                })
+            }
         })
+    } else {
+        res.redirect("/login")
     }
 })
 
@@ -105,6 +120,21 @@ router.get('/cart', (req, res) => {
     }
 })
 
+router.get('/watchlist', (req, res) => {
+    const user = req.user ? req.user : undefined
+    if (user && user.type === ROLE_STUDENT) {
+        getWatchListByStudentId(user.role_id).then(async watchlist => {
+            res.render("user/watch", {user, categories: await getAllCategories(), payload: watchlist})
+        }).catch(() => {
+            res.redirect("/login")
+            return
+        })
+    } else {
+        res.redirect("/login")
+        return
+    }
+})
+
 router.delete('/cart/:courseId', (req, res) => {
     const user = req.user ? req.user : undefined
     const course_id = req.params.courseId
@@ -124,6 +154,25 @@ router.delete('/cart/:courseId', (req, res) => {
     }
 })
 
+router.delete('/watchlist/:courseId', (req, res) => {
+    const user = req.user ? req.user : undefined
+    const courseId = req.params.courseId
+    // console.log(watchlist_id)
+    if (user && user.type === ROLE_STUDENT) {
+        deleteWatchlist({
+            student_id: user.role_id,
+            course_id: courseId
+        }).then(() => {
+            res.json({'msg': 'Delete success'})
+        }).catch((err) => {
+            console.log(err)
+            res.json({'msg': 'Failed'})
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
 router.post('/buy', (req, res) => {
     const courses = req.body.courses
     const user = req.user ? req.user : undefined
@@ -134,6 +183,11 @@ router.post('/buy', (req, res) => {
                 course_id: parseInt(id),
                 created_at: new Date(),
             }).then(() => {
+                getCourse({id: parseInt(id)}).then(course => {
+                    const enroll_number = course.enroll_number ? course.enroll_number : 0
+                    updateCourse(parseInt(id), {enroll_number : enroll_number+1})
+                    res.json({msg: 'ok'})
+                })
                 deleteCart({
                     student_id: user.role_id,
                     course_id: parseInt(id)
@@ -157,5 +211,6 @@ router.get('/buy', (req, res) => {
         res.json({'msg': 'Unauthorized'})
     }
 })
+
 
 module.exports = router

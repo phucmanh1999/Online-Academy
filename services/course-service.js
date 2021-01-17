@@ -108,6 +108,29 @@ const getNewestCourses = async () => {
     return courses;
 }
 
+const getTopEnrollCourse = async () => {
+    let courses = await Course.findAll({
+        include: [{
+            model: Category,
+        }, {
+            model: Instructor,
+            include: [{
+                model: User,
+            }]
+        },],
+        limit: 5,
+        order: [
+            ['enroll_number', 'DESC']
+        ]
+    });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
+    return courses;
+}
+
 const getTopBuyCourseByCategoryId = async (categoryId) => {
     let courses = await Course.findAll({
         where: {
@@ -192,7 +215,7 @@ const getCourse = async obj => {
     let course = await Course.findOne({
         where: obj,
         order: [
-            [Chapter,'id', 'ASC']
+            [Chapter, 'id', 'ASC']
         ],
         include: [{
             model: Instructor,
@@ -281,4 +304,5 @@ module.exports = {
     getCourseLessInfo,
     updateCourse,
     searchCourse,
+    getTopEnrollCourse,
 }

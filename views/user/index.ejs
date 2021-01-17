@@ -68,7 +68,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/user/watchlist">
+                <a class="nav-link" href="/student/watchlist">
                   <i class="fa fa-heart" aria-hidden="true"></i>
                 </a>
               </li>
@@ -123,11 +123,15 @@
           <% for(let i = 0; i < highLightCourses.length; i++) { %>
               <% if(i === 0) { %>
                 <div class="carousel-item active">
-                  <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                  <a href="/courses/<%= highLightCourses[i].id %>">
+                    <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                  </a>
                 </div>
               <% } else { %>
                 <div class="carousel-item">
-                  <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                  <a href="/courses/<%= highLightCourses[i].id %>">
+                    <img class="d-block w-100" src="<%= highLightCourses[i].img_path %>" alt="">
+                  </a>
                 </div>
               <% } %>
           <% } %>
@@ -144,9 +148,11 @@
       <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
         <% for(let i = 0; i < topTenViewCourses.length; i++){ %>
           <div class="courses-item col mb-3">
+            <span data-course-id="<%= topTenViewCourses[i].id %>" class="btn-watch"><i class="fas fa-heart"></i></span>
             <a href="/courses/<%= topTenViewCourses[i].id %>">
               <div class="courses-item-img">
                 <img src="<%= topTenViewCourses[i].img_path %>" alt="" width="100%">
+                
                 <div></div>
               </div>
               <div class="courses-item-title">
@@ -191,9 +197,11 @@
       <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
         <% for(let i = 0; i < topNewCourses.length; i++){ %>
           <div class="courses-item col mb-3">
+            <span data-course-id="<%= topNewCourses[i].id %>" class="btn-watch"><i class="fas fa-heart"></i></span>
             <a href="/courses/<%= topNewCourses[i].id %>">
               <div class="courses-item-img">
                 <img src="<%= topNewCourses[i].img_path %>" alt="" width="100%">
+                
                 <div></div>
               </div>
               <div class="courses-item-title">
@@ -219,6 +227,54 @@
                 <%= topNewCourses[i].price %><%= topNewCourses[i].concurrency %> <span></span>
               </div>
               <% if(topNewCourses[i].view_number > 1000) { %>
+                  <div class="best-seller">
+                    Bestseller
+                  </div>
+              <% } %>
+            </a> 
+          </div>
+          
+        <% } %>
+        %>
+      </div>
+    </div>
+
+    <div class="courses-group container mt-5 mb-5">
+      <div class="courses-group-title row">
+        <span>Top Enroll Courses</span>
+      </div>
+      <div class="courses-row row row-cols-md-5 row-cols-sm-3 d-flex justify-content-between">
+        <% for(let i = 0; i < topEnroll.length; i++){ %>
+          <div class="courses-item col mb-3">
+            <span data-course-id="<%= topEnroll[i].id %>" class="btn-watch"><i class="fas fa-heart"></i></span>
+            <a href="/courses/<%= topEnroll[i].id %>">
+              <div class="courses-item-img">
+                <img src="<%= topEnroll[i].img_path %>" alt="" width="100%">
+                <div></div>
+              </div>
+              <div class="courses-item-title">
+                <%= topEnroll[i].course_name %>
+              </div>
+              <div class="courses-item-lectures">
+                <%= topEnroll[i].Instructor.User.first_name %> <%= topEnroll[i].Instructor.User.last_name %>
+              </div>
+              <div class="courses-item-star">
+                <%= topEnroll[i].rating %>
+                <% for(let j = 1; j <= Math.floor(topEnroll[i].rating); j++) { %>
+                  <i class="fa fa-star"></i>
+                <% } %>
+                <% if(topEnroll[i].rating - Math.floor(topEnroll[i].rating) !== 0) { %>
+                  <i class="fa fa-star-half-alt"></i>
+                <% } %>
+                <% for(let j = Math.ceil(topEnroll[i].rating); j < 5; j++) { %>
+                  <i class="far fa-star"></i>
+                <% } %>
+                 (<%= topEnroll[i].view_number %>)
+              </div>
+              <div class="courses-item-price">
+                <%= topEnroll[i].price %><%= topEnroll[i].concurrency %> <span></span>
+              </div>
+              <% if(topEnroll[i].view_number > 1000) { %>
                   <div class="best-seller">
                     Bestseller
                   </div>
@@ -299,6 +355,37 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+      $(document).ready(function(){
+        $(".btn-watch").click(function() {
+          let course_id = $(this).data("course-id")
+          $.post(
+            "/student/favourite",
+            { course_id },
+            function(data, status) {
+              console.log(data.msg)
+              if(data.msg === "Add favourite success"){
+                Swal.fire({
+                  icon: 'success',
+                  title: data.msg
+                })
+              } else if(data.msg === "Item already exist") {
+                Swal.fire({
+                  icon: 'error',
+                  title: data.msg
+                })
+              }
+              // } else {
+              //   location.href = "/login"
+              // }
+            }
+          )
+        })
+      })
+    </script>
 
   </body>
 </html>
