@@ -1,36 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous"
-  />
+    crossorigin="anonymous" />
   <link rel="stylesheet" href="/css/index.css" />
   <title>
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
   <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
 </head>
+
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container">
       <a href="#" class="navbar-branch">
         <img src="/assets/images/logo.svg" width="160px" />
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarResponsive"
-      >
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -43,25 +34,20 @@
             <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="dropdownCategory"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              >Categories</a
-            >
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Categories</a>
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
               <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
-              <%} %>
+                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
+                  <%= category.category_name %>
+                </a>
+                <%} %>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about">About</a>
           </li>
-          <% if(typeof user !== 'undefined' ) { %>
+          <% if(typeof user !=='undefined' ) { %>
             <li class="nav-item">
               <a class="nav-link" href="/student/cart">
                 <i class="fas fa-shopping-cart"></i>
@@ -73,44 +59,36 @@
               </a>
             </li>
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="dropdownUser"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                ><%= user.username %></a
-              >
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <%= user.username %>
+              </a>
               <div class="dropdown-menu" aria-labelledby="dropdownUser">
                 <a class="dropdown-item" href="/profile">My Profile</a>
                 <a class="dropdown-item" href="/logout">Log out</a>
               </div>
             </li>
-          <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">
-                Login
-              </a>
-            </li>
-          <% } %>
+            <% } else { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">
+                  Login
+                </a>
+              </li>
+              <% } %>
         </ul>
       </div>
     </div>
   </nav>
-  
+
   <!-- Main content -->
-  <div class="container">
-    <div>Profile</div>
-    <div class="row">
-      
-    </div>
-  </div>
+  
+
   <hr>
   <!-- Before footer -->
   <div class="container-fluid">
     <div class="row">
-      <div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career skills.</div>
+      <div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career
+        skills.</div>
       <ul class="col-6 d-flex justify-content-between mb-0 logo">
         <li><img src="https://s.udemycdn.com/partner-logos/lyft-logo.svg" alt=""></li>
         <li><img src="https://s.udemycdn.com/partner-logos/adidas-logo.svg" alt=""></li>
@@ -118,40 +96,40 @@
         <li><img src="https://s.udemycdn.com/partner-logos/surveymonkey-logo.svg" alt=""></li>
         <li><img src="https://s.udemycdn.com/partner-logos/booking-logo.svg" alt=""></li>
       </ul>
-    </div>  
+    </div>
   </div>
   <hr>
   <div class="container-fluid footer">
     <div class="row">
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-          MNP for Business</a></li>
+            MNP for Business</a></li>
         <li class="list-group"><a href="#">
-          Teach on Udemy</a></li>
+            Teach on Udemy</a></li>
         <li class="list-group"><a href="#">
-          About us</a></li>
+            About us</a></li>
         <li class="list-group"><a href="#">
-          Contact us</a></li>
+            Contact us</a></li>
       </ul>
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-          Careers</a></li>
+            Careers</a></li>
         <li class="list-group"><a href="#">
-          Blog</a></li>
+            Blog</a></li>
         <li class="list-group"><a href="#">
-          Help and Support</a></li>
+            Help and Support</a></li>
         <li class="list-group"><a href="#">
-          Affiliate</a></li>
+            Affiliate</a></li>
       </ul>
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-          Terms</a></li>
-        <li class="list-group"><a href="#">           
-          Privacy policy and cookie policy</a></li>
+            Terms</a></li>
         <li class="list-group"><a href="#">
-          Sitemap</a></li>
+            Privacy policy and cookie policy</a></li>
         <li class="list-group"><a href="#">
-          Featured courses</a></li>
+            Sitemap</a></li>
+        <li class="list-group"><a href="#">
+            Featured courses</a></li>
       </ul>
     </div>
     <div class="row footer-logo d-flex justify-content-between">
@@ -174,4 +152,5 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+		integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+		crossorigin="anonymous" />
+	<link rel="stylesheet" href="/css/index.css" />
+	<link rel="stylesheet" href="/css/profile.css" />
+	<title>
+		Online Courses - Learn Anything On Your Schedule | MNP Courses
+	</title>
+	<link rel="shortcut icon" href="/assets/images/logo-images.svg" />
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+		<div class="container">
+			<a href="#" class="navbar-branch">
+				<img src="/assets/images/logo.svg" width="160px" />
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<form id="formSearch" method="GET" action="/search" class="ml-1">
+					<span><i class="fas fa-search"></i></span>
+					<input type="text" placeholder="Search..." class="rounded-pill" />
+				</form>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Categories</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownCategory">
+							<% for(const category of categories) { %>
+								<a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
+									<%= category.category_name %>
+								</a>
+								<%} %>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">About</a>
+					</li>
+					<% if(typeof user !=='undefined' ) { %>
+						<li class="nav-item">
+							<a class="nav-link" href="/student/cart">
+								<i class="fas fa-shopping-cart"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/user/watchlist">
+								<i class="fa fa-heart" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<%= user.username %>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownUser">
+								<a class="dropdown-item" href="/profile">My Profile</a>
+								<a class="dropdown-item" href="/logout">Log out</a>
+							</div>
+						</li>
+						<% } else { %>
+							<li class="nav-item">
+								<a class="nav-link" href="/login">
+									Login
+								</a>
+							</li>
+							<% } %>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Main content -->
+	<form action="/instructor/profile?user_id=<%=user.id%>" method="post" enctype="multipart/form-data" name="profileForm" id="profileForm">
+
+		<div class="wrapper bg-white mt-sm-5">
+			<h4 class="pb-4 border-bottom ">Account settings</h4>
+			<div class="d-flex align-items-start py-3 border-bottom form-group"> 
+				<img id='image'src=<%= user.avatar_url?user.avatar_url:"/assets/images/default_avt.png" %> class="img"alt="Avatar">
+				<div class="pl-sm-4 pl-2" id="img-section">
+					<p><b>Avatar</b></p>
+					<!-- <button class="btn button border"><b>Upload</b></button> -->
+					<input type="file" class="form-control-file" id="courseImage" name="image" onchange="readURL(this);">
+				</div>
+			</div>
+			<div class="py-2">
+				<div class="row py-2 form-group">
+					<div class="col-md-6"> <label for="firstname">First Name</label> <input type="text" name="first_name"
+							class="bg-light form-control" placeholder="Enter First Name" value="<%=user.first_name%>"> </div>
+					<div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Last Name</label> <input type="text" name="last_name"
+							class="bg-light form-control" placeholder="Enter Last Name" value="<%=user.last_name%>"> </div>
+				</div>
+				<div class="row py-2 form-group">
+					<div class="col-md-2">
+						<label for="gender">Gender</label>
+						<select name="gender" id="gender" class="bg-light" >
+							<%if (user.gender==='M' ) {%>
+								<option value="M" selected>Male</option>
+								<option value="F">Female</option>
+								<%} else {%>
+									<option value="F" selected>Female</option>
+									<option value="M">Male</option>
+									<%}%>
+						</select>
+					</div>
+					<div class="col-md-4 pt-md-0 pt-3" id="birthday">
+						<label for="birthday">Birthday</label>
+						<input type='date' name="birthday" id="birthday" class="bg-light form-control" value="<%=user.birthday%>">
+					</div>
+					<div class="col-md-6"> <label for="email">Email Address</label> <input type="text" name="email" class="bg-light form-control"
+							placeholder="ex. phucmanh@gmail.com" value="<%=user.email%>"> </div>
+				</div>
+				<div class="row py-2 form-group">
+					<div class="col-12"> <label for="job_title">Job Title</label> <input type="text" name="job_title"class="bg-light form-control"
+							placeholder="ex. Professional Web Developer and Instructor" value="<%=user.Instructor.job_title%>">
+					</div>
+				</div>
+	
+	
+				<div class="row py-2 form-group">
+					<div class="col-12"> <label for="address">Address</label> <input type="text" name="address"class="bg-light form-control"
+							placeholder="ex.189I/32a Tôn Thất Thuyết P3 Q4 TPHCM" value="<%=user.user_address%>"> </div>
+				</div>
+	
+	
+				<div class="row py-2 form-group">
+					<div class="col-12"> <label for="short_description">Short Description</label>
+						<textarea class="bg-light form-control" name="short_description" id="short_description" cols="30"
+							rows="3"><%=user.Instructor.short_description%></textarea>
+					</div>
+				</div>
+				<div class="row py-2 form-group">
+					<div class="col-12"> <label for="full_description">Full Description</label>
+						<textarea class="bg-light form-control" name="full_description" id="full_description" cols="30"
+							rows="5"><%=user.Instructor.full_description%></textarea>
+	
+					</div>
+				</div>
+			</div>
+			<div class="py-3 pb-4 border-bottom "> 
+				<button class="btn btn-primary mr-3 btn-save" data-form-id="profileForm">Save</button> 
+				<button class="btn border button danger btn-cancel" data-form-id="profileForm">Cancel</button> 
+			</div>
+			
+		</div>
+	</form>
+
+	<!-- Before footer -->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career
+				skills.</div>
+			<ul class="col-6 d-flex justify-content-between mb-0 logo">
+				<li><img src="https://s.udemycdn.com/partner-logos/lyft-logo.svg" alt=""></li>
+				<li><img src="https://s.udemycdn.com/partner-logos/adidas-logo.svg" alt=""></li>
+				<li><img src="https://s.udemycdn.com/partner-logos/eventbrite-logo.svg" alt=""></li>
+				<li><img src="https://s.udemycdn.com/partner-logos/surveymonkey-logo.svg" alt=""></li>
+				<li><img src="https://s.udemycdn.com/partner-logos/booking-logo.svg" alt=""></li>
+			</ul>
+		</div>
+	</div>
+	<hr>
+	<div class="container-fluid footer">
+		<div class="row">
+			<ul class="col list-group">
+				<li class="list-group"><a href="#">
+						MNP for Business</a></li>
+				<li class="list-group"><a href="#">
+						Teach on Udemy</a></li>
+				<li class="list-group"><a href="#">
+						About us</a></li>
+				<li class="list-group"><a href="#">
+						Contact us</a></li>
+			</ul>
+			<ul class="col list-group">
+				<li class="list-group"><a href="#">
+						Careers</a></li>
+				<li class="list-group"><a href="#">
+						Blog</a></li>
+				<li class="list-group"><a href="#">
+						Help and Support</a></li>
+				<li class="list-group"><a href="#">
+						Affiliate</a></li>
+			</ul>
+			<ul class="col list-group">
+				<li class="list-group"><a href="#">
+						Terms</a></li>
+				<li class="list-group"><a href="#">
+						Privacy policy and cookie policy</a></li>
+				<li class="list-group"><a href="#">
+						Sitemap</a></li>
+				<li class="list-group"><a href="#">
+						Featured courses</a></li>
+			</ul>
+		</div>
+		<div class="row footer-logo d-flex justify-content-between">
+			<div>
+				<img src="/assets/images/logo-images.svg" width="50px">
+			</div>
+			<div class="mt-3">
+				Copyright @ 2020 MNP, Inc
+			</div>
+
+		</div>
+	</div>
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	<script>
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+					$('#image')
+						.attr('src', e.target.result)
+						.show()
+				};
+
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$(".btn-save").click(function (e) {
+			e.preventDefault();
+			// var form = $(this).attr("data-form-id");
+			Swal.fire({
+				title: 'Do you want to save the changes?',
+				showDenyButton: true,
+				showCancelButton: true,
+				confirmButtonText: `Save`,
+				denyButtonText: `Don't save`,
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					var formData = new FormData(document.getElementsByName('profileForm')[0]);// yourForm: form selector        
+					// var form = $('#'+$(this).attr("data-form-id"));
+					var url = $(formData).attr('action');
+
+					$.ajax({
+						type: "POST",
+						url: url,// where you wanna post
+						data: formData,
+						processData: false,
+						contentType: false,
+						error: function (jqXHR, textStatus, errorMessage) {
+							console.log(errorMessage); // Optional
+						},
+						success: Swal.fire('Saved!', '', 'success')
+					});
+				} else if (result.isDenied) {
+					Swal.fire('Changes are not saved', '', 'info')
+				}
+			})
+		})
+	</script>
+</body>
+
+</html>
