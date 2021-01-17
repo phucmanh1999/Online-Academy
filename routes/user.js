@@ -3,6 +3,7 @@ const passport = require("passport");
 const router = express.Router()
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt");
+const UserService = require("../services/user-service");
 const {getUser} = require("../services/user-service");
 const {updateAdministrator} = require("../services/admin-service");
 const {updateInstructor} = require("../services/instructor-service");
@@ -42,6 +43,14 @@ router.post('/update', urlencodedParser,async (req, res) => {
     } else {
         res.json({'msg': 'Please login'})
     }
+})
+
+router.post('/checkemail', (req,res) => {
+    UserService.getUser({email: req.query.email}).then (user => {
+        if (user) {
+            res.json({'msg': 'Email existed'})
+        } else {res.json({'msg': 'Available'})}
+    })
 })
 
 router.get('/', (req, res) => {

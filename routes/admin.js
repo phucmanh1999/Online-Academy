@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/active/:userId', (req, res) => {
-    if (req.user && req.uesr.typ === ROLE_ADMIN) {
+    if (req.user && req.user.type === ROLE_ADMIN) {
         const userId = req.params.userId
         const isActive = req.query.isActive
         if (userId && isActive){

@@ -40,7 +40,7 @@ router.get('/editCourse', async (req, res) => {
     let category = await getAllCategories();
 
     let course = await getCourse({id: req.query.id})
-    console.log("course data: " + JSON.stringify(course))
+    // console.log("course data: " + JSON.stringify(course))
     // console.log("full description: " + course.full_description)
     res.render("instructor/editCourse", {category, course})
 })
@@ -126,12 +126,10 @@ router.post('/editCourse', async (req, res) => {
             })
         } else {
             console.log("Unauthorized")
-            res.json({msg: "Unauthorized"})
             res.redirect("/login")
         }
     } else {
         console.log("Unauthorized")
-        res.json({msg: "Unauthorized"})
         res.redirect("/login")
     }
 
