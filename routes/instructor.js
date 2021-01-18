@@ -191,7 +191,8 @@ router.post('/editCourse', async (req, res) => {
                 course_name: req.body.courseName,
                 short_description: req.body.shortDescription,
                 full_description: req.body.fullDescription,
-                price: req.body.price + 0,
+                price: parseFloat(req.body.price),
+                course_language: req.body.language,
                 concurrency: req.body.concurrency ? req.body.concurrency : "USD",
                 updated_at: new Date(),
                 category_id: categoryId,
@@ -300,8 +301,6 @@ router.post('/addChapter', (req, res) => {
 });
 
 router.post('/addLesson', (req, res) => {
-    console.log(req.body)
-    console.log(req.files.video)
     const user = req.user ? req.user : undefined
     const chapter_id = req.query.chapter_id
     let videoFile = null
