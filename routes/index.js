@@ -54,7 +54,7 @@ router.get('/category-courses/:categoryid', (req, res) => {
 
 router.get('/search', (req, res) => {
     const query = req.query.query;
-    console.log(query)
+    // console.log(query)
     const page = req.query.page ? req.query.page : 1
     const order_price = req.query.order_price ? req.query.order_price : "DESC"
     const order_rating = req.query.order_review ? req.query.order_review : "DESC"
