@@ -256,7 +256,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                     imageFile.mv("./public/assets/images/" + imageFile.name)
                 getInstructor({id: instructorId}).then(ins => {
                     updateInstructor(instructorId, {
-                        course_number: ins.course_number ? 1 : ins.course_number + 1;
+                        course_number: ins.course_number ? 1 : ins.course_number + 1
                     })
                 })
                 res.json({msg: "ok"})
