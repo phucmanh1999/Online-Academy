@@ -94,7 +94,7 @@ router.post('/profile', (req, res) => {
         birthday: req.body.birthday,
         email: req.body.email,
         job_title: req.body.job_title,
-        address: req.body.address,
+        user_address: req.body.address,
     }
     let imageFile = null
     let imgPath = null

@@ -105,6 +105,10 @@ router.get("/login",decodeToken, (req, res) => {
     }
 })
 
+router.get("/profile", (req,res) => {
+        res.redirect('/student/profile')
+})
+
 router.get("/logout",decodeToken, (req, res) => {
     res.clearCookie("token");
     res.redirect("/")
