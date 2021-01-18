@@ -174,6 +174,15 @@ router.post('/editLesson', (req, res) => {
     }
 })
 
+router.post('/editChapter', (req, res) => {
+    const user = req.user ? req.user : undefined
+    const chapter_id = req.query.chapter_id
+    updateChapter(chapter_id, {
+        chapter_name: req.body.chapterName,
+        short_description: req.body.shortDescription
+    })
+})
+
 router.post('/editCourse', async (req, res) => {
     if (req.user) {
         if (req.user.type === ROLE_INSTRUCTOR) {
