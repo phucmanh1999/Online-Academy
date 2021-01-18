@@ -7,14 +7,16 @@ const {getAllStudent} = require("../services/user-service");
 const router = express.Router()
 const {getAllInstructor} = require("../services/user-service");
 const {getCourse} = require("../services/course-service");
+const {getAllCategory} = require("../services/course-service")
 
 router.get('/', async (req, res) => {
     if (req.user && req.user.type === ROLE_ADMIN) {
-        res.json({
+        res.render('admin/category',{
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
             rootCategories: await getAllRootCategory(),
             courses: await getAllCourses(),
+            categories: await getAllCategory()
         });
     } else {
         res.redirect('/login')

@@ -68,3 +68,16 @@ insert into lessons values (4,2,'Course Structure2',null,'What is AI?','{\"ops\"
 insert into lessons values (5,2,'Course Required2',null,'Course Required','{\"ops\":[{\"attributes\":{\"size\":\"large\"},\"insert\":\"Math: \"},{\"attributes\":{\"size\":\"large\",\"color\":\"rgba(0, 0, 0, 0.87)\"},\"insert\":\"Discrete mathematics, \"},{\"attributes\":{\"size\":\"large\",\"color\":\"#202124\"},\"insert\":\"Probability theory\"},{\"attributes\":{\"list\":\"ordered\"},\"insert\":\"\\n\"},{\"attributes\":{\"size\":\"large\"},\"insert\":\"Program language: python\"},{\"attributes\":{\"list\":\"ordered\"},\"insert\":\"\\n\"},{\"insert\":\"\\n\"}]}',null,null,null,LOCALTIMESTAMP,LOCALTIMESTAMP)
 insert into lessons values (6,2,'Human Required2',null,'Course Required','{\"ops\":[{\"attributes\":{\"size\":\"huge\"},\"insert\":\"Handsome\"},{\"attributes\":{\"list\":\"bullet\"},\"insert\":\"\\n\"},{\"attributes\":{\"size\":\"huge\"},\"insert\":\"Inteligent\"},{\"attributes\":{\"list\":\"bullet\"},\"insert\":\"\\n\"},{\"insert\":\"\\n\"}]}',null,null,null,LOCALTIMESTAMP,LOCALTIMESTAMP)
 
+insert into rootcategory values (default,'Web',LOCALTIMESTAMP);
+insert into rootcategory values (default,'Mobile',LOCALTIMESTAMP);
+
+
+
+insert into categories values (default,'NodeJs',LOCALTIMESTAMP,LOCALTIMESTAMP,2); --web id = 2
+insert into categories values (default,'Javascript',LOCALTIMESTAMP,LOCALTIMESTAMP,2); --web id = 2
+insert into categories values (default,'React',LOCALTIMESTAMP,LOCALTIMESTAMP,2); --web id = 2
+insert into categories values (default,'Angular',LOCALTIMESTAMP,LOCALTIMESTAMP,2); --web id = 2
+insert into categories values (default,'Python',LOCALTIMESTAMP,LOCALTIMESTAMP,2); --web id = 2
+insert into categories values (default,'Java',LOCALTIMESTAMP,LOCALTIMESTAMP,3); --mobile id = 3
+insert into categories values (default,'Flutter',LOCALTIMESTAMP,LOCALTIMESTAMP,3); --mobileid = 3
+insert into categories values (default,'React Native',LOCALTIMESTAMP,LOCALTIMESTAMP,3); --mobileid = 3
