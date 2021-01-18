@@ -47,12 +47,12 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/">Home</a>
 					</li>
-					
+
 					<li class="nav-item">
 						<a class="nav-link" href="/about">About</a>
 					</li>
 					<% if(typeof user !=='undefined' ) { %>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="/instructor">
 								<i class="fa fa-heart" aria-hidden="true"></i>
@@ -108,11 +108,12 @@
 
 					<select class="form-control" id="category" name="category">
 
-						<option value="<%=course.Category.category_name%>" selected disabled hidden>
+						<option value="<%=course.Category.category_name%>" selected hidden>
 							<%=course.Category.category_name%>
 						</option>
+
 						<% for(let i=0;i<category.length;i++) {%>
-							<option value="<%=category[i].category_name%>" selected>
+							<option value="<%=category[i].category_name%>">
 								<%=category[i].category_name%>
 							</option>
 							<%}%>
@@ -133,9 +134,9 @@
 			</div>
 
 			<div class="form-group">
-				<label for="shortDescription">Short description</label>
-				<textarea autofocus style="margin:0; padding:0" cols="20" class="form-control" id="shortDescription" rows="3"
-					name="shortDescription"><%=course.short_description %></textarea>
+				<label for="shortDescriptionCourse">Short description</label>
+				<textarea autofocus style="margin:0; padding:0" cols="20" class="form-control" id="shortDescriptionCourse"
+					rows="3" name="shortDescription"><%=course.short_description %></textarea>
 			</div>
 			<div class="form-group">
 				<label for="fdcontent">Full description</label>
@@ -160,8 +161,9 @@
 				<h1>Course Content</h1>
 				<hr>
 			</div>
+
 			<div class="accordion" id="accordion">
-				<%for(i=0;i<course.Chapters.length;i++) {%>
+				<% for(i=0; i<course.Chapters.length; i++) {%>
 					<div class="card">
 						<div class="card-header dflex row py-2" id="<%=course.Chapters[i].id%>">
 							<h2 class="mb-0">
@@ -171,7 +173,6 @@
 									Chapter <%=i+1%>: <%=course.Chapters[i].chapter_name%>
 								</button>
 							</h2>
-							<!-- help: 3 cai button sang phai -->
 							<div class='col-3 '>
 								<ul class="list-inline m-0 dflexicon">
 									<li class="list-inline-item">
@@ -221,8 +222,7 @@
 											<!-- edit lesson -->
 											<div id="editLesson<%=course.Chapters[i].Lessons[j].id%>" class="container mt-5 mb-5 edit">
 												<form action="/instructor/editLesson?lesson_id=<%=course.Chapters[i].Lessons[j].id%>"
-													id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" enctype="multipart/form-data"
-													method="post">
+													id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" enctype="multipart/form-data">
 													<div class="form-group">
 														<label for="lessonName<%=course.Chapters[i].Lessons[j].id%>">Lesson name</label>
 														<input type="text" class="form-control" id="lessonName<%=course.Chapters[i].Lessons[j].id%>"
@@ -236,8 +236,9 @@
 															name="shortDescription"><%=course.Chapters[i].Lessons[j].short_description%></textarea>
 													</div>
 													<div class="form-group">
-														<label for="uploadVideo">Upload video</label>
-														<input type="file" class="form-control-file" id="uploadVideo" name="video"
+														<label for="uploadVideoEL<%=course.Chapters[i].Lessons[j].id%>">Upload video</label>
+														<input type="file" class="form-control-file"
+															id="uploadVideoEL<%=course.Chapters[i].Lessons[j].id%>" name="video"
 															value="<%=course.Chapters[i].Lessons[j].video_url%>">
 													</div>
 													<div class="form-group">
@@ -262,12 +263,16 @@
 												<!-- <button id="add-lesson-btn" type="button" class="btn btn-primary"
 													onClick='add("addLesson<%= i %>")'>Add Lesson</button> -->
 												<!-- add Lesson -->
+
 												<div id="addLesson<%= i %>" class="container mt-5 mb-5 addLesson">
+													<p>Add Lesson</p>
+													<hr>
 													<form action="/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>" method="post"
 														id="formLessonAL<%= i %>" enctype="multipart/form-data">
 														<div class="form-group">
-															<label for="lessonName">Lesson name</label>
-															<input type="text" class="form-control" id="lessonName" placeholder="" name="lessonName">
+															<label for="lessonNameAL<%= i %>">Lesson name</label>
+															<input type="text" class="form-control" id="lessonNameAL<%= i %>" placeholder=""
+																name="lessonName">
 														</div>
 														<div class="form-group">
 															<label for="shortDescriptionAL<%= i %>">Short
@@ -276,8 +281,8 @@
 																name="shortDescription"></textarea>
 														</div>
 														<div class="form-group">
-															<label for="uploadVideo">Upload video</label>
-															<input type="file" class="form-control-file" id="uploadVideo" name="video">
+															<label for="uploadVideoAL<%= i %>">Upload video</label>
+															<input type="file" class="form-control-file" id="uploadVideoAL<%= i %>" name="video">
 														</div>
 														<div class="form-group">
 															<label for="fdcontent<%= i %>">Full
@@ -296,14 +301,8 @@
 											</li>
 											<!-- edit chapter -->
 											<li class="list-group-item">
-												<!-- <div class="">
-													<button id="edit-chapter-btn" type="button" class="btn btn-primary btn-edit" data-form-id="editChapter<%=i%>"
-														>Edit
-														Chapter</button>
-												</div> -->
-												<!-- <div id="editChapter<%=i%>" class="container mt-5 mb-5 edit"> -->
 												<div id="editChapter<%=i%>" class="container mt-5 mb-5 edit">
-													<form action="/instructor/editChapter/?chapter_id=<%=course.Chapters[i].id%>" method="post"
+													<form action="/instructor/editChapter/?chapter_id=<%=course.Chapters[i].id%>"
 														id="formEditChapter<%=course.Chapters[i].id%>">
 														<div class="form-group">
 															<label for="chapterName">Chapter name</label>
@@ -326,22 +325,18 @@
 								</ul>
 							</div>
 
-							<!-- <div class="delete-btn">
 
-								<button id="delete-chapter-btn" type="button" class="btn btn-primary delete-btn"
-									onClick="/instructor/deleteChapter?chapter_id=<%=course.Chapters[i].id%>">Delete Chapter</button>
-							</div> -->
 						</div>
 
 					</div>
 					<%}%>
 			</div>
 		</div>
+
 		<div class="form-group">
 			<button title="Add Chapter" class="btn btn-primary btn-sm rounded-0" data-placement="top" data-toggle="tooltip"
 				onClick='add("addChapter")'><i class='fa fa-plus'></i><span><b>Add chapter</b></span></button>
 		</div>
-
 		<!-- add chapter -->
 		<div id="addChapter" class="container mt-5 mb-5">
 			<!-- <form action="/instructor/addChapter/?course_id=<%=course.id%>" method="post" id="formChapter"> -->
@@ -495,28 +490,14 @@
 								title: 'Your work has been saved',
 								showConfirmButton: false,
 								timer: 1500
-							}).then(_ =>{
+							}).then(_ => {
 								location.reload()
 							})
 
 						}
 					});
 				});
-				// $("#addLesson").submit(function (e) {
-				// 	e.preventDefault(); // avoid to execute the actual submit of the form.
-				// 	// state = !state;
-				// 	var form = $("#formLessonAL");
-				// 	var url = form.attr('action');
-
-				// 	$.ajax({
-				// 		type: "POST",
-				// 		url: url,
-				// 		data: form.serialize(), // serializes the form's elements.
-				// 		success: function (data) {
-				// 			alert('Add' + data + 'success!'); // show response from the  script.
-				// 		}
-				// 	});
-				// });
+				
 
 
 
@@ -543,10 +524,8 @@
 						if (result.isConfirmed) {
 							let formId = $(this).attr("data-form-id")
 
-							// var form = document.getElementById(formId)
 							var form = new FormData(document.getElementById(formId));
-							var url = $(form).attr('action');
-							// alert(formId + ' url '+ url )
+							// var url = $(form).attr("action");
 
 							$.ajax({
 								type: "POST",
@@ -556,6 +535,9 @@
 								data: form,
 								error: function (jqXHR, textStatus, errorMessage) {
 									console.log(errorMessage); // Optional
+								}, 
+								beforeSend: function (jqXHR, settings) {
+									alert('url '+ settings.url);
 								},
 								success: function (data) {
 									Swal.fire('Saved!', '', 'success')
@@ -566,10 +548,6 @@
 							Swal.fire('Changes are not saved', '', 'info')
 						}
 					})
-
-
-
-					// var form = $(this).attr("data-form-id");
 					var form = $('#' + $(this).attr("data-form-id"));
 					var url = form.attr('action');
 
@@ -670,6 +648,7 @@
 										'Your file has been deleted.',
 										'success'
 									)
+									location.reload()
 								}
 							});
 
