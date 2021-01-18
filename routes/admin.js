@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
             user: req.user,
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
-            // rootCategories: await getAllRootCategory(),
+            rootCategories: await getAllRootCategory(),
             courses: await getAllCourses(),
         });
     } else {

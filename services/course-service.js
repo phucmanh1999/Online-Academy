@@ -39,6 +39,28 @@ const getAllCourses = async () => {
     return courses;
 }
 
+const getAllCoursesBy = async obj => {
+    let courses = await Course.findAll({
+        include: [{
+            model: Category,
+        }, {
+            model: Instructor,
+            include: [{
+                model: User,
+            }]
+        },
+        ],
+        where: obj
+    });
+    courses = courses.map(course => {
+        course.dataValues.created_at = convertDate(course.dataValues.created_at)
+        course.dataValues.updated_at = convertDate(course.dataValues.updated_at)
+        return course
+    })
+    return courses;
+}
+
+
 const getCourseByTopView = async () => {
     let courses = await Course.findAll({
         include: [{
@@ -305,4 +327,5 @@ module.exports = {
     updateCourse,
     searchCourse,
     getTopEnrollCourse,
+    getAllCoursesBy
 }

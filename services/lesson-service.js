@@ -15,7 +15,29 @@ const updateLesson = (_id, obj) => {
     )
 }
 
+const deleteLessonByChapterID = (_id) => {
+    return Lesson.destroy(
+        {
+            where: {
+                chapter_id: _id
+            }
+        }
+    )
+}
+
+const deleteLesson = (_id) => {
+    return Lesson.destroy(
+        {
+            where: {
+                id: _id
+            }
+        }
+    )
+}
+
 module.exports = {
     createLesson,
-    updateLesson
+    updateLesson,
+    deleteLesson,
+    deleteLessonByChapterID
 }

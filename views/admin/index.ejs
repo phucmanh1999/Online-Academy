@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
     crossorigin="anonymous"
   />
@@ -19,6 +15,7 @@
   <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
   <link rel="stylesheet" href="/css/admin.css">
 </head>
+
 <body>
 
   <div class="main-container">
@@ -122,21 +119,48 @@
           <table>
             <tr>
               <th>ID</th>
-              <th>Username</th>
+              <th style="width: 25%;">Full Name</th>
               <th>Email</th>
-              <th>First name</th>
-              <th>Last name</th>
+              <th>Job title</th>
+              <th>Total Courses</th>
+              <th style="width: 10%;">Rating</th>
+              <th>Enroll number</th>
               <th>Action</th>
             </tr>
             <% instructors.forEach(item => { %>
               <tr>
                 <td><%= item.id %></td>
-                <td><%= item.user_name %></td>
+                <td data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.Instructor.full_description %>">
+                  <div class="d-flex">
+                    <div>
+                      <img src="<%= item.avatar_url %>" width="70px" height="70px" class="rounded-circle">
+                    </div>
+                    <div class="ml-2"> 
+                      <div class="course-name"><%= item.first_name %> <%= item.last_name %></div>
+                      <div class="course-description"><%= item.Instructor.full_description %></div>
+                    </div>
+                  </div>
+                </td>
                 <td><%= item.email %></td>
-                <td><%= item.first_name %></td>
-                <td><%= item.last_name %></td>
+                <td><%= item.Instructor.job_title %></td>
+                <td><%= item.Instructor.course_number %></td>
+                <td class="text-center">
+                  <div>
+                    <%= item.Instructor.rating %> 
+                  </div>
+                  <div>
+                    (<%= item.Instructor.rating_number %> ratings)
+                  </div>
+                </td>
                 <td>
-                  <button class="btn btn-danger">Disable</button>
+                  <%= item.Instructor.enroll_number %>
+                </td>
+                <td>
+                  <% if(item.is_active) { %>
+                    <button data-user-id="<%= item.id %>" class="btn btn-disable btn-danger">Disable</button>
+                  <% } else { %>
+                    <button data-user-id="<%= item.id %>" class="btn btn-enable btn-primary">Enable</button>
+                  <% } %>
                 </td>
               </tr>
             <% }) %>
@@ -150,8 +174,16 @@
         </div>
         <div class="d-flex justify-content-between">
           <div>
+            <select class="form-select mb-2" id="filterInstructor">
+              <option value="" selected>All instructors</option>
+              <% instructors.forEach(item => { %>
+                <option value="<%= item.first_name %> <%= item.last_name %>">
+                  <%= item.first_name %> <%= item.last_name %>
+                </option>
+              <% }) %>
+            </select>
           </div>
-          <div class="count">
+          <div id="courseLength" class="count">
             Total: <%= courses.length %>
           </div>
         </div>
@@ -166,9 +198,9 @@
               <th>Action</th>
             </tr>
             <% courses.forEach(item => { %>
-              <tr>
+              <tr class="course-table-item" data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
                 <td><%= item.id %></td>
-                <td class="d-flex">
+                <td class="d-flex"  data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.full_description %>">
                   <div>
                     <img src="<%= item.img_path %>" height="80px">
                   </div>
@@ -203,12 +235,13 @@
         </div>
         <div class="modal-body">
           <div class="signup text-center">
-            <form id="signUpForm">
+            <form action="/authentication/signup" method="POST" id="signUpForm">
               <div class="form-group">
                 <input type="text" class="form-control" name="name" placeholder="Username">
               </div>
               <div class="form-group">
-                <input type="email" class="form-control" name="email" placeholder="Email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                <span id="messageEmail"></span>
               </div>
               <div class="form-group d-flex justify-content-between">
                 <input type="text" class="form-control mr-2" name="first_name" placeholder="First name">
@@ -216,6 +249,9 @@
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" name="job_title" placeholder="Job title">
+              </div>
+              <div class="form-group d-none">
+                <input type="text" class="form-control" name="type" placeholder="Type" value="Instructor">
               </div>
               <div class="form-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
@@ -232,6 +268,7 @@
       </div>
     </div>
   </div>
+  <div class="overlay"></div>
   
 
   <!-- jQuery library -->
@@ -243,10 +280,14 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <script>
     $(document).ready(function(){
+      $('[data-toggle="popover"]').popover()
+
       let dataList = $('[data-transform="tableTransform"]').map(function(){
         return $(this).data('target')
       }).get()
@@ -292,6 +333,30 @@
         })
       })
 
+      var timer;
+      $("#email").change(function(){
+        clearTimeout(timer)
+        timer = setTimeout(function(){
+          let email = $("#email").val()
+          $.ajax({
+            url: "/user/checkemail",
+            type: "POST",
+            data: {
+              email
+            },
+            success: function(data){
+              if(data.msg === "Email existed"){
+                $("#messageEmail").css("color", "red").html("Email Exist")
+              } else if(data.msg === "Email is not valid"){
+                $("#messageEmail").css("color", "red").html("Email is not valid")
+              } else {
+                $("#messageEmail").css("color", "green").html("Email valid")
+              }
+            }
+          })
+        }, 100)
+      })
+
       $("#signUpForm").validate({
         onfocusout: false,
         onkeyup: false,
@@ -303,9 +368,6 @@
           "email":{
             required: true,
             email: true,
-            remote: {
-              
-            }
           },
           "first_name": {
             required: true
@@ -327,7 +389,50 @@
         }
       })
 
+      $("#btnSubmitForm").click(function() {
+        if($("#signUpForm").valid()) {
+          let value = $("#signUpForm").serialize()
+          $.ajax({
+            url: "/authentication/signup",
+            type: "POST",
+            data: value,
+            success: async function(data) {
+              await Swal.fire({
+                icon: "success",
+                title: "Create account instructor success!"
+              })
+              location.reload()
+            }
+          })
+        }
+      })
+
+      $("#filterInstructor").change(function(){
+        let name = $(this).val()
+        let total;
+        if(name === "") {
+          total = $(".course-table-item").length
+          $(".course-table-item").show()
+        }
+        else {
+          $(".course-table-item").hide()
+          total = $(`[data-instructor-name="${name}"]`).length
+          $(`[data-instructor-name="${name}"]`).show()
+        }
+        $("#courseLength").text(`Total: ${total}`)
+      })
+
+      $(document).on({
+          ajaxStart: function(){
+              $("body").addClass("loading"); 
+          },
+          ajaxStop: function(){ 
+              $("body").removeClass("loading"); 
+          }    
+      });
+
     })
   </script>
 </body>
+
 </html>

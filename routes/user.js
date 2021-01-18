@@ -3,11 +3,16 @@ const passport = require("passport");
 const router = express.Router()
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt");
+const UserService = require("../services/user-service");
 const {getUser} = require("../services/user-service");
 const {updateAdministrator} = require("../services/admin-service");
 const {updateInstructor} = require("../services/instructor-service");
 const {updateUser} = require("../services/user-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
+
+function emailIsValid (email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
 
 router.post('/update', urlencodedParser,async (req, res) => {
     const user_inf = req.user
@@ -42,6 +47,19 @@ router.post('/update', urlencodedParser,async (req, res) => {
     } else {
         res.json({'msg': 'Please login'})
     }
+})
+
+router.post('/checkemail', (req,res) => {
+    if(emailIsValid(req.body.email)){
+        UserService.getUser({email: req.body.email}).then (user => {
+            if (user) {
+                res.json({'msg': 'Email existed'})
+            } else {res.json({'msg': 'Available'})}
+        })
+    } else {
+        res.json({"msg": "Email is not valid"})
+    }
+    
 })
 
 router.get('/', (req, res) => {

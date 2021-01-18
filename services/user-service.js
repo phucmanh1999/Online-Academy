@@ -68,10 +68,13 @@ const getUser = async obj => {
             model: Student,
         }]
     });
-    user = user.toJSON()
-    user.created_at = convertDate(user.created_at)
-    user.updated_at = convertDate(user.updated_at)
-    return user;
+    if (user){
+        user = user.toJSON()
+        user.created_at = convertDate(user.created_at)
+        user.updated_at = convertDate(user.updated_at)
+        return user;
+    }
+    return null;
 }
 
 const createUser = async obj => {

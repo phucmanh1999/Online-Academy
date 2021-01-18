@@ -25,8 +25,19 @@ const updateChapter = (_id, obj) => {
     )
 }
 
+const deleteChapter = (_id) => {
+    return Chapter.destroy(
+        {
+            where: {
+                id: _id
+            }
+        }
+    )
+}
+
 module.exports = {
     createChapter,
     getChapter,
-    updateChapter
+    updateChapter,
+    deleteChapter
 }
