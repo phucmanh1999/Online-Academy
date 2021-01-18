@@ -68,7 +68,7 @@ const verifyAdmin = (req, res, next) => {
         req.user = decoded;
         if (!req.user || req.user.type !== ROLE_ADMIN) {
             res.redirect('/login')
-        } else
+        } else if (req.user.type === ROLE_ADMIN)
             return next()
     } catch (err) {
         return next();

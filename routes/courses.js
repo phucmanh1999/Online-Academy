@@ -1,4 +1,5 @@
 const express = require("express")
+const {getAllRootCategory} = require("../services/root-category-service");
 const {isOwn} = require("../services/bought-service");
 const {getTopBuyCourseByCategoryId} = require("../services/course-service");
 const {getAllCategories} = require("../services/category-service");
@@ -21,6 +22,7 @@ router.get('/:id', async (req, res) => {
             user: req.user ? req.user : undefined,
             isLog: req.user ? true : false,
             payload: course,
+            rootCategories: await getAllRootCategory(),
             categories: await getAllCategories(),
             topBuyCourses: await getTopBuyCourseByCategoryId(course.Category.id),
             isOwn: req.user ? await isOwn(req.user.role_id, req.params.id) : false

@@ -45,9 +45,10 @@ router.get('/category-courses/:categoryid',verifyStudentOrNormal, (req, res) => 
     }
     getCoursesByCategoryId(id, page, 5, order_price, order_rating).then((payload) => {
         payload.categoryId = id
-        getAllCategories().then((cat) => {
+        getAllCategories().then(async (cat) => {
             response.categories = cat
             response.payload = payload
+            response.rootCategories = await getAllRootCategory(),
             res.render("user/category",
                 response)
         })
@@ -78,9 +79,10 @@ router.get('/search',verifyStudentOrNormal, (req, res) => {
         // delete courses.Result
         // console.log(payload)
         payload.query = query
-        getAllCategories().then((cat) => {
+        getAllCategories().then(async ( cat) => {
             response.categories = cat
             response.payload = payload
+            response.rootCategories = await getAllRootCategory(),
             res.render("user/search", response)
         })
     })
