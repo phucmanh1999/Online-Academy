@@ -219,3 +219,6 @@ body {
 .dropdown:hover>.dropdown-menu {
   display: block;
 }
+.dropright:hover>.dropdown-menu {
+  display: block;
+}

@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous" />
+    crossorigin="anonymous"
+  />
   <link rel="stylesheet" href="/css/course.css">
   <link rel="stylesheet" href="/css/index.css" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.6.3/plyr.css" />
@@ -15,22 +20,19 @@
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
   <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
-  <!-- Main Quill library -->
-  <script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
-  <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
-
-  <!-- Theme included stylesheets -->
-  <link href="//cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
-  <link href="//cdn.quilljs.com/1.0.0/quill.bubble.css" rel="stylesheet">
 </head>
-
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container">
       <a href="/" class="navbar-branch">
         <img src="/assets/images/logo.svg" width="160px" />
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarResponsive"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -43,47 +45,111 @@
             <a class="nav-link" href="/login">Home</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">Categories</a>
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdownCategory"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Categories</a
+            >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
-                  <%= category.category_name %>
-                </a>
-                <%} %>
+              <% for(const rootCategory of rootCategories) { %>
+                <div class="dropdown-item p-0">
+                  <div class="nav-item dropright pl-2 pr-2">
+                    <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= rootCategory.root_category_name %>
+                    </a>
+                    <div class="dropdown-menu">
+                      <% rootCategory.Categories.forEach(item => { %>
+                        <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="=/about">About</a>
           </li>
-          <% if(typeof user !=='undefined' ) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/student/cart">
-                <i class="fas fa-shopping-cart"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/student/watchlist">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <%= user.username %>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                <a class="dropdown-item" href="/profile">My Profile</a>
-                <a class="dropdown-item" href="/logout">Log out</a>
-              </div>
-            </li>
-            <% } else { %>
+          <% if(typeof user !== 'undefined') { %>
+            <% if(user.type === "Student") { %>
               <li class="nav-item">
-                <a class="nav-link" href="/login">
-                  Login
+                <a class="nav-link" href="/student/cart">
+                  <i class="fas fa-shopping-cart"></i>
                 </a>
               </li>
-              <% } %>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/watchlist">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </a>
+              </li>
+            <% } %>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownUser"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                ><%= user.username %></a
+              >
+              <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                <% if(user.type === "Instructor") { %>
+                  <a class="dropdown-item" href="/instructor">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                      </div>
+                      <div>
+                        Instructor
+                      </div>
+                    </div>
+                  </a>
+                <% } else if(user.type === "Administrator") { %>
+                  <a class="dropdown-item" href="/admin">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-user-cog"></i>
+                      </div>
+                      <div>
+                        Admin
+                      </div>
+                    </div>
+                  </a>
+                <% } %>
+                <a class="dropdown-item" href="/profile">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="far fa-id-badge"></i>
+                    </div>
+                    <div>
+                      My profile
+                    </div>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div>
+                      Log out
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">
+                Login
+              </a>
+            </li>
+          <% } %>
         </ul>
       </div>
     </div>
@@ -93,15 +159,11 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">
-            <img src="/assets/images/logo-images.svg" width="30px">
-          </a></li>
+          <img src="/assets/images/logo-images.svg" width="30px">
+        </a></li>
         <li class="breadcrumb-item">Category</li>
-        <li class="breadcrumb-item"><a href="/category-courses/<%= payload.category_id %>">
-            <%= payload.Category.category_name %>
-          </a></li>
-        <li class="breadcrumb-item active" aria-current="page">
-          <%= payload.course_name %>
-        </li>
+        <li class="breadcrumb-item"><a href="/category-courses/<%= payload.category_id %>"><%= payload.Category.category_name %></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= payload.course_name %></li>
       </ol>
     </nav>
   </div>
@@ -113,34 +175,27 @@
           <div class="course-title">
             <%= payload.course_name %>
           </div>
-          <div  id="editor" hidden>
-          </div>
-          <div class="course-detail" id="fdcontent">
-            <%=payload.full_description%>
+          <div class="course-detail">
+            <%= payload.full_description %>
           </div>
           <div class="course-star mt-2">
             <%= payload.rating %>
-              <% for(let j=1; j <=Math.floor(payload.rating); j++) { %>
-                <i class="fa fa-star"></i>
-                <% } %>
-                  <% if(payload.rating - Math.floor(payload.rating) !==0) { %>
-                    <i class="fa fa-star-half-alt"></i>
-                    <% } %>
-                      <% for(let j=Math.ceil(payload.rating); j < 5; j++) { %>
-                        <i class="far fa-star"></i>
-                        <% } %>
-                          <div class="course-number d-inline ml-2">
-                            (<%= payload.rating_number ? payload.rating_number : 0 %> ratings) <span class="ml-2">
-                                <%= payload.enroll_number ? payload.enroll_number : 0 %> students
-                              </span>
-                          </div>
+            <% for(let j = 1; j <= Math.floor(payload.rating); j++) { %>
+              <i class="fa fa-star"></i>
+            <% } %>
+            <% if(payload.rating - Math.floor(payload.rating) !== 0) { %>
+              <i class="fa fa-star-half-alt"></i>
+            <% } %>
+            <% for(let j = Math.ceil(payload.rating); j < 5; j++) { %>
+              <i class="far fa-star"></i>
+            <% } %>
+            <div class="course-number d-inline ml-2">
+              (<%= payload.rating_number ? payload.rating_number : 0 %> ratings) <span class="ml-2"><%= payload.enroll_number ? payload.enroll_number : 0 %> students</span>
+            </div>
           </div>
 
           <div class="course-lectures mt-2">
-            Create by: <span>
-              <%= payload.Instructor.User.first_name %>
-                <%= payload.Instructor.User.last_name %>
-            </span>
+            Create by: <span><%= payload.Instructor.User.first_name %> <%= payload.Instructor.User.last_name %></span>
           </div>
 
           <div class="course-update">
@@ -155,23 +210,20 @@
             Course Content
           </div>
           <div class="accordion" id="accordionChapter">
-            <% payload.Chapters.forEach((chapter, iChapter)=> { %>
+            <% payload.Chapters.forEach((chapter, iChapter) => { %>
               <div class="card">
                 <div class="card-header" id="heading<%= iChapter %>">
                   <h2 class="mb-0">
-                    <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                      data-target="#collapse<%= iChapter %>" aria-expanded="true"
-                      aria-controls="collapse<%= iChapter %>">
+                    <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<%= iChapter %>" aria-expanded="true" aria-controls="collapse<%= iChapter %>">
                       <%= chapter.chapter_name %>
                     </button>
                   </h2>
                 </div>
 
-                <div id="collapse<%= iChapter %>" class="collapse show" aria-labelledby="heading<%= iChapter %>"
-                  data-parent="#accordionChapter">
+                <div id="collapse<%= iChapter %>" class="collapse show" aria-labelledby="heading<%= iChapter %>" data-parent="#accordionChapter">
                   <div class="card-body">
                     <ul class="list-group">
-                      <% chapter.Lessons.forEach((lesson, iLesson)=> { %>
+                      <% chapter.Lessons.forEach((lesson, iLesson) => { %>
                         <li class="list-group-item">
                           <div class="d-flex justify-content-between">
                             <div>
@@ -179,18 +231,17 @@
                             </div>
                             <div>
                               <% if(isOwn || lesson.is_free) { %>
-                                <a href="#" data-toggle="modal"
-                                  data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
-                                <% } %>
+                                <a href="#" data-toggle="modal" data-target="#chapter<%= iChapter %>Lesson<%= iLesson %>">Watch</a>
+                              <% } %>
                             </div>
                           </div>
                         </li>
-                        <% }) %>
+                      <% }) %>
                     </ul>
                   </div>
                 </div>
               </div>
-              <% }) %>
+            <% }) %>
           </div>
         </div>
         <div class="relate-courses">
@@ -198,7 +249,7 @@
             Top Buy Courses Related "<%= payload.Category.category_name %>"
           </div>
           <div class="container-fluid">
-            <% topBuyCourses.forEach((item)=> { %>
+            <% topBuyCourses.forEach((item) => { %>
               <a href="/courses/<%= item.id %>">
                 <div class="row row-cols-4">
                   <div class="col-6 d-flex">
@@ -218,17 +269,15 @@
                     <%= item.rating %> <i class="fa fa-star"></i>
                   </div>
                   <div class="col-2">
-                    <i class="fas fa-user-friends"></i>
-                    <%= item.view_number %>
+                    <i class="fas fa-user-friends"></i> <%= item.view_number %>
                   </div>
                   <div class="col-2">
-                    <%= item.price %>
-                      <%= item.concurrency %>
+                    <%= item.price %> <%= item.concurrency %>
                   </div>
                 </div>
                 <hr>
               </a>
-              <%}) %>
+            <%}) %>
           </div>
         </div>
         <div class="instructor">
@@ -237,11 +286,10 @@
           </div>
           <div class="instructor-profile">
             <div class="instructor-name">
-              <%= payload.Instructor.User.first_name %>
-                <%= payload.Instructor.User.last_name %>
-                  <span class="d-block">
-                    <%= payload.Instructor.job_title %>
-                  </span>
+              <%= payload.Instructor.User.first_name %> <%= payload.Instructor.User.last_name %>
+              <span class="d-block">
+                <%= payload.Instructor.job_title %>
+              </span>
             </div>
             <div class="instructor-avatar d-flex">
               <div class="instructor-img ">
@@ -249,18 +297,10 @@
               </div>
               <div class="instructor-detail">
                 <ul>
-                  <li><i class="fa fa-star"></i>
-                    <%= payload.Instructor.rating %> Rating
-                  </li>
-                  <li><i class="fas fa-user-friends"></i>
-                    <%= payload.Instructor.enroll_number %> Students
-                  </li>
-                  <li><i class="fas fa-holly-berry"></i>
-                    <%= payload.Instructor.rating_number %> Reviews
-                  </li>
-                  <li><i class="fa fa-play"></i>
-                    <%= payload.Instructor.course_number %> Courses
-                  </li>
+                  <li><i class="fa fa-star"></i> <%= payload.Instructor.rating %> Rating</li>
+                  <li><i class="fas fa-user-friends"></i> <%= payload.Instructor.enroll_number %> Students</li>
+                  <li><i class="fas fa-holly-berry"></i> <%= payload.Instructor.rating_number %> Reviews</li>
+                  <li><i class="fa fa-play"></i> <%= payload.Instructor.course_number %> Courses</li>
                 </ul>
               </div>
             </div>
@@ -278,15 +318,15 @@
               <%= payload.rating %>
             </div>
             <div>
-              <% for(let j=1; j <=Math.floor(payload.rating); j++) { %>
+              <% for(let j = 1; j <= Math.floor(payload.rating); j++) { %>
                 <i class="fa fa-star"></i>
-                <% } %>
-                  <% if(payload.rating - Math.floor(payload.rating) !==0) { %>
-                    <i class="fa fa-star-half-alt"></i>
-                    <% } %>
-                      <% for(let j=Math.ceil(payload.rating); j < 5; j++) { %>
-                        <i class="far fa-star"></i>
-                        <% } %>
+              <% } %>
+              <% if(payload.rating - Math.floor(payload.rating) !== 0) { %>
+                <i class="fa fa-star-half-alt"></i>
+              <% } %>
+              <% for(let j = Math.ceil(payload.rating); j < 5; j++) { %>
+                <i class="far fa-star"></i>
+              <% } %>
             </div>
             <div class="mb-3">
               Course Rating
@@ -300,31 +340,26 @@
             Reviews
           </div>
           <div class="container-fluid review-item">
-            <% payload.Reviews.forEach(item=> { %>
+            <% payload.Reviews.forEach(item => { %>
               <div class="row">
                 <div class="col-1">
-                  <img class="rounded-circle"
-                    src="https://www.cogandhand.com.au/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png"
-                    width="50px" height="50px">
+                  <img class="rounded-circle" src="https://www.cogandhand.com.au/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" width="50px" height="50px">
                 </div>
                 <div class="col-11">
                   <div class="student-review">
-                    <%= item.Student.User.first_name %>
-                      <%= item.Student.User.last_name %>
+                    <%= item.Student.User.first_name %> <%= item.Student.User.last_name %>
                   </div>
                   <div class="review-rating">
-                    <% for(let j=1; j <=Math.floor(item.star); j++) { %>
+                    <% for(let j = 1; j <= Math.floor(item.star); j++) { %>
                       <i class="fa fa-star"></i>
-                      <% } %>
-                        <% if(item.star - Math.floor(item.star) !==0) { %>
-                          <i class="fa fa-star-half-alt"></i>
-                          <% } %>
-                            <% for(let j=Math.ceil(item.star); j < 5; j++) { %>
-                              <i class="far fa-star"></i>
-                              <% } %>
-                                <span class="ml-2">
-                                  <%= item.created_at %>
-                                </span>
+                    <% } %>
+                    <% if(item.star - Math.floor(item.star) !== 0) { %>
+                      <i class="fa fa-star-half-alt"></i>
+                    <% } %>
+                    <% for(let j = Math.ceil(item.star); j < 5; j++) { %>
+                      <i class="far fa-star"></i>
+                    <% } %>
+                    <span class="ml-2"><%= item.created_at %></span>
                   </div>
                   <div class="review-content">
                     <%= item.comment %>
@@ -332,23 +367,23 @@
                 </div>
               </div>
               <hr>
-              <% }) %>
-                <% if(isOwn) { %>
-                  <div class="add-review">
-                    <div class="text-center">
-                      <div id="starCount" class="review-star">
-                        <i data-star='1' class="far fa-star"></i>
-                        <i data-star='2' class="far fa-star"></i>
-                        <i data-star='3' class="far fa-star"></i>
-                        <i data-star='4' class="far fa-star"></i>
-                        <i data-star='5' class="far fa-star"></i>
-                      </div>
-                      <span style="color: red;">Please rating !</span>
-                    </div>
-                    <input class="w-100 d-block mb-2" type="text" name="comment" placeholder="Add comment..">
-                    <button data-course-id="<%= payload.courseId %>" class="btn btn-primary" id="addReview">Add</button>
+            <% }) %>
+            <% if(isOwn) { %>
+              <div class="add-review">
+                <div class="text-center">
+                  <div id="starCount" class="review-star">
+                    <i data-star='1' class="far fa-star"></i>
+                    <i data-star='2' class="far fa-star"></i>
+                    <i data-star='3' class="far fa-star"></i>
+                    <i data-star='4' class="far fa-star"></i>
+                    <i data-star='5' class="far fa-star"></i>
                   </div>
-                  <% } %>
+                  <span  style="color: red;">Please rating !</span>
+                </div>
+                <input class="w-100 d-block mb-2" type="text" name="comment" placeholder="Add comment..">
+                <button data-course-id="<%= payload.courseId %>" class="btn btn-primary" id="addReview">Add</button>
+              </div>
+            <% } %>
           </div>
         </div>
 
@@ -366,35 +401,32 @@
           <% if(isLog) { %>
             <% if(!isOwn) { %>
               <div class="course-price">
-                <%= payload.price %>
-                  <%= payload.concurrency %>
+                <%= payload.price %> <%= payload.concurrency %>
               </div>
               <div class="course-controls">
-                <button id="btnAdd" data-course-id="<%= payload.id %>" class="btn btn-danger btn-block">Add To
-                  Cart</button>
+                <button id="btnAdd" data-course-id="<%= payload.id %>" class="btn btn-danger btn-block">Add To Cart</button>
                 <a data-toggle="modal" data-target="#buyCourse" class="btn btn-outline-primary btn-block">Buy</a>
                 <div>
                   30-Day Money-Back Guarantee
                 </div>
               </div>
-              <% } %>
-                <% } else { %>
-                  <div class="course-price">
-                    <%= payload.price %>
-                      <%= payload.concurrency %>
-                  </div>
-                  <div class="course-controls">
-                    <a href="/login" class="btn btn-block btn-outline-danger">Login to buy</a>
-                  </div>
-                  <% } %>
-                    <div class="course-include">
-                      <div>This course includes: </div>
-                      <ul>
-                        <li><i class="fas fa-film"></i> 22 hours on-demand video</li>
-                        <li><i class="fas fa-infinity"></i> Full lifetime access</li>
-                        <li><i class="fas fa-mobile-alt"></i> Access on mobile and TV</li>
-                      </ul>
-                    </div>
+            <% } %>
+          <% } else { %>
+            <div class="course-price">
+              <%= payload.price %> <%= payload.concurrency %>
+            </div>
+            <div class="course-controls">
+              <a href="/login" class="btn btn-block btn-outline-danger">Login to buy</a>
+            </div>
+          <% } %>
+          <div class="course-include">
+            <div>This course includes: </div>
+            <ul>
+              <li><i class="fas fa-film"></i> 22 hours on-demand video</li>
+              <li><i class="fas fa-infinity"></i> Full lifetime access</li>
+              <li><i class="fas fa-mobile-alt"></i> Access on mobile and TV</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -405,14 +437,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <div>Course Preview</div>
-          <div>
-            <%= payload.course_name %>
-          </div>
+          <div><%= payload.course_name %></div>
         </div>
         <div class="modal-body">
           <video data-poster="/assets/images/Course3.jpg" crossorigin playsinline width="100%" controls id="player">
-            <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4"
-              size="576" />
+            <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576"/>
           </video>
         </div>
       </div>
@@ -424,9 +453,7 @@
       <div class="modal-content">
         <div class="modal-header d-flex flex-column">
           <div>Summary:</div>
-          <div>
-            <%= payload.course_name %>
-          </div>
+          <div><%= payload.course_name %></div>
         </div>
         <div class="modal-body">
           <div class="d-flex justify-content-between">
@@ -434,8 +461,7 @@
               Original price:
             </div>
             <div>
-              <%= payload.price %>
-                <%= payload.concurrency %>
+              <%= payload.price %> <%= payload.concurrency %>
             </div>
           </div>
           <div class="d-flex justify-content-between">
@@ -449,41 +475,34 @@
           <hr>
           <div class="d-flex justify-content-between mb-2">
             <div>Total: </div>
-            <div>
-              <%= payload.price %>
-                <%= payload.concurrency %>
-            </div>
+            <div><%= payload.price %> <%= payload.concurrency %></div>
           </div>
-          <button class="btn btn-block btn-danger" id="btnBuy" data-course-id="<%= payload.id %>">Complete
-            Payment</button>
+          <button class="btn btn-block btn-danger" id="btnBuy" data-course-id="<%= payload.id %>">Complete Payment</button>
         </div>
       </div>
     </div>
   </div>
 
   <div id="watchVideo">
-    <% payload.Chapters.forEach((chapter, iChapter)=> { %>
-      <% chapter.Lessons.forEach((lesson, iLesson)=> { %>
+    <% payload.Chapters.forEach((chapter, iChapter) => { %>
+      <% chapter.Lessons.forEach((lesson, iLesson) => { %>
         <div class="modal fade" id="chapter<%= iChapter %>Lesson<%= iLesson %>">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header">
                 <div>Course Preview</div>
-                <div>
-                  <%= lesson.lesson_name %>
-                </div>
+                <div><%= lesson.lesson_name %></div>
               </div>
               <div class="modal-body">
-                <video data-poster="<%= payload.img_path %>" crossorigin playsinline width="100%" controls
-                  class="js-player">
-                  <source src="<%= lesson.video_url %>" type="video/mp4" />
+                <video data-poster="<%= payload.img_path %>" crossorigin playsinline width="100%" controls class="js-player">
+                  <source src="<%= lesson.video_url %>" type="video/mp4"/>
                 </video>
               </div>
             </div>
           </div>
         </div>
-        <% }) %>
-          <% }) %>
+      <% }) %>
+    <% }) %>
   </div>
 
 
@@ -491,8 +510,7 @@
   <!-- Before footer -->
   <div class="container-fluid">
     <div class="row">
-      <div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career skills.
-      </div>
+      <div class="col-6 footer-text">Top companies choose <a href="#">MNP Courses</a> to build in-demand career skills.</div>
       <ul class="col-6 d-flex justify-content-between mb-0 logo">
         <li><img src="https://s.udemycdn.com/partner-logos/lyft-logo.svg" alt=""></li>
         <li><img src="https://s.udemycdn.com/partner-logos/adidas-logo.svg" alt=""></li>
@@ -507,33 +525,33 @@
     <div class="row">
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-            MNP for Business</a></li>
+          MNP for Business</a></li>
         <li class="list-group"><a href="#">
-            Teach on Udemy</a></li>
+          Teach on Udemy</a></li>
         <li class="list-group"><a href="#">
-            About us</a></li>
+          About us</a></li>
         <li class="list-group"><a href="#">
-            Contact us</a></li>
+          Contact us</a></li>
       </ul>
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-            Careers</a></li>
+          Careers</a></li>
         <li class="list-group"><a href="#">
-            Blog</a></li>
+          Blog</a></li>
         <li class="list-group"><a href="#">
-            Help and Support</a></li>
+          Help and Support</a></li>
         <li class="list-group"><a href="#">
-            Affiliate</a></li>
+          Affiliate</a></li>
       </ul>
       <ul class="col list-group">
         <li class="list-group"><a href="#">
-            Terms</a></li>
+          Terms</a></li>
         <li class="list-group"><a href="#">
-            Privacy policy and cookie policy</a></li>
+          Privacy policy and cookie policy</a></li>
         <li class="list-group"><a href="#">
-            Sitemap</a></li>
+          Sitemap</a></li>
         <li class="list-group"><a href="#">
-            Featured courses</a></li>
+          Featured courses</a></li>
       </ul>
     </div>
     <div class="row footer-logo d-flex justify-content-between">
@@ -563,23 +581,23 @@
 
   <script>
     $(".add-review span").hide()
-    $().ready(function () {
+    $().ready(function(){
       const players = Plyr.setup('.js-player');
 
       $('#previewCourse').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
       })
-      $("#btnAdd").click(function () {
-        let courseId = $(this).attr("data-course-id")
-        $.post(`/student/addCart/${courseId}`, function (data, status) {
-          if (data.msg === "Add cart success") {
+      $("#btnAdd").click(function(){
+        let courseId =$(this).attr("data-course-id")
+        $.post(`/student/addCart/${courseId}`, function(data, status){
+          if(data.msg === "Add cart success") {
             Swal.fire({
               icon: 'success',
               title: data.msg
             })
             // let cartCount = Number(document.getElementById("cartCount").innerHTML)
             // document.getElementById("cartCount").innerHTML = cartCount + 1
-          } else if (data.msg === "Cart already exist") {
+          } else if(data.msg === "Cart already exist") {
             Swal.fire({
               icon: 'error',
               title: "Course already exist"
@@ -587,28 +605,28 @@
           }
         })
       })
-      $("#btnBuy").click(function () {
+      $("#btnBuy").click(function(){
         let courses = Array($(this).attr("data-course-id"))
         console.log(courses.join("+"))
         $.post(`/student/buy`,
-          {
-            courses: courses.join("+")
-          },
-          async function (data, status) {
-            if (data.msg === "Buy success") {
-              await Swal.fire({
-                icon: 'success',
-                title: data.msg
-              })
-              location.reload()
-            }
-          })
+         {
+           courses: courses.join("+")
+         },
+         async function(data, status) {
+          if(data.msg === "Buy success") {
+            await Swal.fire({
+              icon: 'success',
+              title: data.msg
+            })
+            location.reload()
+          }
+        })
       })
       let star = 0;
-      $("#starCount i").click(function () {
+      $("#starCount i").click(function(){
         star = $(this).data("star")
-        $("#starCount i").each(function (index) {
-          if (index < star) {
+        $("#starCount i").each(function(index) {
+          if(index < star) {
             $(this).removeClass("far").addClass("fa")
           } else {
             $(this).removeClass("fa").addClass("far")
@@ -616,8 +634,8 @@
         })
         $(".add-review span").hide()
       })
-      $("#addReview").click(function () {
-        if (star === 0) {
+      $("#addReview").click(function() {
+        if(star === 0) {
           $(".add-review span").show()
         } else {
           let comment = $(".add-review input").val()
@@ -629,8 +647,8 @@
               comment,
               course_id
             },
-            async function (data, status) {
-              if (data.msg === "Add comment success") {
+            async function(data, status) {
+              if(data.msg === "Add comment success") {
                 await Swal.fire({
                   icon: 'success',
                   title: data.msg
@@ -643,19 +661,6 @@
       })
     })
   </script>
-  <script>
-    // content = document.getElementById('editor').value
-    content = JSON.parse(document.getElementById('fdcontent').innerText);
-
-    var editor = new Quill('#editor');
-    //load content from db
-    editor.setContents(content);
-    console.log(editor.root.innerHTML)
-
-
-    document.getElementById('fdcontent').innerHTML = editor.root.innerHTML
-  </script>
 
 </body>
-
 </html>

@@ -54,29 +54,41 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+              <% for(const rootCategory of rootCategories) { %>
+                <div class="dropdown-item p-0">
+                  <div class="nav-item dropright pl-2 pr-2">
+                    <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= rootCategory.root_category_name %>
+                    </a>
+                    <div class="dropdown-menu">
+                      <% rootCategory.Categories.forEach(item => { %>
+                        <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
               <%} %>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about">About</a>
           </li>
-          <% if(typeof user !== 'undefined' ) { %>
-            <li class="nav-item active">
-              <a class="nav-link" href="/student/cart">
-                <i class="fas fa-shopping-cart"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/student/watchlist">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-              </a>
-            </li>
+          <% if(typeof user !== 'undefined') { %>
+            <% if(user.type === "Student") { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/cart">
+                  <i class="fas fa-shopping-cart"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/watchlist">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </a>
+              </li>
+            <% } %>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                href="#"
                 id="dropdownUser"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -84,8 +96,50 @@
                 ><%= user.username %></a
               >
               <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                <a class="dropdown-item" href="/profile">My Profile</a>
-                <a class="dropdown-item" href="/logout">Log out</a>
+                <% if(user.type === "Instructor") { %>
+                  <a class="dropdown-item" href="/instructor">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                      </div>
+                      <div>
+                        Instructor
+                      </div>
+                    </div>
+                  </a>
+                <% } else if(user.type === "Administrator") { %>
+                  <a class="dropdown-item" href="/admin">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-user-cog"></i>
+                      </div>
+                      <div>
+                        Admin
+                      </div>
+                    </div>
+                  </a>
+                <% } %>
+                <a class="dropdown-item" href="/profile">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="far fa-id-badge"></i>
+                    </div>
+                    <div>
+                      My profile
+                    </div>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div>
+                      Log out
+                    </div>
+                  </div>
+                </a>
               </div>
             </li>
           <% } else { %>

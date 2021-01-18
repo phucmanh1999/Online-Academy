@@ -74,7 +74,7 @@ router.post('/signup', urlencodedParser, (req, res) => {
                 }
                 // console.log(instructor)
                 createInstructor(instructor).then(
-                    res.redirect("/login")
+                    res.json({msg: "Created success"})
                 ).catch(() => {
                     deleteUser(user_created)
                 })

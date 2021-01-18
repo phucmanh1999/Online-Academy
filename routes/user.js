@@ -10,6 +10,10 @@ const {updateInstructor} = require("../services/instructor-service");
 const {updateUser} = require("../services/user-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
+function emailIsValid (email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
 router.post('/update', urlencodedParser,async (req, res) => {
     const user_inf = req.user
     console.log(await (user_inf))
@@ -46,11 +50,16 @@ router.post('/update', urlencodedParser,async (req, res) => {
 })
 
 router.post('/checkemail', (req,res) => {
-    UserService.getUser({email: req.query.email}).then (user => {
-        if (user) {
-            res.json({'msg': 'Email existed'})
-        } else {res.json({'msg': 'Available'})}
-    })
+    if(emailIsValid(req.body.email)){
+        UserService.getUser({email: req.body.email}).then (user => {
+            if (user) {
+                res.json({'msg': 'Email existed'})
+            } else {res.json({'msg': 'Available'})}
+        })
+    } else {
+        res.json({"msg": "Email is not valid"})
+    }
+    
 })
 
 router.get('/', (req, res) => {
