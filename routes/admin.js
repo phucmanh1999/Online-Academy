@@ -7,7 +7,7 @@ const {getAllStudent} = require("../services/user-service");
 const router = express.Router()
 const {getAllInstructor} = require("../services/user-service");
 const {getCourse} = require("../services/course-service");
-const {getAllCategory} = require("../services/course-service")
+const {getAllCategories} = require("../services/category-service")
 
 router.get('/', async (req, res) => {
     if (req.user && req.user.type === ROLE_ADMIN) {
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
             students: await getAllStudent(),
             rootCategories: await getAllRootCategory(),
             courses: await getAllCourses(),
-            categories: await getAllCategory()
+            categories: await getAllCategories()
         });
     } else {
         res.redirect('/')
