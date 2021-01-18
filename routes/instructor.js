@@ -30,7 +30,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 router.get('/', async (req, res) => {
     const userI = req.user ? req.user : undefined
     if (userI && userI.type === ROLE_INSTRUCTOR) {
-        const user = await getInstructor({id: userI.role_id})
+        const user = await getUser({id: userI.id})
         let category = await getAllCategories();
         const rootCategory = await getAllRootCategory();
         const courses = await getAllCoursesBy({instructor_id: user.role_id})
