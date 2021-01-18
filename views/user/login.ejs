@@ -189,6 +189,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
   <script>
     $().ready(function(){
       $("#signUpForm").validate({
@@ -229,6 +232,12 @@
           }
           else if(data.msg === 'Password is incorrect'){
             $("#msgPass").text(data.msg).show()  
+          }
+          else if(data.msg === "Account is deactived") {
+            Swal.fire({
+              icon: 'error',
+              title: data.msg
+            })
           }
         })
       })

@@ -61,17 +61,19 @@
             <li class="nav-item">
               <a class="nav-link" href="/about">About</a>
             </li>
-            <% if(typeof user !== 'undefined' ) { %>
-              <li class="nav-item">
-                <a class="nav-link" href="/student/cart">
-                  <i class="fas fa-shopping-cart"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/student/watchlist">
-                  <i class="fa fa-heart" aria-hidden="true"></i>
-                </a>
-              </li>
+            <% if(typeof user !== 'undefined') { %>
+              <% if(user.type === "Student") { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/student/cart">
+                    <i class="fas fa-shopping-cart"></i>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/student/watchlist">
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                  </a>
+                </li>
+              <% } %>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -82,8 +84,50 @@
                   ><%= user.username %></a
                 >
                 <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                  <a class="dropdown-item" href="/profile">My Profile</a>
-                  <a class="dropdown-item" href="/logout">Log out</a>
+                  <% if(user.type === "Instructor") { %>
+                    <a class="dropdown-item" href="/instructor">
+                      <div class="d-flex">
+                        <div class="icon-profile w-25">
+                          <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div>
+                          Instructor
+                        </div>
+                      </div>
+                    </a>
+                  <% } else if(user.type === "Administrator") { %>
+                    <a class="dropdown-item" href="/admin">
+                      <div class="d-flex">
+                        <div class="icon-profile w-25">
+                          <i class="fas fa-user-cog"></i>
+                        </div>
+                        <div>
+                          Admin
+                        </div>
+                      </div>
+                    </a>
+                  <% } %>
+                  <a class="dropdown-item" href="/profile">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="far fa-id-badge"></i>
+                      </div>
+                      <div>
+                        My profile
+                      </div>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/logout">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-sign-out-alt"></i>
+                      </div>
+                      <div>
+                        Log out
+                      </div>
+                    </div>
+                  </a>
                 </div>
               </li>
             <% } else { %>
@@ -377,10 +421,9 @@
                   icon: 'error',
                   title: data.msg
                 })
+              } else {
+                location.href = "/login"
               }
-              // } else {
-              //   location.href = "/login"
-              // }
             }
           )
         })

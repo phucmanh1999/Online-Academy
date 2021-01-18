@@ -11,7 +11,8 @@ const {getAllCategory} = require("../services/course-service")
 
 router.get('/', async (req, res) => {
     if (req.user && req.user.type === ROLE_ADMIN) {
-        res.render('admin/category',{
+        res.render("admin/index",{
+            user: req.user,
             instructors: await getAllInstructor(),
             students: await getAllStudent(),
             rootCategories: await getAllRootCategory(),
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
             categories: await getAllCategory()
         });
     } else {
-        res.redirect('/login')
+        res.redirect('/')
     }
 })
 
