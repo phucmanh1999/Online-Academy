@@ -258,7 +258,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                     imageFile.mv("./public/assets/images/" + imageFile.name)
                 getInstructor({id: instructorId}).then(ins => {
                     updateInstructor(instructorId, {
-                        course_number: ins.course_number ? 1 : ins.course_number + 1
+                        course_number: ins.course_number ? ins.course_number + 1 : 1
                     })
                 })
                 res.json({msg: "ok"})
@@ -300,8 +300,6 @@ router.post('/addChapter', (req, res) => {
 });
 
 router.post('/addLesson', (req, res) => {
-    console.log(req.body)
-    console.log(req.files.video)
     const user = req.user ? req.user : undefined
     const chapter_id = req.query.chapter_id
     let videoFile = null

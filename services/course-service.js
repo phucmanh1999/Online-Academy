@@ -282,6 +282,9 @@ const getCourse = async obj => {
     course = course.toJSON()
     course.created_at = convertDate(course.created_at)
     course.updated_at = convertDate(course.updated_at)
+    course.Chapters.forEach(chapter => {
+        chapter.Lessons.sort((a, b) => (a.id > b.id) ? 1 : -1)
+    })
     return course;
 }
 
