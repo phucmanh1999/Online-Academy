@@ -41,8 +41,6 @@ router.get('/', async (req, res) => {
     }
 })
 
-// get render page
-
 router.get('/addCourse', async (req, res) => {
     const category = await getAllCategories();
     const user = req.user ? req.user : undefined
@@ -94,7 +92,7 @@ router.post('/profile', (req, res) => {
         birthday: req.body.birthday,
         email: req.body.email,
         job_title: req.body.job_title,
-        address: req.body.address,
+        user_address: req.body.address,
     }
     let imageFile = null
     let imgPath = null
@@ -120,7 +118,6 @@ router.post('/profile', (req, res) => {
     } else {
         res.redirect("/login")
     }
-
 })
 
 router.delete('/deleteChapter', (req, res) => {
@@ -254,7 +251,8 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 course_state: 'U',
                 created_at: new Date(),
                 category_id: categoryId,
-                instructor_id: instructorId
+                instructor_id: instructorId,
+                is_active: true
             }).then(() => {
                 if (imageFile)
                     imageFile.mv("./public/assets/images/" + imageFile.name)

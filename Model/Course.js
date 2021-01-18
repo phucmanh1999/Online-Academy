@@ -37,6 +37,7 @@ const Course = database.define('Course', {
             notNull: true,
             type: sequelize.INTEGER,
         },
+        is_active: sequelize.BOOLEAN
     },
     {
         timestamps: false,

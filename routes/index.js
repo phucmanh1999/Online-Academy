@@ -1,5 +1,7 @@
 const express = require("express")
 const jwt = require('jsonwebtoken')
+const {decodeToken} = require("../middleware/authentication");
+const {verifyStudentOrNormal} = require("../middleware/authentication");
 const {getAllRootCategory} = require("../services/root-category-service");
 const {getTopEnrollCourse} = require("../services/course-service");
 const {searchCourse} = require("../services/course-service");
@@ -10,7 +12,7 @@ const {getCourseByTopView} = require("../services/course-service");
 const {getAllCategories} = require("../services/category-service");
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/',verifyStudentOrNormal, async (req, res) => {
     res.render("user/index", {
         user: req.user ? req.user : undefined,
         categories: await getAllCategories(),
@@ -22,7 +24,7 @@ router.get('/', async (req, res) => {
     });
 })
 
-router.get('/category-courses/:categoryid', (req, res) => {
+router.get('/category-courses/:categoryid',verifyStudentOrNormal, (req, res) => {
 
     const id = req.params.categoryid
     const page = req.query.page ? req.query.page : 1
@@ -43,18 +45,19 @@ router.get('/category-courses/:categoryid', (req, res) => {
     }
     getCoursesByCategoryId(id, page, 5, order_price, order_rating).then((payload) => {
         payload.categoryId = id
-        getAllCategories().then((cat) => {
+        getAllCategories().then(async (cat) => {
             response.categories = cat
             response.payload = payload
+            response.rootCategories = await getAllRootCategory(),
             res.render("user/category",
                 response)
         })
     });
 })
 
-router.get('/search', (req, res) => {
+router.get('/search',verifyStudentOrNormal, (req, res) => {
     const query = req.query.query;
-    console.log(query)
+    // console.log(query)
     const page = req.query.page ? req.query.page : 1
     const order_price = req.query.order_price ? req.query.order_price : "DESC"
     const order_rating = req.query.order_review ? req.query.order_review : "DESC"
@@ -76,19 +79,20 @@ router.get('/search', (req, res) => {
         // delete courses.Result
         // console.log(payload)
         payload.query = query
-        getAllCategories().then((cat) => {
+        getAllCategories().then(async ( cat) => {
             response.categories = cat
             response.payload = payload
+            response.rootCategories = await getAllRootCategory(),
             res.render("user/search", response)
         })
     })
 })
 
-router.get("/signup", (req, res) => {
+router.get("/signup",decodeToken, (req, res) => {
     res.render("user/signup")
 })
 
-router.get("/login", (req, res) => {
+router.get("/login",decodeToken, (req, res) => {
     if (!req.user) {
         res.render("user/login")
         return;
@@ -101,7 +105,11 @@ router.get("/login", (req, res) => {
     }
 })
 
-router.get("/logout", (req, res) => {
+router.get("/profile", (req,res) => {
+        res.redirect('/student/profile')
+})
+
+router.get("/logout",decodeToken, (req, res) => {
     res.clearCookie("token");
     res.redirect("/")
 })
