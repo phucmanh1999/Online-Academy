@@ -34,12 +34,12 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/">Home</a>
 					</li>
-					
+
 					<li class="nav-item">
 						<a class="nav-link" href="/about">About</a>
 					</li>
 					<% if(typeof user !=='undefined' ) { %>
-						
+
 						<li class="nav-item">
 							<a class="nav-link" href="/instructor">
 								<i class="fa fa-heart" aria-hidden="true"></i>
@@ -48,7 +48,7 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true"
 								aria-expanded="false">
-								<%= user.username %>
+								<%= user.user_name %>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownUser">
 								<a class="dropdown-item" href="/profile">My Profile</a>
@@ -72,7 +72,7 @@
 
 		<div class="wrapper bg-white mt-sm-5">
 			<h4 class="pb-4 border-bottom ">Account settings</h4>
-			<div class="d-flex align-items-start py-3 border-bottom form-group"> 
+			<div class="d-flex align-items-start py-3 border-bottom form-group">
 				<img id='image'src=<%= user.avatar_url?user.avatar_url:"/assets/images/default_avt.png" %> class="img"alt="Avatar">
 				<div class="pl-sm-4 pl-2" id="img-section">
 					<p><b>Avatar</b></p>
@@ -112,14 +112,14 @@
 							placeholder="ex. Professional Web Developer and Instructor" value="<%=user.Instructor.job_title%>">
 					</div>
 				</div>
-	
-	
+
+
 				<div class="row py-2 form-group">
 					<div class="col-12"> <label for="address">Address</label> <input type="text" name="address"class="bg-light form-control"
 							placeholder="ex.189I/32a Tôn Thất Thuyết P3 Q4 TPHCM" value="<%=user.user_address%>"> </div>
 				</div>
-	
-	
+
+
 				<div class="row py-2 form-group">
 					<div class="col-12"> <label for="short_description">Short Description</label>
 						<textarea class="bg-light form-control" name="short_description" id="short_description" cols="30"
@@ -130,15 +130,15 @@
 					<div class="col-12"> <label for="full_description">Full Description</label>
 						<textarea class="bg-light form-control" name="full_description" id="full_description" cols="30"
 							rows="5"><%=user.Instructor.full_description%></textarea>
-	
+
 					</div>
 				</div>
 			</div>
-			<div class="py-3 pb-4 border-bottom "> 
-				<button class="btn btn-primary mr-3 btn-save" data-form-id="profileForm">Save</button> 
-				<button class="btn border button danger btn-cancel" data-form-id="profileForm">Cancel</button> 
+			<div class="py-3 pb-4 border-bottom ">
+				<button class="btn btn-primary mr-3 btn-save" data-form-id="profileForm">Save</button>
+				<button class="btn border button danger btn-cancel" data-form-id="profileForm">Cancel</button>
 			</div>
-			
+
 		</div>
 	</form>
 
@@ -238,7 +238,7 @@
 			}).then((result) => {
 				/* Read more about isConfirmed, isDenied below */
 				if (result.isConfirmed) {
-					var formData = new FormData(document.getElementsByName('profileForm')[0]);// yourForm: form selector        
+					var formData = new FormData(document.getElementsByName('profileForm')[0]);// yourForm: form selector
 					// var form = $('#'+$(this).attr("data-form-id"));
 					var url = $(formData).attr('action');
 
