@@ -177,3 +177,6 @@ ADD COLUMN parent_category INTEGER;
 
 ALTER TABLE categories
     ADD CONSTRAINT categories_rootcategory_id_fkey FOREIGN KEY (parent_category) REFERENCES rootcategory(id)
+
+ALTER TABLE courses
+ADD COLUMN is_active boolean;

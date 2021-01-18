@@ -1,4 +1,5 @@
 const express = require("express")
+const {setActiveCourse} = require("../services/course-service");
 const {getAllCourses} = require("../services/course-service");
 const {getAllRootCategory} = require("../services/root-category-service");
 const {setActive} = require("../services/user-service");
@@ -28,6 +29,22 @@ router.post('/active/:userId', (req, res) => {
         const isActive = req.query.isActive
         if (userId && isActive){
             setActive(userId, isActive).then(() => {
+                res.json({msg: 'ok'})
+            }).catch(() => {
+                res.json({msg: 'error'})
+            })
+        }
+    } else {
+        res.redirect('/login')
+    }
+})
+
+router.post('/activeCourse/:courseId', (req, res) => {
+    if (req.user && req.user.type === ROLE_ADMIN) {
+        const courseId = req.params.courseId
+        const isActive = req.query.isActive
+        if (courseId && isActive){
+            setActiveCourse(courseId, isActive).then(() => {
                 res.json({msg: 'ok'})
             }).catch(() => {
                 res.json({msg: 'error'})

@@ -7,11 +7,9 @@ const domainBlock = ["/login", "/authentication/login", "/signup", "/authenticat
 
 const decodeToken = (req, res, next) => {
     try {
-        // console.log("Url", req.originalUrl)
         if (!domainBlock.includes(req.originalUrl)) {
             req.session.previousPage = req.originalUrl;
         }
-        // console.log(req.session.previousPage)
         const token = req.cookies.token;
         const decoded = jwt.verify(token, 'secret', {algorithms: ['HS256']});
         req.user = decoded;
@@ -38,11 +36,9 @@ const verifyToken = (req, res, next) => {
 
 const verifyInstructor = (req, res, next) => {
     try {
-        // console.log("Url", req.originalUrl)
         if (!domainBlock.includes(req.originalUrl)) {
             req.session.previousPage = req.originalUrl;
         }
-        // console.log(req.session.previousPage)
         const token = req.cookies.token;
         const decoded = jwt.verify(token, 'secret', {algorithms: ['HS256']});
         req.user = decoded;
@@ -58,11 +54,9 @@ const verifyInstructor = (req, res, next) => {
 
 const verifyAdmin = (req, res, next) => {
     try {
-        // console.log("Url", req.originalUrl)
         if (!domainBlock.includes(req.originalUrl)) {
             req.session.previousPage = req.originalUrl;
         }
-        // console.log(req.session.previousPage)
         const token = req.cookies.token;
         const decoded = jwt.verify(token, 'secret', {algorithms: ['HS256']});
         req.user = decoded;
