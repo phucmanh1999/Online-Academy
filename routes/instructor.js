@@ -23,6 +23,7 @@ const {getUser} = require("../services/user-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // get render page
+
 router.get('/addCourse', async (req, res) => {
     const category = await getAllCategories();
     res.render("instructor/addCourse", {category})

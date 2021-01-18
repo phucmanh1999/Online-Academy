@@ -19,6 +19,8 @@ const {createCart} = require("../services/cart-service");
 const {createWatchList} = require("../services/watchlist-service");
 const {createReview} = require("../services/review-services");
 const {getAllCategories} = require("../services/category-service");
+const {getUser} = require("../services/user-service");
+
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 router.post('/review', urlencodedParser, (req, res) => {
@@ -220,6 +222,15 @@ router.get('/buy', (req, res) => {
         res.json({'msg': 'Unauthorized'})
     }
 })
+
+router.get('/profile', async (req,res) =>{
+    let id = req.query.user_id
+    let categories = await getAllCategories();
+    let user = await getUser({id: id});
+    console.log(user)
+    res.render("user/profile",{categories,user})
+})
+
 
 
 module.exports = router
