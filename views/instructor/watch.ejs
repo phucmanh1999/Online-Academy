@@ -112,12 +112,12 @@
     </nav>
 
     <div class="row mt-3 watch-list">
-      <% if(course_number.length > 0) { %>
+      <% if(user.Instructor.course_number.length > 0) { %>
         <div class="col-12 watch-list-body">
             <div class="btn-add">
 
             </div>
-          <% course.forEach((course,index) => { %>
+          <% courses.forEach((course,index) => { %>
             <span>
               <div data-course-id="<%= course.course_id %>" class="course-item row p-2">
                 <div class="col-2">
@@ -129,9 +129,9 @@
                   <a href="/editCourse?id=course.course_id %>">
                     <div>
                       <div class="title">
-                        <%= course.Course.course_name%>
+                        <%= course.course_name%>
                       </div>
-                     <span>State: <%= course.Course.course_state === 'F'?'Finished':'Unfinished' %></span>
+                     <span>State: <%= course.course_state === 'F'?'Finished':'Unfinished' %></span>
                     </div>
                   </a>
                   <div>

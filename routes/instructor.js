@@ -28,9 +28,10 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 router.get('/', async (req, res) => {
     const user = req.user ? req.user : undefined
     if (user && user.type === ROLE_INSTRUCTOR) {
-        let category = await getAllCategories();
+        let categories = await getAllCategories();
         const courses = await getAllCoursesBy({instructor_id: user.role_id})
-        res.json( {category, courses, user})
+        res.json({categories, courses, user})
+        // res.render('instructor/watch', {categories, courses, user})
     } else {
         res.redirect("/login")
     }
