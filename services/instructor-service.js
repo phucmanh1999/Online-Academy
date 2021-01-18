@@ -4,6 +4,13 @@ const createInstructor = async obj => {
     return await Instructor.create(obj);
 }
 
+const getInstructor = async obj => {
+        const instructor = await  Instructor.findOne({
+            where: obj,
+        });
+        return instructor;
+}
+
 const updateInstructor = (_id, obj) => {
     return Instructor.update(
         obj
@@ -19,4 +26,5 @@ const updateInstructor = (_id, obj) => {
 module.exports = {
     createInstructor,
     updateInstructor,
+    getInstructor
 }
