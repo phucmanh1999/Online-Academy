@@ -34,28 +34,14 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/">Home</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Categories</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownCategory">
-							<% for(const category of categories) { %>
-								<a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
-									<%= category.category_name %>
-								</a>
-								<%} %>
-						</div>
-					</li>
+					
 					<li class="nav-item">
 						<a class="nav-link" href="/about">About</a>
 					</li>
 					<% if(typeof user !=='undefined' ) { %>
+						
 						<li class="nav-item">
-							<a class="nav-link" href="/student/cart">
-								<i class="fas fa-shopping-cart"></i>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/user/watchlist">
+							<a class="nav-link" href="/instructor">
 								<i class="fa fa-heart" aria-hidden="true"></i>
 							</a>
 						</li>

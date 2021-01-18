@@ -5,6 +5,8 @@ const {getCourse} = require("../services/course-service");
 
 const router = app.Router()
 const bodyParser = require("body-parser")
+const {getAllRootCategory} = require("../services/root-category-service");
+const {getInstructor} = require("../services/instructor-service");
 const {getAllCoursesBy} = require("../services/course-service");
 const {updateInstructor} = require("../services/instructor-service");
 const {updateUser} = require("../services/user-service");
@@ -26,12 +28,14 @@ const {getUser} = require("../services/user-service");
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 router.get('/', async (req, res) => {
-    const user = req.user ? req.user : undefined
-    if (user && user.type === ROLE_INSTRUCTOR) {
+    const userI = req.user ? req.user : undefined
+    if (userI && userI.type === ROLE_INSTRUCTOR) {
+        const user = await getUser({id: userI.id})
         let categories = await getAllCategories();
-        const courses = await getAllCoursesBy({instructor_id: user.role_id})
-        res.json({categories, courses, user})
-        // res.render('instructor/watch', {categories, courses, user})
+        const rootCategory = await getAllRootCategory();
+        const courses = await getAllCoursesBy({instructor_id: userI.role_id})
+        // res.json( {categories, courses, user, rootCategory})
+        res.render( 'instructor/watch',{categories, courses, user, rootCategory})
     } else {
         res.redirect("/login")
     }
@@ -41,7 +45,9 @@ router.get('/', async (req, res) => {
 
 router.get('/addCourse', async (req, res) => {
     const category = await getAllCategories();
-    res.render("instructor/addCourse", {category})
+    const user = req.user ? req.user : undefined
+
+    res.render("instructor/addCourse", {category,user})
 });
 
 router.get('/addChapter', async (req, res) => {
@@ -214,8 +220,6 @@ router.post('/editCourse', async (req, res) => {
         console.log("Unauthorized")
         res.redirect("/login")
     }
-
-
 });
 //post form
 router.post('/addCourse', urlencodedParser, async (req, res) => {
@@ -254,6 +258,11 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
             }).then(() => {
                 if (imageFile)
                     imageFile.mv("./public/assets/images/" + imageFile.name)
+                getInstructor({id: instructorId}).then(ins => {
+                    updateInstructor(instructorId, {
+                        course_number: ins.course_number ? 1 : ins.course_number + 1
+                    })
+                })
                 res.json({msg: "ok"})
             }).catch((err) => {
                 console.log(err)

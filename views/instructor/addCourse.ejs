@@ -11,8 +11,10 @@
 		integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
 		crossorigin="anonymous" />
 	<link rel="stylesheet" href="/css/index.css" />
+	<link rel="stylesheet" href="/css/instructor.css" />
+
 	<title>
-		Online Courses - Learn Anything On Your Schedule | MNP Courses
+		Add Course
 	</title>
 	<link rel="shortcut icon" href="/assets/images/logo-images.svg" />
 	<!-- Main Quill library -->
@@ -43,28 +45,13 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/">Home</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="dropdownCategory" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">Categories</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownCategory">
-							<% for(const cat of category) { %>
-								<a class="dropdown-item" href="/category-courses/<%= cat.id %>?page=1">
-									<%= cat.category_name %>
-								</a>
-								<%} %>
-						</div>
-					</li>
+					
 					<li class="nav-item">
 						<a class="nav-link" href="/about">About</a>
 					</li>
 					<% if(typeof user !=='undefined' ) { %>
 						<li class="nav-item">
-							<a class="nav-link" href="/student/cart">
-								<i class="fas fa-shopping-cart"></i>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/user/watchlist">
+							<a class="nav-link" href="/instructor">
 								<i class="fa fa-heart" aria-hidden="true"></i>
 							</a>
 						</li>
@@ -74,7 +61,7 @@
 								<%= user.username %>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownUser">
-								<a class="dropdown-item" href="/profile">My Profile</a>
+								<a class="dropdown-item" href="/instructor/profile">My Profile</a>
 								<a class="dropdown-item" href="/logout">Log out</a>
 							</div>
 						</li>
@@ -93,31 +80,54 @@
 	</nav>
 
 	<!-- Courses -->
-	<div class="container mt-5 mb-5">
+	<div class="container mt-5 mb-5 wrapper">
+		<h1>Course Information</h1>
+		<hr>
 		<form action="/instructor/addCourse" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="courseName">Course name</label>
 				<input type="text" class="form-control" id="courseName" placeholder=""
 					name="courseName">
 			</div>
-			<div class="form-group">
-				<label for="courseImage">Course image</label>
-				<div class="row ">
-					<div class="col-md-6 offset-md-3">
-						<img id="image" class="course-image" alt="Image">
+			<div class="row">
+				<!-- <div class="form-group">
+					<label for="courseImage">Course image</label>
+					<div class="row ">
+						<div class="col-md-6 offset-md-3">
+							<img id="image" class="course-image" alt="Image">
+						</div>
 					</div>
+					<input type="file" class="form-control-file" id="courseImage" name="image" onchange="readURL(this);">
+				</div> -->
+
+				<div class="form-group col-md-2">
+					<label for="courseImage">Course image</label>
+					<div class="row ">
+						<div class="col-md-6 ">
+							<img id="image" class="course-image" src='/assets/images/default.jpg' alt="Image">
+						</div>
+					</div>
+					<input type="file" class="form-control-file" id="courseImage" name="image" onchange="readURL(this);">
 				</div>
-				<input type="file" class="form-control-file" id="courseImage" name="image" onchange="readURL(this);">
-			</div>
-			<div class="form-group">
-				<label for="category">Category</label>
-				<select class="form-control" id="category" name="category">
-					<% for(let i=0;i < category.length;i++) { %>
-						<option>
-							<%= category[i].category_name %>
-						</option>
-						<% } %>
-				</select>
+
+				<div class="form-group col-md-4">
+					<label for="category">Category</label>
+					<select class="form-control" id="category" name="category">
+						<% for(let i=0;i < category.length;i++) { %>
+							<option>
+								<%= category[i].category_name %>
+							</option>
+							<% } %>
+					</select>
+				</div>
+				<div class="form-group col-md-2">
+					<label for="price">Price</label>
+					<input type="number" class="form-control" id="price" placeholder="99" name="price">
+				</div>
+				<div class="form-group col-md-2">
+					<label for="concurency">Concurency</label>
+					<input type="text" class="form-control" id="concurency" placeholder="USD" name="concurency">
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -132,17 +142,11 @@
 				<input type="text" id="fdcontent" name='fullDescription' hidden>
 
 			</div>
-			<div class="form-group">
-				<label for="price">Price</label>
-				<input type="number" class="form-control" id="price" placeholder="699" name="price">
-			</div>
-			<div class="form-group">
-				<label for="concurency">Concurency</label>
-				<input type="text" class="form-control" id="concurency" placeholder="USD" name="concurency">
-			</div>
+			
 
-
-			<input type="submit" class="btn btn-primary" value="Submit this course" />
+			<div class="center">
+				<input type="submit" class="btn btn-primary center" value="Submit this course" />
+			</div>
 		</form>
 		
 	</div>

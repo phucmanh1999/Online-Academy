@@ -43,11 +43,6 @@ const getAllCoursesBy = async obj => {
     let courses = await Course.findAll({
         include: [{
             model: Category,
-        }, {
-            model: Instructor,
-            include: [{
-                model: User,
-            }]
         },
         ],
         where: obj
