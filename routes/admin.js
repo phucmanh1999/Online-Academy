@@ -90,6 +90,9 @@ router.post('/addCategory', (req, res) => {
             }).then(() => {
                 console.log("aaa")
                 res.json({'msg': 'ok'})
+            }).catch(() => {
+                console.log("err")
+                res.status(400).json({'msg': 'error'})
             })
         })
     } else {
@@ -102,11 +105,20 @@ router.post('/editCategory', (req, res) => {
         getRootCategory({
             root_category_name: req.body.root_category_name
         }).then((root) => {
-            updateCategory(req.body.id, {
-                category_name: req.body.category_name,
+            getCategory({
                 parent_category: root.id,
-                updated_at: new Date()
-            }).then(res.json({'msg': 'ok'}))
+                category_name: req.body.category_name
+            }).then((cat) => {
+                if (cat) {
+                    console.log(cat)
+                    res.status(400).json({'msg': 'error'})
+                    return
+                } else updateCategory(req.body.id, {
+                    category_name: req.body.category_name,
+                    parent_category: root.id,
+                    updated_at: new Date()
+                }).then(res.status(200).json({'msg': 'ok'}))
+            })
         })
     } else {
         res.redirect('/login')

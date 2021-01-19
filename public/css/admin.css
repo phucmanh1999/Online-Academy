@@ -90,11 +90,7 @@ tr:nth-child(even) {
   color: #fff;
 }
 
-/*#instructorTable, #courseTable, #categoryTable {*/
-/*  display: none;*/
-/*}*/
-
-#instructorTable, #courseTable, #studentTable {
+#instructorTable, #courseTable, #categoryTable {
   display: none;
 }
 

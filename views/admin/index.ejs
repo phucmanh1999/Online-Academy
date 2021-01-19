@@ -425,7 +425,7 @@
               </tr>
               <% }) %>
                 <tr>
-                  
+
 
                     <th>
                       New
@@ -447,7 +447,7 @@
                     <th>
                       <button class="btn btn-add btn-success">Add</button>
                     </th>
-                  
+
 
                 </tr>
           </table>
@@ -610,7 +610,6 @@
           if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             // Request finished. Do processing here.
             await Swal.fire({
-              position: 'top-end',
               icon: 'success',
               title: 'Your work has been saved',
               showConfirmButton: false,
@@ -671,7 +670,6 @@
               if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 // Request finished. Do processing here.
                 await Swal.fire({
-                  position: 'top-end',
                   icon: 'success',
                   title: 'Your work has been saved',
                   showConfirmButton: false,
