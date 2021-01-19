@@ -3,7 +3,7 @@ const {ROLE_ADMIN} = require("../constant/constant");
 const {ROLE_STUDENT} = require("../constant/constant");
 const {ROLE_INSTRUCTOR} = require("../constant/constant");
 
-const domainBlock = ["/login", "/authentication/login", "/signup", "/authentication/signup", "/student/review", "/student/favourite", "/student/buy"]
+const domainBlock = ["/login", "/authentication/login", "/signup", "/authentication/signup", "/student/review", "/student/favourite", "/student/buy", "/user/checkemail"]
 
 const decodeToken = (req, res, next) => {
     try {

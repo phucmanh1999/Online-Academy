@@ -54,7 +54,20 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <!-- Category item -->
+              <% for(const rootCategory of rootCategories) { %>
+                <div class="dropdown-item p-0">
+                  <div class="nav-item dropright pl-2 pr-2">
+                    <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= rootCategory.root_category_name %>
+                    </a>
+                    <div class="dropdown-menu">
+                      <% rootCategory.Categories.forEach(item => { %>
+                        <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
@@ -178,9 +191,9 @@
             <option value="ASC">Ascending</option>
             <option value="DESC">Descending </option>
           </select>
-          
+
         </div>
-        <div id="coursesSection"  class="col-9">    
+        <div id="coursesSection"  class="col-9">
           <% payload.courses.forEach((item) => { %>
             <a href="/courses/<%= item.id %>" class="d-block mb-3">
               <div class="row courses-item">
@@ -253,11 +266,11 @@
                 </ul>
             <% } %>
             </nav>
-          </div>   
+          </div>
         </div>
       </div>
     </div>
-    
+
 
   </div>
 
@@ -273,10 +286,10 @@
           <li><img src="https://s.udemycdn.com/partner-logos/surveymonkey-logo.svg" alt=""></li>
           <li><img src="https://s.udemycdn.com/partner-logos/booking-logo.svg" alt=""></li>
         </ul>
-      </div>  
+      </div>
     </div>
     <hr>
-  
+
   <!-- footer -->
   <div class="container-fluid footer">
     <div class="row">
@@ -303,7 +316,7 @@
       <ul class="col list-group">
         <li class="list-group"><a href="#">
           Terms</a></li>
-        <li class="list-group"><a href="#">           
+        <li class="list-group"><a href="#">
           Privacy policy and cookie policy</a></li>
         <li class="list-group"><a href="#">
           Sitemap</a></li>
@@ -327,7 +340,7 @@
       document.getElementById("mySidenav").style.width = "250px";
       document.getElementById("main").style.marginLeft = "250px";
     }
-    
+
     function closeNav() {
       document.getElementById("mySidenav").style.width = "0";
       document.getElementById("main").style.marginLeft= "0";
@@ -342,7 +355,7 @@
 
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
+
   <script>
     $(document).ready(function(){
       let filterFlag = true;
@@ -369,7 +382,8 @@
 
       $(".page").click(function() {
         let page = $(this).data("page")
-        window.location.href = `/category-courses/${category_id}?page=${page}`
+        let query = $("#filterSection").data("query")
+        window.location.href = `/search?query=${query}&page=${page}`
       })
     })
   </script>

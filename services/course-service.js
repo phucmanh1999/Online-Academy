@@ -282,6 +282,9 @@ const getCourse = async obj => {
     course = course.toJSON()
     course.created_at = convertDate(course.created_at)
     course.updated_at = convertDate(course.updated_at)
+    course.Chapters.forEach(chapter => {
+        chapter.Lessons.sort((a, b) => (a.id > b.id) ? 1 : -1)
+    })
     return course;
 }
 
@@ -301,12 +304,23 @@ const searchCourse = async (searchText, page, size, order_rating, order_price) =
     const limit = size ? size : 10
     let splitResult = searchText.trim().replace(/[^a-zA-Z0-9 ]/g, "").split(" ").join(' & ')
     splitResult = "'" + splitResult + "'"
-    const coursesResult = await database.query(`Select categories.category_name, courses.is_active, courses.id, courses.course_name, courses.short_description, courses.full_description, courses.rating, courses.rating_number, courses.enroll_number, courses.chapter_number, courses.view_number, courses.price, courses.concurrency,courses.img_path, courses.created_at, instructor.job_title, users.user_name, users.first_name, users.last_name from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id INNER JOIN categories on categories.id = courses.category_id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title || ' ' || category_name) @@ to_tsquery(${splitResult}) ORDER BY courses.rating ${order_rating}, courses.price ${order_price}`, {
-            type: QueryTypes.SELECT
-        }
-    ).catch((err) => {
-        console.log(err)
-    })
+    let coursesResult
+    if (order_rating)
+        coursesResult = await database.query(`Select categories.category_name, courses.is_active, courses.id, courses.course_name, courses.short_description, courses.full_description, courses.rating, courses.rating_number, courses.enroll_number, courses.chapter_number, courses.view_number, courses.price, courses.concurrency,courses.img_path, courses.created_at, instructor.job_title, users.user_name, users.first_name, users.last_name from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id INNER JOIN categories on categories.id = courses.category_id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title || ' ' || category_name) @@ to_tsquery(${splitResult}) ORDER BY courses.rating ${order_rating}`, {
+                type: QueryTypes.SELECT
+            }
+        )
+    else if (order_price) {
+        coursesResult = await database.query(`Select categories.category_name, courses.is_active, courses.id, courses.course_name, courses.short_description, courses.full_description, courses.rating, courses.rating_number, courses.enroll_number, courses.chapter_number, courses.view_number, courses.price, courses.concurrency,courses.img_path, courses.created_at, instructor.job_title, users.user_name, users.first_name, users.last_name from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id INNER JOIN categories on categories.id = courses.category_id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title || ' ' || category_name) @@ to_tsquery(${splitResult}) ORDER BY courses.price ${order_price}`, {
+                type: QueryTypes.SELECT
+            }
+        )
+    } else {
+        coursesResult = await database.query(`Select categories.category_name, courses.is_active, courses.id, courses.course_name, courses.short_description, courses.full_description, courses.rating, courses.rating_number, courses.enroll_number, courses.chapter_number, courses.view_number, courses.price, courses.concurrency,courses.img_path, courses.created_at, instructor.job_title, users.user_name, users.first_name, users.last_name from courses INNER JOIN instructor ON courses.instructor_id = instructor.id INNER JOIN users on instructor.user_id = users.id INNER JOIN categories on categories.id = courses.category_id where to_tsvector(course_name || ' ' || user_name || ' ' || job_title || ' ' || category_name) @@ to_tsquery(${splitResult}) ORDER BY courses.price DESC `, {
+                type: QueryTypes.SELECT
+            }
+        )
+    }
     const coursesFull = coursesResult[0]
     let count = 0
     coursesFull.forEach(course => {

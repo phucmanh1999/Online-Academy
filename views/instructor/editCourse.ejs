@@ -485,7 +485,6 @@
 						data: form.serialize(), // serializes the form's elements.
 						success: function (data) {
 							Swal.fire({
-								position: 'top-end',
 								icon: 'success',
 								title: 'Your work has been saved',
 								showConfirmButton: false,
@@ -497,7 +496,7 @@
 						}
 					});
 				});
-				
+
 
 
 
@@ -533,7 +532,7 @@
 								data: form,
 								error: function (jqXHR, textStatus, errorMessage) {
 									console.log(errorMessage); // Optional
-								}, 
+								},
 								// beforeSend: function (jqXHR, settings) {
 								// 	alert('url '+ settings.url);
 								// },

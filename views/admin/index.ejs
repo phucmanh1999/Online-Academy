@@ -54,7 +54,7 @@
           </li>
         </ul>
         <div class="mt-5 text-center home">
-          <a href="/">Back to home</a>
+          <a class="d-block mt-2" href="/logout">Log out</a>
         </div>
 
       </div>
@@ -135,7 +135,7 @@
                     <div>
                       <img src="<%= item.avatar_url %>" width="70px" height="70px" class="rounded-circle">
                     </div>
-                    <div class="ml-2"> 
+                    <div class="ml-2">
                       <div class="course-name"><%= item.first_name %> <%= item.last_name %></div>
                       <div class="course-description"><%= item.Instructor.full_description %></div>
                     </div>
@@ -146,7 +146,7 @@
                 <td><%= item.Instructor.course_number %></td>
                 <td class="text-center">
                   <div>
-                    <%= item.Instructor.rating %> 
+                    <%= item.Instructor.rating %>
                   </div>
                   <div>
                     (<%= item.Instructor.rating_number %> ratings)
@@ -182,6 +182,18 @@
                 </option>
               <% }) %>
             </select>
+            <select class="form-select ml-2 mb-2" id="filterCategory">
+              <option value="" selected>All categories</option>
+              <% rootCategories.forEach(rootCategory => { %>
+                <% rootCategory.Categories.forEach(item => { %>
+                  <option value="<%= item.category_name %>">
+                    <%= item.category_name %>
+                  </option>
+                <% }) %>
+              <% }) %>
+            </select>
+
+            <button class="btn btn-outline-dark ml-2 mb-2 p-1" id="filterCourse">Filter</button>
           </div>
           <div id="courseLength" class="count">
             Total: <%= courses.length %>
@@ -198,9 +210,9 @@
               <th>Action</th>
             </tr>
             <% courses.forEach(item => { %>
-              <tr class="course-table-item" data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
+              <tr class="course-table-item" data-category-name="<%= item.Category.category_name %>" data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
                 <td><%= item.id %></td>
-                <td class="d-flex"  data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.full_description %>">
+                <td class="d-flex">
                   <div>
                     <img src="<%= item.img_path %>" height="80px">
                   </div>
@@ -209,7 +221,7 @@
                       <%= item.course_name %>
                     </div>
                     <div class="course-description">
-                      <%= item.full_description %>
+                      <%= item.short_description %>
                     </div>
                   </div>
                 </td>
@@ -217,7 +229,11 @@
                 <td><%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %></td>
                 <td><%= item.price %> <%= item.concurrency%></td>
                 <td>
-                  <button class="btn btn-danger">Disable</button>
+                  <% if(item.is_active) { %>
+                    <button data-course-id="<%= item.id %>" class="btn btn-disable-course btn-danger">Disable</button>
+                  <% } else { %>
+                    <button data-course-id="<%= item.id %>" class="btn btn-enable-course btn-primary">Enable</button>
+                  <% } %>
                 </td>
               </tr>
             <% }) %>
@@ -264,12 +280,13 @@
               </div>
               <button type="button" id="btnSubmitForm" class="btn btn-primary w-50 rounded-pill">Create new instructor</button>
             </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="overlay"></div>
-  
+
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -322,6 +339,33 @@
       $(".btn-enable").click(function() {
         let userId = $(this).data("user-id")
         $.post(`/admin/active/${userId}?isActive=true`, async function(data, status) {
+          console.log(data.msg)
+          if(data.msg === "ok") {
+            await Swal.fire({
+              icon: "success",
+              title: "Enable success"
+            })
+            location.reload()
+          }
+        })
+      })
+
+      $(".btn-disable-course").click(function() {
+        let courseId = $(this).data("course-id")
+        $.post(`/admin/activeCourse/${courseId}?isActive=false`, async function(data, status) {
+          console.log(data.msg)
+          if(data.msg === "ok") {
+            await Swal.fire({
+              icon: "success",
+              title: "Disable success"
+            })
+            location.reload()
+          }
+        })
+      })
+      $(".btn-enable-course").click(function() {
+        let courseId = $(this).data("course-id")
+        $.post(`/admin/activeCourse/${courseId}?isActive=true`, async function(data, status) {
           console.log(data.msg)
           if(data.msg === "ok") {
             await Swal.fire({
@@ -407,28 +451,36 @@
         }
       })
 
-      $("#filterInstructor").change(function(){
-        let name = $(this).val()
+      $("#filterCourse").click(function(){
+        let name = $("#filterInstructor").val()
+        let category = $("#filterCategory").val()
         let total;
-        if(name === "") {
+        if(name === "" && category === "") {
           total = $(".course-table-item").length
           $(".course-table-item").show()
-        }
-        else {
+        } else if(name !== "" && category === "") {
           $(".course-table-item").hide()
           total = $(`[data-instructor-name="${name}"]`).length
           $(`[data-instructor-name="${name}"]`).show()
+        } else if(name === "" && category !== "") {
+          $(".course-table-item").hide()
+          total = $(`[data-category-name="${category}"]`).length
+          $(`[data-category-name="${category}"]`).show()
+        } else {
+          $(".course-table-item").hide()
+          total = $(`[data-category-name="${category}"][data-instructor-name="${name}"]`).length
+          $(`[data-category-name="${category}"][data-instructor-name="${name}"]`).show()
         }
         $("#courseLength").text(`Total: ${total}`)
       })
 
       $(document).on({
           ajaxStart: function(){
-              $("body").addClass("loading"); 
+              $("body").addClass("loading");
           },
-          ajaxStop: function(){ 
-              $("body").removeClass("loading"); 
-          }    
+          ajaxStop: function(){
+              $("body").removeClass("loading");
+          }
       });
 
     })

@@ -40,8 +40,8 @@ router.post('/review', urlencodedParser, (req, res) => {
             if (course) {
                 const rating = course.rating ? course.rating : 0
                 const rating_number = course.rating_number ? course.rating_number : 0
-                const aveRating = Number(((rating * rating_number + star) / (rating_number + 1)).toFixed(1))
-                updateCourse(course_id, {rating_number : rating_number+1, rating : aveRating})
+                const aveRating = Number(((Number(rating) * Number(rating_number) + Number(star)) / (Number(rating_number) + 1)).toFixed(1))
+                updateCourse(course_id, {rating_number : Number(rating_number)+1, rating : aveRating})
             }
         })
         res.json({'msg': 'Add comment success'})

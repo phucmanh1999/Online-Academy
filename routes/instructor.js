@@ -174,6 +174,15 @@ router.post('/editLesson', (req, res) => {
     }
 })
 
+router.post('/editChapter', (req, res) => {
+    const user = req.user ? req.user : undefined
+    const chapter_id = req.query.chapter_id
+    updateChapter(chapter_id, {
+        chapter_name: req.body.chapterName,
+        short_description: req.body.shortDescription
+    })
+})
+
 router.post('/editCourse', async (req, res) => {
     if (req.user) {
         if (req.user.type === ROLE_INSTRUCTOR) {
@@ -254,15 +263,15 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 category_id: categoryId,
                 instructor_id: instructorId,
                 is_active: true
-            }).then(() => {
+            }).then((course) => {
                 if (imageFile)
                     imageFile.mv("./public/assets/images/" + imageFile.name)
                 getInstructor({id: instructorId}).then(ins => {
                     updateInstructor(instructorId, {
-                        course_number: ins.course_number ? 1 : ins.course_number + 1
+                        course_number: ins.course_number ? ins.course_number + 1 : 1
                     })
                 })
-                res.json({msg: "ok"})
+                res.redirect('/editCourse?id='+course.id)
             }).catch((err) => {
                 console.log(err)
                 res.json({msg: "Unknow error"})
