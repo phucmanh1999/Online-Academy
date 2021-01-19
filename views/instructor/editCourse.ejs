@@ -147,7 +147,7 @@
 			</div>
 
 			<div class="center">
-				<input type="submit" class="btn btn-primary btn-save" data-form-id="formEditCourse<%=course.id%>"
+				<input type="button" class="btn btn-primary btn-save" data-form-id="formEditCourse<%=course.id%>"
 					value="Save" />
 				<button class="btn-cancel btn btn-danger" data-form-id="formEditCourse<%=course.id%>"
 					type="button">Cancle</button>
@@ -224,7 +224,8 @@
 												<form action="/instructor/editLesson?lesson_id=<%=course.Chapters[i].Lessons[j].id%>"
 													id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" enctype="multipart/form-data">
 													<div class="form-group">
-														<label for="lessonName<%=course.Chapters[i].Lessons[j].id%>">Lesson name</label>
+														<label for="lessonName<%=course.Chapters[i].Lessons[j].id%>">Lesson
+															name</label>
 														<input type="text" class="form-control" id="lessonName<%=course.Chapters[i].Lessons[j].id%>"
 															name="lessonName" value="<%=course.Chapters[i].Lessons[j].lesson_name%>">
 													</div>
@@ -236,7 +237,8 @@
 															name="shortDescription"><%=course.Chapters[i].Lessons[j].short_description%></textarea>
 													</div>
 													<div class="form-group">
-														<label for="uploadVideoEL<%=course.Chapters[i].Lessons[j].id%>">Upload video</label>
+														<label for="uploadVideoEL<%=course.Chapters[i].Lessons[j].id%>">Upload
+															video</label>
 														<input type="file" class="form-control-file"
 															id="uploadVideoEL<%=course.Chapters[i].Lessons[j].id%>" name="video"
 															value="<%=course.Chapters[i].Lessons[j].video_url%>">
@@ -250,7 +252,7 @@
 															name='fullDescription' hidden>
 													</div>
 													<input class="btn btn-primary btn-save"
-														data-form-id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" type="submit"
+														data-form-id="formEditLesson<%=course.Chapters[i].Lessons[j].id%>" type="button"
 														value="Save">
 													<button class="btn-cancel btn btn-danger"
 														data-form-id="editLesson<%=course.Chapters[i].Lessons[j].id%>" type="button">Cancle</button>
@@ -267,8 +269,8 @@
 												<div id="addLesson<%= i %>" class="container mt-5 mb-5 addLesson">
 													<p>Add Lesson</p>
 													<hr>
-													<form action="/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>" method="post"
-														id="formLessonAL<%= i %>" enctype="multipart/form-data">
+													<form action="/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>" id="formLessonAL<%= i %>" enctype="multipart/form-data" class="formLessonAL" method='post'>
+														
 														<div class="form-group">
 															<label for="lessonNameAL<%= i %>">Lesson name</label>
 															<input type="text" class="form-control" id="lessonNameAL<%= i %>" placeholder=""
@@ -316,7 +318,7 @@
 																name="shortDescription"><%=course.Chapters[i].short_description %></textarea>
 														</div>
 														<input class="btn btn-primary btn-save"
-															data-form-id="formEditChapter<%=course.Chapters[i].id%>" type="submit" value="Save">
+															data-form-id="formEditChapter<%=course.Chapters[i].id%>" type="button" value="Save">
 														<button class="btn-cancel btn btn-danger" data-form-id="editChapter<%=i%>"
 															type="button">Cancle</button>
 													</form>
@@ -335,7 +337,8 @@
 
 		<div class="form-group">
 			<button title="Add Chapter" class="btn btn-primary btn-sm rounded-0" data-placement="top" data-toggle="tooltip"
-				onClick='add("addChapter")'><i class='fa fa-plus'></i><span><b>Add chapter</b></span></button>
+				onClick='add("addChapter")'><i class='fa fa-plus'></i><span><b>Add
+						chapter</b></span></button>
 		</div>
 		<!-- add chapter -->
 		<div id="addChapter" class="container mt-5 mb-5">
@@ -497,160 +500,161 @@
 					});
 				});
 
+				
 
 
 
+			$(".btn-cancel").click(function () {
+				let formId = $(this).attr("data-form-id")
+				if (formId.slice(0, 9) === 'addLesson') {
+					let id = formId.slice(9)
+				}
+				$(`#${formId}`).toggle()
+			})
 
-				$(".btn-cancel").click(function () {
-					let formId = $(this).attr("data-form-id")
-					if (formId.slice(0, 9) === 'addLesson') {
-						let id = formId.slice(9)
-					}
-					$(`#${formId}`).toggle()
-				})
+			$(".btn-save").click(function (e) {
+				e.preventDefault();
 
-				$(".btn-save").click(function (e) {
-					e.preventDefault();
+				Swal.fire({
+					title: 'Do you want to save the changes?',
+					showDenyButton: true,
+					showCancelButton: true,
+					confirmButtonText: `Save`,
+					denyButtonText: `Don't save`,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						var form = $('#' + $(this).attr("data-form-id"));
+						var url = form.attr('action');
+						let formId = $(this).attr("data-form-id")
+						var form = new FormData(document.getElementById(formId));
+						// var url = $(form).attr("action");
 
-					Swal.fire({
-						title: 'Do you want to save the changes?',
-						showDenyButton: true,
-						showCancelButton: true,
-						confirmButtonText: `Save`,
-						denyButtonText: `Don't save`,
-					}).then((result) => {
-						if (result.isConfirmed) {
-							// let formId = $(this).attr("data-form-id")
-							// var form = new FormData(document.getElementById(formId));
-							// var url = $(form).attr("action");
-
-							$.ajax({
-								type: "POST",
-								url: url,
-								processData: false,
-								contentType: false,
-								data: form,
-								error: function (jqXHR, textStatus, errorMessage) {
-									console.log(errorMessage); // Optional
-								},
-								// beforeSend: function (jqXHR, settings) {
-								// 	alert('url '+ settings.url);
-								// },
-								success: function (data) {
-									Swal.fire('Saved!', '', 'success')
-									location.reload()
-								}
-							});
-						} else if (result.isDenied) {
-							Swal.fire('Changes are not saved', '', 'info')
-						}
-					})
-					var form = $('#' + $(this).attr("data-form-id"));
-					var url = form.attr('action');
-				})
-
-				//state for create editor in edit lesson
-
-				//
-				$(".btn-edit").click(function () {
-					let formId = $(this).attr("data-form-id")//editLesson3 //editChapter0
-					// target = 'editLesson',
-					// id = formId.slice(10)
-					// alert('edit ' + formId)
-
-					// if (formId.slice(0, 11) === 'editChapter') {
-					// 	target = 'editChapter'
-					// 	id = formId.slice(11)
-					// }
-
-					let id = formId.slice(10)
-					if (formId.slice(0, 10) === 'editLesson' && stateEdit[id]) {
-						let content = document.getElementById("fdLessonContent" + id).value
-						stateEdit[id] = !stateEdit[id];
-						content = content ? JSON.parse(content) : '""'
-
-						let toolbarOptions = [
-							['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-							['blockquote', 'code-block'],
-
-							[{ 'header': 1 }, { 'header': 2 }],               // custom button values
-							[{ 'list': 'ordered' }, { 'list': 'bullet' }],
-							[{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-							[{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-							[{ 'direction': 'rtl' }],                         // text direction
-
-							[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-							[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-							[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-							[{ 'font': [] }],
-							[{ 'align': [] }],
-
-							['clean']                                         // remove formatting button
-						];
-
-						var editor = new Quill(`#editorEdit${id}`, {
-							modules: { toolbar: toolbarOptions },
-							theme: 'snow'
+						$.ajax({
+							type: "POST",
+							url: url,
+							processData: false,
+							contentType: false,
+							data: form,
+							error: function (jqXHR, textStatus, errorMessage) {
+								console.log(errorMessage); // Optional
+							},
+							beforeSend: function (jqXHR, settings) {
+								alert('url '+ settings.url);
+							},
+							success: function (data) {
+								Swal.fire('Saved!', '', 'success')
+								location.reload()
+							}
 						});
-						//load content from db
-						// editor.setContents(content);
+					} else if (result.isDenied) {
+						Swal.fire('Changes are not saved', '', 'info')
+					}
+				})
+				
+			})
 
+			//state for create editor in edit lesson
+
+			//
+			$(".btn-edit").click(function () {
+				let formId = $(this).attr("data-form-id")//editLesson3 //editChapter0
+				// target = 'editLesson',
+				// id = formId.slice(10)
+				// alert('edit ' + formId)
+
+				// if (formId.slice(0, 11) === 'editChapter') {
+				// 	target = 'editChapter'
+				// 	id = formId.slice(11)
+				// }
+
+				let id = formId.slice(10)
+				if (formId.slice(0, 10) === 'editLesson' && stateEdit[id]) {
+					let content = document.getElementById("fdLessonContent" + id).value
+					stateEdit[id] = !stateEdit[id];
+					content = content ? JSON.parse(content) : '""'
+
+					let toolbarOptions = [
+						['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+						['blockquote', 'code-block'],
+
+						[{ 'header': 1 }, { 'header': 2 }],               // custom button values
+						[{ 'list': 'ordered' }, { 'list': 'bullet' }],
+						[{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+						[{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+						[{ 'direction': 'rtl' }],                         // text direction
+
+						[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+						[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+						[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+						[{ 'font': [] }],
+						[{ 'align': [] }],
+
+						['clean']                                         // remove formatting button
+					];
+
+					var editor = new Quill(`#editorEdit${id}`, {
+						modules: { toolbar: toolbarOptions },
+						theme: 'snow'
+					});
+					//load content from db
+					// editor.setContents(content);
+
+					let delta = JSON.stringify(editor.getContents()).replace('\"', '"')
+					document.getElementById(`fdLessonContent${id}`).value = delta
+
+					editor.on('text-change', function () {
 						let delta = JSON.stringify(editor.getContents()).replace('\"', '"')
 						document.getElementById(`fdLessonContent${id}`).value = delta
+					});
+				}
+				$(`#${formId}`).toggle()
+			})
 
-						editor.on('text-change', function () {
-							let delta = JSON.stringify(editor.getContents()).replace('\"', '"')
-							document.getElementById(`fdLessonContent${id}`).value = delta
-						});
-					}
-					$(`#${formId}`).toggle()
-				})
+			$(".btn-delete").click(function () {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						let formId = $(this).attr("data-form-id")
+						let name = 'lesson_id',
+							id = formId.slice(6),
+							url = '/instructor/deleteLesson?' + name + '=' + id
 
-				$(".btn-delete").click(function () {
-					Swal.fire({
-						title: 'Are you sure?',
-						text: "You won't be able to revert this!",
-						icon: 'warning',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes, delete it!'
-					}).then((result) => {
-						if (result.isConfirmed) {
-							let formId = $(this).attr("data-form-id")
-							let name = 'lesson_id',
-								id = formId.slice(6),
-								url = '/instructor/deleteLesson?' + name + '=' + id
-
-							if (formId.slice(0, 7) === 'chapter') {
-								name = 'chapter_id'
-								id = formId.slice(7)
-								url = '/instructor/deleteChapter?' + name + '=' + id
-
-							}
-							$.ajax({
-								url: url,
-								type: 'DELETE',
-								data: { name: id },
-								success: function () {
-									Swal.fire(
-										'Deleted!',
-										'Your file has been deleted.',
-										'success'
-									)
-									location.reload()
-								}
-							});
+						if (formId.slice(0, 7) === 'chapter') {
+							name = 'chapter_id'
+							id = formId.slice(7)
+							url = '/instructor/deleteChapter?' + name + '=' + id
 
 						}
-					})
+						$.ajax({
+							url: url,
+							type: 'DELETE',
+							data: { name: id },
+							success: function () {
+								Swal.fire(
+									'Deleted!',
+									'Your file has been deleted.',
+									'success'
+								)
+								location.reload()
+							}
+						});
 
-
-
-
-					// $(`#${formId}`).toggle()
+					}
 				})
+
+
+
+
+				// $(`#${formId}`).toggle()
+			})
 
 
 
