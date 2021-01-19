@@ -520,11 +520,9 @@
 						confirmButtonText: `Save`,
 						denyButtonText: `Don't save`,
 					}).then((result) => {
-						/* Read more about isConfirmed, isDenied below */
 						if (result.isConfirmed) {
-							let formId = $(this).attr("data-form-id")
-
-							var form = new FormData(document.getElementById(formId));
+							// let formId = $(this).attr("data-form-id")
+							// var form = new FormData(document.getElementById(formId));
 							// var url = $(form).attr("action");
 
 							$.ajax({
@@ -536,9 +534,9 @@
 								error: function (jqXHR, textStatus, errorMessage) {
 									console.log(errorMessage); // Optional
 								}, 
-								beforeSend: function (jqXHR, settings) {
-									alert('url '+ settings.url);
-								},
+								// beforeSend: function (jqXHR, settings) {
+								// 	alert('url '+ settings.url);
+								// },
 								success: function (data) {
 									Swal.fire('Saved!', '', 'success')
 									location.reload()
@@ -550,12 +548,6 @@
 					})
 					var form = $('#' + $(this).attr("data-form-id"));
 					var url = form.attr('action');
-
-					// let formId = $(this).attr("data-form-id")
-					// if (formId.slice(0, 9) === 'addLesson') {
-					// 	let id = formId.slice(9)
-					// }
-
 				})
 
 				//state for create editor in edit lesson

@@ -7,8 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous"
-  />
+    crossorigin="anonymous" />
   <title>
     Online Courses - Learn Anything On Your Schedule | MNP Courses
   </title>
@@ -28,7 +27,7 @@
           Dashboard
         </div>
         <ul class="list-group">
-          <li  data-transform="tableTransform" data-target="#studentTable" class="list-group-item active d-flex">
+          <li data-transform="tableTransform" data-target="#studentTable" class="list-group-item active d-flex">
             <div class="icon">
               <i class="far fa-user"></i>
             </div>
@@ -44,12 +43,20 @@
               List Instructors
             </div>
           </li>
-          <li  data-transform="tableTransform"  data-target="#courseTable" class="list-group-item d-flex">
+          <li data-transform="tableTransform" data-target="#courseTable" class="list-group-item d-flex">
             <div class="icon">
               <i class="fas fa-book"></i>
             </div>
             <div>
               List Courses
+            </div>
+          </li>
+          <li data-transform="tableTransform" data-target="#CategoryTable" class="list-group-item d-flex">
+            <div class="icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div>
+              List Category
             </div>
           </li>
         </ul>
@@ -82,22 +89,32 @@
               <th>Last name</th>
               <th>Action</th>
             </tr>
-            <% students.forEach(item => { %>
+            <% students.forEach(item=> { %>
               <tr>
-                <td><%= item.id %></td>
-                <td><%= item.user_name %></td>
-                <td><%= item.email %></td>
-                <td><%= item.first_name %></td>
-                <td><%= item.last_name %></td>
+                <td>
+                  <%= item.id %>
+                </td>
+                <td>
+                  <%= item.user_name %>
+                </td>
+                <td>
+                  <%= item.email %>
+                </td>
+                <td>
+                  <%= item.first_name %>
+                </td>
+                <td>
+                  <%= item.last_name %>
+                </td>
                 <td>
                   <% if(item.is_active) { %>
                     <button data-user-id="<%= item.id %>" class="btn btn-disable btn-danger">Disable</button>
-                  <% } else { %>
-                    <button data-user-id="<%= item.id %>" class="btn btn-enable btn-primary">Enable</button>
-                  <% } %>
+                    <% } else { %>
+                      <button data-user-id="<%= item.id %>" class="btn btn-enable btn-primary">Enable</button>
+                      <% } %>
                 </td>
               </tr>
-            <% }) %>
+              <% }) %>
           </table>
         </div>
       </div>
@@ -127,26 +144,40 @@
               <th>Enroll number</th>
               <th>Action</th>
             </tr>
-            <% instructors.forEach(item => { %>
+            <% instructors.forEach(item=> { %>
               <tr>
-                <td><%= item.id %></td>
-                <td data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.Instructor.full_description %>">
+                <td>
+                  <%= item.id %>
+                </td>
+                <td data-trigger="hover" data-toggle="popover" title="Full Description"
+                  data-content="<%= item.Instructor.full_description %>">
                   <div class="d-flex">
                     <div>
                       <img src="<%= item.avatar_url %>" width="70px" height="70px" class="rounded-circle">
                     </div>
-                    <div class="ml-2"> 
-                      <div class="course-name"><%= item.first_name %> <%= item.last_name %></div>
-                      <div class="course-description"><%= item.Instructor.full_description %></div>
+                    <div class="ml-2">
+                      <div class="course-name">
+                        <%= item.first_name %>
+                          <%= item.last_name %>
+                      </div>
+                      <div class="course-description">
+                        <%= item.Instructor.full_description %>
+                      </div>
                     </div>
                   </div>
                 </td>
-                <td><%= item.email %></td>
-                <td><%= item.Instructor.job_title %></td>
-                <td><%= item.Instructor.course_number %></td>
+                <td>
+                  <%= item.email %>
+                </td>
+                <td>
+                  <%= item.Instructor.job_title %>
+                </td>
+                <td>
+                  <%= item.Instructor.course_number %>
+                </td>
                 <td class="text-center">
                   <div>
-                    <%= item.Instructor.rating %> 
+                    <%= item.Instructor.rating %>
                   </div>
                   <div>
                     (<%= item.Instructor.rating_number %> ratings)
@@ -158,12 +189,12 @@
                 <td>
                   <% if(item.is_active) { %>
                     <button data-user-id="<%= item.id %>" class="btn btn-disable btn-danger">Disable</button>
-                  <% } else { %>
-                    <button data-user-id="<%= item.id %>" class="btn btn-enable btn-primary">Enable</button>
-                  <% } %>
+                    <% } else { %>
+                      <button data-user-id="<%= item.id %>" class="btn btn-enable btn-primary">Enable</button>
+                      <% } %>
                 </td>
               </tr>
-            <% }) %>
+              <% }) %>
           </table>
         </div>
       </div>
@@ -176,11 +207,12 @@
           <div>
             <select class="form-select mb-2" id="filterInstructor">
               <option value="" selected>All instructors</option>
-              <% instructors.forEach(item => { %>
+              <% instructors.forEach(item=> { %>
                 <option value="<%= item.first_name %> <%= item.last_name %>">
-                  <%= item.first_name %> <%= item.last_name %>
+                  <%= item.first_name %>
+                    <%= item.last_name %>
                 </option>
-              <% }) %>
+                <% }) %>
             </select>
           </div>
           <div id="courseLength" class="count">
@@ -197,10 +229,14 @@
               <th>Price</th>
               <th>Action</th>
             </tr>
-            <% courses.forEach(item => { %>
-              <tr class="course-table-item" data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
-                <td><%= item.id %></td>
-                <td class="d-flex"  data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.full_description %>">
+            <% courses.forEach(item=> { %>
+              <tr class="course-table-item"
+                data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
+                <td>
+                  <%= item.id %>
+                </td>
+                <td class="d-flex" data-trigger="hover" data-toggle="popover" title="Full Description"
+                  data-content="<%= item.full_description %>">
                   <div>
                     <img src="<%= item.img_path %>" height="80px">
                   </div>
@@ -213,17 +249,112 @@
                     </div>
                   </div>
                 </td>
-                <td><%= item.Category.category_name %></td>
-                <td><%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %></td>
-                <td><%= item.price %> <%= item.concurrency%></td>
+                <td>
+                  <%= item.Category.category_name %>
+                </td>
+                <td>
+                  <%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>
+                </td>
+                <td>
+                  <%= item.price %>
+                    <%= item.concurrency%>
+                </td>
                 <td>
                   <button class="btn btn-danger">Disable</button>
                 </td>
               </tr>
-            <% }) %>
+              <% }) %>
           </table>
         </div>
       </div>
+
+      <!-- category -->
+      <div id="categoryTable" class="container item-table">
+        <div class="admin-title">
+          List Categories
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <div>
+          </div>
+          <div class="count">
+            Total: <%= categories.length %>
+          </div>
+        </div>
+        <div class="table-views">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Category name</th>
+              <th>Root Category</th>
+              <th>Action</th>
+            </tr>
+            <% categories.forEach(item=> { %>
+              <tr id="row<%= item.id %>">
+                <td id="id<%= item.id %>">
+                  <%= item.id %>
+                </td>
+                <td id="name<%= item.id %>">
+                  <%= item.category_name %>
+                </td>
+                <td id="root_name<%= item.id %>">
+                  <span id="text_root_name<%= item.id %>">
+                    <%= item.RootCategory.root_category_name %>
+                  </span>
+                  <select id="select_root_name<%= item.id %>" class="select_root_name">
+                    <option hidden selected>
+                      <%=item.RootCategory.root_category_name %>
+                    </option>
+                    <% rootCategories.forEach( item=> { %>
+                      <option>
+                        <%=item.root_category_name%>
+                      </option>
+                      <%})%>
+                  </select>
+                </td>
+                <td id='editdelete<%= item.id %>'>
+                  <button data-category-id="<%= item.id %>" class="btn btn-edit btn-primary">Edit</button>
+                  <button id="btndelete<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-delete btn-danger">Delete</button>
+                </td>
+                <td id='savecancel<%= item.id %>' class='savecancel'>
+                  <button id="btnsave<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-save btn-primary">Save</button>
+                  <button id="btncancel<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-cancel btn-danger">Cancel</button>
+                </td>
+              </tr>
+              <% }) %>
+                <tr>
+                  
+
+                    <th>
+                      New
+                    </th>
+                    <th>
+                      <input id='category_name' type="text" placeholder="Enter category name" name="category_name">
+                    </th>
+                    <th>
+                      <select  id='root_category_name'>
+                        <option selected hidden> </option>
+                        <% rootCategories.forEach( item=> { %>
+                          <option>
+                            <%=item.root_category_name%>
+                          </option>
+                          <%})%>
+
+                      </select>
+                    </th>
+                    <th>
+                      <button class="btn btn-add btn-success">Add</button>
+                    </th>
+                  
+
+                </tr>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -231,7 +362,7 @@
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-         New Instructor
+          New Instructor
         </div>
         <div class="modal-body">
           <div class="signup text-center">
@@ -257,182 +388,312 @@
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" name="re_password" id="re_password" placeholder="Confirm password">
+                <input type="password" class="form-control" name="re_password" id="re_password"
+                  placeholder="Confirm password">
               </div>
               <div class="form-group">
-                <textarea class="form-control" id="full_description" name="full_description" placeholder="Description" rows="3"></textarea>
+                <textarea class="form-control" id="full_description" name="full_description" placeholder="Description"
+                  rows="3"></textarea>
               </div>
-              <button type="button" id="btnSubmitForm" class="btn btn-primary w-50 rounded-pill">Create new instructor</button>
+              <button type="button" id="btnSubmitForm" class="btn btn-primary w-50 rounded-pill">Create new
+                instructor</button>
             </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="overlay"></div>
-  
+    <div class="overlay"></div>
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
 
-  <script>
-    $(document).ready(function(){
-      $('[data-toggle="popover"]').popover()
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-      let dataList = $('[data-transform="tableTransform"]').map(function(){
-        return $(this).data('target')
-      }).get()
+    <script>
+      $(document).ready(function () {
+        // $('[data-toggle="popover"]').popover()
 
-      $('[data-transform="tableTransform"]').click(function(){
-        let target = $(this).data("target")
-        dataList.forEach(async item => {
-          if(item === target){
-            $(item).show()
-            await $('[data-transform="tableTransform"]').removeClass("active")
-            $(`[data-target="${item}"]`).addClass("active")
+        // let dataList = $('[data-transform="tableTransform"]').map(function(){
+        //   return $(this).data('target')
+        // }).get()
+
+        // $('[data-transform="tableTransform"]').click(function(){
+        //   let target = $(this).data("target")
+        //   dataList.forEach(async item => {
+        //     if(item === target){
+        //       $(item).show()
+        //       await $('[data-transform="tableTransform"]').removeClass("active")
+        //       $(`[data-target="${item}"]`).addClass("active")
+        //     }
+        //     else {
+        //       $(item).hide()
+        //     }
+        //   })
+        // })
+
+        // $(".btn-disable").click(function() {
+        //   let userId = $(this).data("user-id")
+        //   $.post(`/admin/active/${userId}?isActive=false`, async function(data, status) {
+        //     console.log(data.msg)
+        //     if(data.msg === "ok") {
+        //       await Swal.fire({
+        //         icon: "success",
+        //         title: "Disable success"
+        //       })
+        //       location.reload()
+        //     }
+        //   })
+        // })
+        // $(".btn-enable").click(function() {
+        //   let userId = $(this).data("user-id")
+        //   $.post(`/admin/active/${userId}?isActive=true`, async function(data, status) {
+        //     console.log(data.msg)
+        //     if(data.msg === "ok") {
+        //       await Swal.fire({
+        //         icon: "success",
+        //         title: "Enable success"
+        //       })
+        //       location.reload()
+        //     }
+        //   })
+        // })
+        $(".btn-add").click(function (e) {
+          e.preventDefault();
+          alert('hus')
+          let form = new FormData(),
+              category_name = document.getElementById('category_name').value,
+              root_category_name = document.getElementById('root_category_name').value
+          form.append('category_name',category_name)
+          form.append('root_category_name',root_category_name)
+
+          $.ajax({
+            type: "POST",
+            url: '/admin/addCategory',
+            data: $(form).serialize(),
+            error: function (jqXHR, textStatus, errorMessage) {
+              console.log(errorMessage); // Optional
+            },
+            success: async function (data) {
+              await Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(_ => {
+                location.reload()
+              })
+            }
+          })
+        })
+
+        $(".btn-edit").click(function (e) {
+          let categoryId = $(this).data("category-id")
+          this.style.display = 'none'
+          document.getElementById('savecancel' + categoryId).style.display = 'block'
+          document.getElementById('editdelete' + categoryId).style.display = 'none'
+          document.getElementById('name' + categoryId).contentEditable = 'true'
+          document.getElementById('name' + categoryId).style.backgroundColor = 'white'
+          document.getElementById('name' + categoryId).style.borderStyle = 'solid'
+          document.getElementById('text_root_name' + categoryId).style.display = 'none'
+          document.getElementById('select_root_name' + categoryId).style.display = 'block'
+        })
+        $(".btn-cancel").click(function (e) {
+          location.reload();
+        })
+
+        $(".btn-save").click(function (e) {
+          Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Save`,
+            denyButtonText: `Don't save`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // let formId = $(this).attr("data-form-id")
+              // var form = new FormData(document.getElementById(formId));
+              // var url = $(form).attr("action");
+              let categoryId = $(this).data("category-id")
+              let name = document.getElementById('name' + categoryId).innerText
+              let root_name = document.getElementById('select_root_name' + categoryId).value
+              // alert('edit' + categoryId + ' ' + name + ' ' + root_name)
+              var formData = new FormData();
+              formData.append('category_name', name);
+              formData.append('root_category_name', root_name)
+              $.ajax({
+                type: "POST",
+                url: '/admin/editCategory',
+                data: formData,
+                error: function (jqXHR, textStatus, errorMessage) {
+                  console.log(errorMessage); // Optional
+                },
+                success: async function (data) {
+                  await Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                  }).then(_ => {
+                    location.reload()
+                  })
+                }
+              })
+            } else if (result.isDenied) {
+              Swal.fire('Changes are not saved', '', 'info')
+            }
+          })
+
+        })
+        $(".btn-delete").click(function () {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              let category_id = $(this).data("category-id")
+
+              $.ajax({
+                url: '/admin/category',
+                type: 'DELETE',
+                data: { category_id: category_id },
+                success: async function () {
+                  await Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                  location.reload()
+                }
+              });
+            }
+          })
+
+
+
+
+          // $(`#${formId}`).toggle()
+        })
+
+
+        // manh >--<->-<<->>>-<->-------------------------------------------------------------------------
+        var timer;
+        $("#email").change(function () {
+          clearTimeout(timer)
+          timer = setTimeout(function () {
+            let email = $("#email").val()
+            $.ajax({
+              url: "/user/checkemail",
+              type: "POST",
+              data: {
+                email
+              },
+              success: function (data) {
+                if (data.msg === "Email existed") {
+                  $("#messageEmail").css("color", "red").html("Email Exist")
+                } else if (data.msg === "Email is not valid") {
+                  $("#messageEmail").css("color", "red").html("Email is not valid")
+                } else {
+                  $("#messageEmail").css("color", "green").html("Email valid")
+                }
+              }
+            })
+          }, 100)
+        })
+
+        $("#signUpForm").validate({
+          onfocusout: false,
+          onkeyup: false,
+          onclick: false,
+          rules: {
+            "name": {
+              required: true
+            },
+            "email": {
+              required: true,
+              email: true,
+            },
+            "first_name": {
+              required: true
+            },
+            "last_name": {
+              required: true
+            },
+            "job_title": {
+              required: true
+            },
+            "password": {
+              required: true,
+              minlength: 8
+            },
+            "re_password": {
+              equalTo: "#password",
+              minlength: 8
+            }
+          }
+        })
+
+        $("#btnSubmitForm").click(function () {
+          if ($("#signUpForm").valid()) {
+            let value = $("#signUpForm").serialize()
+            $.ajax({
+              url: "/authentication/signup",
+              type: "POST",
+              data: value,
+              success: async function (data) {
+                await Swal.fire({
+                  icon: "success",
+                  title: "Create account instructor success!"
+                })
+                location.reload()
+              }
+            })
+          }
+        })
+
+        $("#filterInstructor").change(function () {
+          let name = $(this).val()
+          let total;
+          if (name === "") {
+            total = $(".course-table-item").length
+            $(".course-table-item").show()
           }
           else {
-            $(item).hide()
+            $(".course-table-item").hide()
+            total = $(`[data-instructor-name="${name}"]`).length
+            $(`[data-instructor-name="${name}"]`).show()
           }
+          $("#courseLength").text(`Total: ${total}`)
         })
-      })
 
-      $(".btn-disable").click(function() {
-        let userId = $(this).data("user-id")
-        $.post(`/admin/active/${userId}?isActive=false`, async function(data, status) {
-          console.log(data.msg)
-          if(data.msg === "ok") {
-            await Swal.fire({
-              icon: "success",
-              title: "Disable success"
-            })
-            location.reload()
+        $(document).on({
+          ajaxStart: function () {
+            $("body").addClass("loading");
+          },
+          ajaxStop: function () {
+            $("body").removeClass("loading");
           }
-        })
-      })
-      $(".btn-enable").click(function() {
-        let userId = $(this).data("user-id")
-        $.post(`/admin/active/${userId}?isActive=true`, async function(data, status) {
-          console.log(data.msg)
-          if(data.msg === "ok") {
-            await Swal.fire({
-              icon: "success",
-              title: "Enable success"
-            })
-            location.reload()
-          }
-        })
-      })
+        });
 
-      var timer;
-      $("#email").change(function(){
-        clearTimeout(timer)
-        timer = setTimeout(function(){
-          let email = $("#email").val()
-          $.ajax({
-            url: "/user/checkemail",
-            type: "POST",
-            data: {
-              email
-            },
-            success: function(data){
-              if(data.msg === "Email existed"){
-                $("#messageEmail").css("color", "red").html("Email Exist")
-              } else if(data.msg === "Email is not valid"){
-                $("#messageEmail").css("color", "red").html("Email is not valid")
-              } else {
-                $("#messageEmail").css("color", "green").html("Email valid")
-              }
-            }
-          })
-        }, 100)
       })
-
-      $("#signUpForm").validate({
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        rules: {
-          "name": {
-            required: true
-          },
-          "email":{
-            required: true,
-            email: true,
-          },
-          "first_name": {
-            required: true
-          },
-          "last_name": {
-            required: true
-          },
-          "job_title":{
-            required: true
-          },
-          "password": {
-            required: true,
-            minlength: 8
-          },
-          "re_password": {
-            equalTo: "#password",
-            minlength: 8
-          }
-        }
-      })
-
-      $("#btnSubmitForm").click(function() {
-        if($("#signUpForm").valid()) {
-          let value = $("#signUpForm").serialize()
-          $.ajax({
-            url: "/authentication/signup",
-            type: "POST",
-            data: value,
-            success: async function(data) {
-              await Swal.fire({
-                icon: "success",
-                title: "Create account instructor success!"
-              })
-              location.reload()
-            }
-          })
-        }
-      })
-
-      $("#filterInstructor").change(function(){
-        let name = $(this).val()
-        let total;
-        if(name === "") {
-          total = $(".course-table-item").length
-          $(".course-table-item").show()
-        }
-        else {
-          $(".course-table-item").hide()
-          total = $(`[data-instructor-name="${name}"]`).length
-          $(`[data-instructor-name="${name}"]`).show()
-        }
-        $("#courseLength").text(`Total: ${total}`)
-      })
-
-      $(document).on({
-          ajaxStart: function(){
-              $("body").addClass("loading"); 
-          },
-          ajaxStop: function(){ 
-              $("body").removeClass("loading"); 
-          }    
-      });
-
-    })
-  </script>
+    </script>
 </body>
 
 </html>
