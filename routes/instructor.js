@@ -48,16 +48,16 @@ router.get('/addCourse', async (req, res) => {
     res.render("instructor/addCourse", {category,user})
 });
 
-router.get('/addChapter', async (req, res) => {
-    // res.render("instructor/addChapter", await getAllCategories())
-    res.render("instructor/addChapter", {course_id: req.query.course_id})
-})
+// router.get('/addChapter', async (req, res) => {
+//     // res.render("instructor/addChapter", await getAllCategories())
+//     res.render("instructor/addChapter", {course_id: req.query.course_id})
+// })
 
 
-router.get('/addLesson', async (req, res) => {
-    // res.render("instructor/addLesson",await getAllCategories())
-    res.render("instructor/addLesson", {chapter_id: req.query.chapter_id})
-})
+// router.get('/addLesson', async (req, res) => {
+//     // res.render("instructor/addLesson",await getAllCategories())
+//     res.render("instructor/addLesson", {chapter_id: req.query.chapter_id})
+// })
 
 //edit
 router.get('/editCourse', async (req, res) => {
