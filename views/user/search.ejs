@@ -54,7 +54,20 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <!-- Category item -->
+              <% for(const rootCategory of rootCategories) { %>
+                <div class="dropdown-item p-0">
+                  <div class="nav-item dropright pl-2 pr-2">
+                    <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= rootCategory.root_category_name %>
+                    </a>
+                    <div class="dropdown-menu">
+                      <% rootCategory.Categories.forEach(item => { %>
+                        <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
@@ -364,7 +377,8 @@
 
       $(".page").click(function() {
         let page = $(this).data("page")
-        window.location.href = `/category-courses/${category_id}?page=${page}`
+        let query = $("#filterSection").data("query")
+        window.location.href = `/search?query=${query}?page=${page}`
       })
     })
   </script>
