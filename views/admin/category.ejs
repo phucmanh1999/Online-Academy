@@ -326,29 +326,29 @@
               </tr>
               <% }) %>
                 <tr>
-                  
 
-                    <th>
-                      New
-                    </th>
-                    <th>
-                      <input id='category_name' type="text" placeholder="Enter category name" name="category_name">
-                    </th>
-                    <th>
-                      <select  id='root_category_name'>
-                        <option selected hidden> </option>
-                        <% rootCategories.forEach( item=> { %>
-                          <option>
-                            <%=item.root_category_name%>
-                          </option>
-                          <%})%>
 
-                      </select>
-                    </th>
-                    <th>
-                      <button class="btn btn-add btn-success">Add</button>
-                    </th>
-                  
+                  <th>
+                    New
+                  </th>
+                  <th>
+                    <input id='category_name' type="text" placeholder="Enter category name" name="category_name">
+                  </th>
+                  <th>
+                    <select id='root_category_name'>
+                      <option selected hidden> </option>
+                      <% rootCategories.forEach( item=> { %>
+                        <option>
+                          <%=item.root_category_name%>
+                        </option>
+                        <%})%>
+
+                    </select>
+                  </th>
+                  <th>
+                    <button class="btn btn-add btn-success">Add</button>
+                  </th>
+
 
                 </tr>
           </table>
@@ -470,32 +470,29 @@
         // })
         $(".btn-add").click(function (e) {
           e.preventDefault();
-          alert('hus')
           let form = new FormData(),
-              category_name = document.getElementById('category_name').value,
-              root_category_name = document.getElementById('root_category_name').value
-          form.append('category_name',category_name)
-          form.append('root_category_name',root_category_name)
+            category_name = document.getElementById('category_name').value,
+            root_category_name = document.getElementById('root_category_name').value
+          form.append('category_name', category_name)
+          form.append('root_category_name', root_category_name)
 
-          $.ajax({
-            type: "POST",
-            url: '/admin/addCategory',
-            data: $(form).serialize(),
-            error: function (jqXHR, textStatus, errorMessage) {
-              console.log(errorMessage); // Optional
-            },
-            success: async function (data) {
-              await Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Your work has been saved',
-                showConfirmButton: false,
-                timer: 1500
-              }).then(_ => {
-                location.reload()
-              })
-            }
-          })
+          alert('add new category ' + category_name + ' ' + root_category_name)
+          var xhr = new XMLHttpRequest;
+              xhr.open('POST', '/admin/addCategory', true);
+              xhr.onreadystatechange = async function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                  // Request finished. Do processing here.
+                  await Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  location.reload()
+                }
+              }
+              xhr.send(form);
         })
 
         $(".btn-edit").click(function (e) {
@@ -513,6 +510,7 @@
           location.reload();
         })
 
+
         $(".btn-save").click(function (e) {
           Swal.fire({
             title: 'Do you want to save the changes?',
@@ -528,29 +526,27 @@
               let categoryId = $(this).data("category-id")
               let name = document.getElementById('name' + categoryId).innerText
               let root_name = document.getElementById('select_root_name' + categoryId).value
-              // alert('edit' + categoryId + ' ' + name + ' ' + root_name)
-              var formData = new FormData();
+              let formData = new FormData();
+              formData.append('id',categoryId);
               formData.append('category_name', name);
-              formData.append('root_category_name', root_name)
-              $.ajax({
-                type: "POST",
-                url: '/admin/editCategory',
-                data: formData,
-                error: function (jqXHR, textStatus, errorMessage) {
-                  console.log(errorMessage); // Optional
-                },
-                success: async function (data) {
+              formData.append('root_category_name', root_name);
+
+              var xhr = new XMLHttpRequest;
+              xhr.open('POST', '/admin/editCategory', true);
+              xhr.onreadystatechange = async function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                  // Request finished. Do processing here.
                   await Swal.fire({
                     position: 'top-end',
                     icon: 'success',
                     title: 'Your work has been saved',
                     showConfirmButton: false,
                     timer: 1500
-                  }).then(_ => {
-                    location.reload()
                   })
+                  location.reload()
                 }
-              })
+              }
+              xhr.send(formData);
             } else if (result.isDenied) {
               Swal.fire('Changes are not saved', '', 'info')
             }

@@ -212,12 +212,12 @@ router.post('/buy', (req, res) => {
     }
 })
 
-router.get('/buy', (req, res) => {
+router.get('/enroll', async (req, res) => {
     const user = req.user ? req.user : undefined
-
+    let categories = await getAllCategories();
     if (user && user.type === ROLE_STUDENT) {
-        getBought({student_id: user.role_id}).then((bought) => {
-            console.info(bought)
+        getBought({student_id: user.role_id}).then((courses) => {
+            res.render('user/enroll',{user,courses,categories})
         })
     } else {
         res.json({'msg': 'Unauthorized'})
