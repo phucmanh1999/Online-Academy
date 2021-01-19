@@ -212,7 +212,7 @@
             <% courses.forEach(item => { %>
               <tr class="course-table-item" data-category-name="<%= item.Category.category_name %>" data-instructor-name="<%= `${item.Instructor.User.first_name} ${item.Instructor.User.last_name}` %>">
                 <td><%= item.id %></td>
-                <td class="d-flex"  data-trigger="hover" data-toggle="popover" title="Full Description" data-content="<%= item.full_description %>">
+                <td class="d-flex">
                   <div>
                     <img src="<%= item.img_path %>" height="80px">
                   </div>
@@ -221,7 +221,7 @@
                       <%= item.course_name %>
                     </div>
                     <div class="course-description">
-                      <%= item.full_description %>
+                      <%= item.short_description %>
                     </div>
                   </div>
                 </td>
@@ -280,6 +280,7 @@
               </div>
               <button type="button" id="btnSubmitForm" class="btn btn-primary w-50 rounded-pill">Create new instructor</button>
             </form>
+          </div>
         </div>
       </div>
     </div>
