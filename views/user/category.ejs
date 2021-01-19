@@ -182,18 +182,27 @@
       <div class="row">
         <div id="filterSection" data-course-id="<%= payload.categoryId  %>" class="col-3">
           
-          <select id="orderBy" class="form-select w-100 mb-2">
-            <option selected disabled>Order by</option>
-            <option value="order_price">Order by price</option>
-            <option value="order_review">Order by rating</option>
+          <select id="orderBy" data-order-by="<%= order_by %>" class="form-select w-100 mb-2">
+            <% if(order_by === "order_review") { %>
+              <option selected value="order_review">Order by rating</option>
+              <option value="order_price">Order by price</option>
+            <% } else { %>
+              <option value="order_review">Order by rating</option>
+              <option selected value="order_price">Order by price</option>
+            <% } %>
           </select>
 
-          <select id="sortBy" class="form-select w-100 mb-2">
-            <option selected disabled>Sort by</option>
-            <option value="ASC">Ascending</option>
-            <option value="DESC">Descending </option>
+          <select id="sortBy" data-sort-by="<%= sort_by %>" class="form-select w-100 mb-2">
+            <% if(sort_by === "DECS") { %>
+              <option selected value="DESC">Descending </option>
+              <option value="ASC">Ascending</option>
+            <% } else { %>
+              <option value="DESC">Descending </option>
+              <option selected value="ASC">Ascending</option>
+            <% } %>
           </select>
           
+          <button id="filterBtn" class="btn btn-block btn-primary">Filter</button>
           
         </div>
         <div id="coursesSection"  class="col-9">    
@@ -365,7 +374,7 @@
       })
 
       let category_id = $("#filterSection").data("course-id")
-      $("#sortBy").change(function(){
+      $("#filterBtn").click(function(){
         let order_by = $("#orderBy").val()
         let sort_by = $("#sortBy").val()
         let orderStr = order_by ? `${order_by}=${sort_by}` : `order_review=${sort_by}`
@@ -374,7 +383,13 @@
 
       $(".page").click(function() {
         let page = $(this).data("page")
-        window.location.href = `/category-courses/${category_id}?page=${page}`
+        let order_by = $("#orderBy").data("order-by")
+        let sort_by = $("#sortBy").data("sort-by")
+        if(order_by === "order_review" && sort_by === "DESC") {
+          window.location.href = `/category-courses/${category_id}?page=${page}`
+        } else {
+          window.location.href = `/category-courses/${category_id}?page=${page}&${order_by}=${sort_by}`
+        }
       })
       
     })
