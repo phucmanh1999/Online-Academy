@@ -24,6 +24,20 @@ router.get('/', async (req, res) => {
         res.redirect('/')
     }
 })
+router.get('/category', async (req, res) => {
+    if (req.user && req.user.type === ROLE_ADMIN) {
+        res.render("admin/category",{
+            user: req.user,
+            instructors: await getAllInstructor(),
+            students: await getAllStudent(),
+            rootCategories: await getAllRootCategory(),
+            courses: await getAllCourses(),
+            categories: await getAllCategories()
+        });
+    } else {
+        res.redirect('/')
+    }
+})
 
 router.post('/active/:userId', (req, res) => {
     if (req.user && req.user.type === ROLE_ADMIN) {

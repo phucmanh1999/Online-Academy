@@ -90,7 +90,7 @@ tr:nth-child(even) {
   color: #fff;
 }
 
-#instructorTable, #courseTable{
+#instructorTable, #courseTable, #studentTable {
   display: none;
 }
 
@@ -147,4 +147,8 @@ body.loading .overlay{
 #btnSubmitForm:hover {
   background-position: 100% 0 !important;
   transition: all 0.4s ease-in-out;
+}
+
+.savecancel, .select_root_name{
+  display: none;
 }

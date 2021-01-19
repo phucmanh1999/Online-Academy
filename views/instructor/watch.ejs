@@ -26,10 +26,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <form id="formSearch" method="GET" action="/search" class="ml-1">
-          <span><i class="fas fa-search"></i></span>
-          <input type="text" name="query" placeholder="Search..." class="rounded-pill" />
-        </form>
+        
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/">Home</a>
@@ -38,7 +35,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/about">About</a>
           </li>
-          <% if(typeof user !=='undefined' ) { %>
+          <% if (typeof user !=='undefined') { %>
 
 
             <li class="nav-item dropdown">
@@ -76,10 +73,10 @@
 
     <div class="row mt-3 watch-list">
       <% if(user.Instructor.course_number> 0) { %>
+        <div class="btn-add" id="btn-add-course">
+          <a class='button' href='/instructor/addCourse'>Add Course</a>
+        </div>
         <div class="col-12 watch-list-body">
-          <div class="btn-add">
-            <a class='button' href='/instructor/addCourse'>Add Course</a>
-          </div>
           <% courses.forEach((course,index)=> { %>
             <span>
               <div data-course-id="<%= course.id %>" class="course-item row p-2">
@@ -110,10 +107,9 @@
               <div>
                 Your course is empty. Create a course now!
               </div>
-              <div class="btn-add">
+              <div class="btn-add" id="btn-add-course">
                 <a class='button' href='/instructor/addCourse'>Add Course</a>
               </div>
-              <a href="/" class="btn btn-danger pt-2 pb-2 mt-2 mb-2">Browse courses now</a>
             </div>
           </div>
           <% } %>
