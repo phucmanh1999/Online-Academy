@@ -52,6 +52,14 @@
               List Courses
             </div>
           </li>
+          <li data-transform="tableTransform" data-target="#categoryTable" class="list-group-item d-flex">
+            <div class="icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div>
+              List Category
+            </div>
+          </li>
         </ul>
         <div class="mt-5 text-center home">
           <a class="d-block mt-2" href="/logout">Log out</a>
@@ -240,6 +248,91 @@
           </table>
         </div>
       </div>
+      <div id="categoryTable" class="container item-table">
+        <div class="admin-title">
+          List Categories
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <div>
+          </div>
+          <div class="count">
+            Total: <%= categories.length %>
+          </div>
+        </div>
+        <div class="table-views">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Category name</th>
+              <th>Root Category</th>
+              <th>Action</th>
+            </tr>
+            <% categories.forEach(item=> { %>
+              <tr id="row<%= item.id %>">
+                <td id="id<%= item.id %>">
+                  <%= item.id %>
+                </td>
+                <td id="name<%= item.id %>">
+                  <%= item.category_name %>
+                </td>
+                <td id="root_name<%= item.id %>">
+                  <span id="text_root_name<%= item.id %>">
+                    <%= item.RootCategory.root_category_name %>
+                  </span>
+                  <select id="select_root_name<%= item.id %>" class="select_root_name">
+                    <option hidden selected>
+                      <%=item.RootCategory.root_category_name %>
+                    </option>
+                    <% rootCategories.forEach( item=> { %>
+                      <option>
+                        <%=item.root_category_name%>
+                      </option>
+                      <%})%>
+                  </select>
+                </td>
+                <td id='editdelete<%= item.id %>'>
+                  <button data-category-id="<%= item.id %>" class="btn btn-edit btn-primary">Edit</button>
+                  <button id="btndelete<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-delete btn-danger">Delete</button>
+                </td>
+                <td id='savecancel<%= item.id %>' class='savecancel'>
+                  <button id="btnsave<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-save btn-primary">Save</button>
+                  <button id="btncancel<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-cancel btn-danger">Cancel</button>
+                </td>
+              </tr>
+              <% }) %>
+                <tr>
+                  
+
+                    <th>
+                      New
+                    </th>
+                    <th>
+                      <input id='category_name' type="text" placeholder="Enter category name" name="category_name">
+                    </th>
+                    <th>
+                      <select  id='root_category_name'>
+                        <option selected hidden> </option>
+                        <% rootCategories.forEach( item=> { %>
+                          <option>
+                            <%=item.root_category_name%>
+                          </option>
+                          <%})%>
+
+                      </select>
+                    </th>
+                    <th>
+                      <button class="btn btn-add btn-success">Add</button>
+                    </th>
+                  
+
+                </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -322,6 +415,129 @@
           }
         })
       })
+
+      $(".btn-add").click(function (e) {
+          e.preventDefault();
+          let form = new FormData(),
+              category_name = document.getElementById('category_name').value,
+              root_category_name = document.getElementById('root_category_name').value
+          form.append('category_name',category_name)
+          form.append('root_category_name',root_category_name)
+
+          $.ajax({
+            type: "POST",
+            url: '/admin/addCategory',
+            data: $(form).serialize(),
+            error: function (jqXHR, textStatus, errorMessage) {
+              console.log(errorMessage); // Optional
+            },
+            success: async function (data) {
+              await Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(_ => {
+                location.reload()
+              })
+            }
+          })
+        })
+
+        $(".btn-edit").click(function (e) {
+          let categoryId = $(this).data("category-id")
+          this.style.display = 'none'
+          document.getElementById('savecancel' + categoryId).style.display = 'block'
+          document.getElementById('editdelete' + categoryId).style.display = 'none'
+          document.getElementById('name' + categoryId).contentEditable = 'true'
+          document.getElementById('name' + categoryId).style.backgroundColor = 'white'
+          document.getElementById('name' + categoryId).style.borderStyle = 'solid'
+          document.getElementById('text_root_name' + categoryId).style.display = 'none'
+          document.getElementById('select_root_name' + categoryId).style.display = 'block'
+        })
+        $(".btn-cancel").click(function (e) {
+          location.reload();
+        })
+
+        $(".btn-save").click(function (e) {
+          Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Save`,
+            denyButtonText: `Don't save`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // let formId = $(this).attr("data-form-id")
+              // var form = new FormData(document.getElementById(formId));
+              // var url = $(form).attr("action");
+              let categoryId = $(this).data("category-id")
+              let name = document.getElementById('name' + categoryId).innerText
+              let root_name = document.getElementById('select_root_name' + categoryId).value
+              // alert('edit' + categoryId + ' ' + name + ' ' + root_name)
+              var formData = new FormData();
+              formData.append('category_name', name);
+              formData.append('root_category_name', root_name)
+              $.ajax({
+                type: "POST",
+                url: '/admin/editCategory',
+                data: formData,
+                error: function (jqXHR, textStatus, errorMessage) {
+                  console.log(errorMessage); // Optional
+                },
+                success: async function (data) {
+                  await Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                  }).then(_ => {
+                    location.reload()
+                  })
+                }
+              })
+            } else if (result.isDenied) {
+              Swal.fire('Changes are not saved', '', 'info')
+            }
+          })
+
+        })
+        $(".btn-delete").click(function () {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              let category_id = $(this).data("category-id")
+
+              $.ajax({
+                url: '/admin/category',
+                type: 'DELETE',
+                data: { category_id: category_id },
+                success: async function () {
+                  await Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                  location.reload()
+                }
+              });
+            }
+          })
+
+
+
+
+          // $(`#${formId}`).toggle()
+        })
 
       $(".btn-disable").click(function() {
         let userId = $(this).data("user-id")
@@ -482,9 +698,7 @@
               $("body").removeClass("loading");
           }
       });
-
     })
   </script>
 </body>
-
 </html>
