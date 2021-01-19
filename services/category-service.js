@@ -15,7 +15,42 @@ const getCategory = async obj => {
         where: obj
     })
 }
+const createCategory = obj => {
+    return Category.create(obj);
+}
+const updateCategory = (_id, obj) => {
+    return Category.update(
+        obj
+        ,
+        {
+            where: {
+                id: _id
+            },
+        }
+    )
+}
+
+const deleteCategory = (obj) => {
+    Category.destroy({
+        where: obj
+    })
+}
+
+const checkCategoryHaveCourse = async (id) => {
+    const course = await Course.findAndCountAll({
+        where: {
+            category_id: id,
+        },
+        limit: 1
+    })
+    return course.count > 0
+}
+
 module.exports = {
     getAllCategories,
-    getCategory
+    getCategory,
+    createCategory,
+    updateCategory,
+    checkCategoryHaveCourse,
+    deleteCategory
 }

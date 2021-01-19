@@ -13,6 +13,7 @@ const getRootCategory = async obj => {
         where: obj
     })
 }
+
 module.exports = {
     getAllRootCategory,
     getRootCategory
