@@ -45,13 +45,22 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Categories</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
-                  <%= category.category_name %>
-                </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownCategory">
+                <% for(const rootCategory of rootCategories) { %>
+                  <div class="dropdown-item p-0">
+                    <div class="nav-item dropright pl-2 pr-2">
+                      <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <%= rootCategory.root_category_name %>
+                      </a>
+                      <div class="dropdown-menu">
+                        <% rootCategory.Categories.forEach(item => { %>
+                          <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>
                 <%} %>
-            </div>
+              </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="=/about">About</a>
@@ -154,6 +163,13 @@
           <div class="course_language">
             <i class="fas fa-closed-captioning"></i> Language: <%= payload.course_language %>
           </div>
+          <div>
+          </div>
+          <% if(typeof user !=='undefined' ) { %>
+            <div>
+              <button data-course-id="<%= payload.id %>" class="btn btn-watchlist btn-outline-danger mt-2">Watch list <i class="far fa-heart"></i></button>
+            </div>
+          <% } %>
         </div>
         <div class="course-content">
           <div class="course-content-title">
@@ -644,6 +660,30 @@
           )
         }
       })
+      $(".btn-watchlist").click(function() {
+        let course_id = $(this).data("course-id")
+        $.post(
+          "/student/favourite",
+          { course_id },
+          function(data, status) {
+            console.log(data.msg)
+            if(data.msg === "Add favourite success"){
+              Swal.fire({
+                icon: 'success',
+                title: data.msg
+              })
+            } else if(data.msg === "Item already exist") {
+              Swal.fire({
+                icon: 'error',
+                title: data.msg
+              })
+            } else {
+              location.reload()
+            }
+          }
+        )
+      })
+      
     })
   </script>
   <script>
@@ -654,6 +694,7 @@
     editor.setContents(content);
     console.log(editor.root.innerHTML)
     document.getElementById('fdcontent').innerHTML = editor.root.innerHTML
+
   </script>
 
 </body>
