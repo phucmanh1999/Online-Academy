@@ -14,9 +14,9 @@
     crossorigin="anonymous"
   />
   <link rel="stylesheet" href="/css/index.css" />
-  <link rel="stylesheet" href="/css/signup.css">
+  <link rel="stylesheet" href="/css/watchlist.css">
   <title>
-    Online Courses - Learn Anything On Your Schedule | MNP Courses
+    Enroll List
   </title>
   <link rel="shortcut icon" href="/assets/images/logo-images.svg" />
 </head>
@@ -54,33 +54,35 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <a class="dropdown-item" href="#">Mobile</a>
-              <a class="dropdown-item" href="#">web</a>
+              <% for(const category of categories) { %>
+                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+              <%} %>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="/about">About</a>
           </li>
-          <% if(typeof user !== 'undefined' ) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-shopping-cart"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/student/enroll">
-                <i class="fa fa-book" aria-hidden="true"></i>
-              </a>
-            </li>
+          <% if(typeof user !== 'undefined') { %>
+            <% if(user.type === "Student") { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/cart">
+                  <i class="fas fa-shopping-cart"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/watchlist">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/student/enroll">
+                  <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
+              </li>
+            <% } %>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                href="#"
                 id="dropdownUser"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -88,8 +90,50 @@
                 ><%= user.username %></a
               >
               <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                <a class="dropdown-item" href="#">My Profile</a>
-                <a class="dropdown-item" href="#">Log out</a>
+                <% if(user.type === "Instructor") { %>
+                  <a class="dropdown-item" href="/instructor">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                      </div>
+                      <div>
+                        Instructor
+                      </div>
+                    </div>
+                  </a>
+                <% } else if(user.type === "Administrator") { %>
+                  <a class="dropdown-item" href="/admin">
+                    <div class="d-flex">
+                      <div class="icon-profile w-25">
+                        <i class="fas fa-user-cog"></i>
+                      </div>
+                      <div>
+                        Admin
+                      </div>
+                    </div>
+                  </a>
+                <% } %>
+                <a class="dropdown-item" href="/profile">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="far fa-id-badge"></i>
+                    </div>
+                    <div>
+                      My profile
+                    </div>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">
+                  <div class="d-flex">
+                    <div class="icon-profile w-25">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div>
+                      Log out
+                    </div>
+                  </div>
+                </a>
               </div>
             </li>
           <% } else { %>
@@ -105,35 +149,60 @@
   </nav>
   
   <!-- Main content -->
-  <div class="container signup-container d-flex justify-content-center">
-    <div class="signup text-center">
-      <div>Sign Up</div>
-      <span>Already a memeber? <a href="/login">Log In</a></span>
-      <form method="POST" action="/authentication/signup" id="signUpForm">
-        <div class="form-group">
-          <input type="text" class="form-control" name="name" placeholder="Username">
+  <div class="container mt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">
+          <img src="/assets/images/logo-images.svg" width="30px">
+        </a></li>
+        <li class="breadcrumb-item active">Enroll</li>
+      </ol>
+    </nav>
+
+    <div class="row mt-3 watch-list">
+      <% if(courses.length > 0) { %>
+        <div class="col-12 watch-list-body">
+          <% courses.forEach((course,index) => { %>
+            <span>
+              <div data-course-id="<%= course.course_id %>" class="course-item row p-2">
+                <div class="col-2">
+                  <a href="/courses/<%= course.course_id %>">
+                    <img src="<%= course.Course.img_path %>" width="130px">
+                  </a>
+                </div>
+                <div class="col-10 d-flex justify-content-between">
+                  <a href="/courses/<%= course.course_id %>">
+                    <div>
+                      <div class="title">
+                        <%= course.Course.course_name%>
+                      </div>
+                      <span>By: <%= course.Course.Instructor.User.user_name %></span>
+                    </div>
+                  </a>
+                  <div>
+                    <button class="remove-btn" data-course-id="<%= course.Course.id %>">Remove</button>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <hr>
+          <% }) %>  
         </div>
-        <div class="form-group text-center">
-          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          <span id="messageEmail"></span>
+      <% } else { %>
+        <div class="col-12 watch-list-body d-flex justify-content-center">
+          <div class="text-center">
+            <i style="color: #ccc;" class="fas fa-heart fa-5x p-3"></i>
+            <div>
+              Your enroll courses is empty.
+            </div>
+            <a href="/" class="btn btn-danger pt-2 pb-2 mt-2 mb-2">Browse courses now</a>
+          </div>
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="first_name" placeholder="First name">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="last_name" placeholder="Last name">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" name="re_password" id="re_password" placeholder="Confirm password">
-        </div>
-        <button type="submit" class="btn btn-primary w-50 rounded-pill">Sign Up</button>
-      </form>
+      <% } %>
     </div>
+
   </div>
-  <div class="overlay"></div>
+
   <hr>
   <!-- Before footer -->
   <div class="container-fluid">
@@ -202,75 +271,25 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <script>
-    $(document).ready(function(){
-      
-      
-      var timer;
-      $("#email").change(function(){
-        // $("#messageEmail").hide()
-        clearTimeout(timer)
-        timer = setTimeout(function(){
-          let email = $("#email").val()
-          $.ajax({
-            url: "/user/checkemail",
-            type: "POST",
-            data: {
-              email
-            },
-            success: function(data){
-              if(data.msg === "Email existed"){
-                $("#messageEmail").css("color", "red").html("Email Exist")
-              } else if(data.msg === "Email is not valid"){
-                $("#messageEmail").css("color", "red").html("Email is not valid")
-              } else {
-                $("#messageEmail").css("color", "green").html("Email valid")
-              }
-            }
-          })
-        }, 100)
-      })
-
-      $("#signUpForm").validate({
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
-        rules: {
-          "name": {
-            required: true
-          },
-          "email":{
-            required: true,
-            email: true,
-          },
-          "first_name": {
-            required: true
-          },
-          "last_name": {
-            required: true
-          },
-          "password": {
-            required: true,
-            minlength: 8
-          },
-          "re_password": {
-            equalTo: "#password",
-            minlength: 8
+    $(document).ready(function() {
+      $(".remove-btn").click(function() {
+        let courseId = $(this).attr("data-course-id")
+        $.ajax({
+          url: `/student/watchlist/${courseId}`,
+          type: "DELETE",
+          success: async function(result) {
+            await Swal.fire({
+              icon: 'success',
+              title: result.msg
+            })
+            location.reload()
           }
-        },
+        })
       })
-      $(document).on({
-          ajaxStart: function(){
-              $("body").addClass("loading"); 
-          },
-          ajaxStop: function(){ 
-              $("body").removeClass("loading"); 
-          }    
-      });
     })
   </script>
-
 </body>
 </html>
