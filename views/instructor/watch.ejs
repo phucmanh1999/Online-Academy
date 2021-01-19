@@ -26,7 +26,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        
+
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/">Home</a>
@@ -73,7 +73,7 @@
 
     <div class="row mt-3 watch-list">
       <% if(user.Instructor.course_number> 0) { %>
-        <div class="btn-add" id="btn-add-course">
+        <div class="btn-add btn btn-primary mb-2" id="btn-add-course">
           <a class='button' href='/instructor/addCourse'>Add Course</a>
         </div>
         <div class="col-12 watch-list-body">
@@ -107,7 +107,7 @@
               <div>
                 Your course is empty. Create a course now!
               </div>
-              <div class="btn-add" id="btn-add-course">
+              <div class="btn-add btn btn-primary mb-2" id="btn-add-course">
                 <a class='button' href='/instructor/addCourse'>Add Course</a>
               </div>
             </div>

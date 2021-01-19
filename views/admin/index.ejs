@@ -135,7 +135,7 @@
                     <div>
                       <img src="<%= item.avatar_url %>" width="70px" height="70px" class="rounded-circle">
                     </div>
-                    <div class="ml-2"> 
+                    <div class="ml-2">
                       <div class="course-name"><%= item.first_name %> <%= item.last_name %></div>
                       <div class="course-description"><%= item.Instructor.full_description %></div>
                     </div>
@@ -146,7 +146,7 @@
                 <td><%= item.Instructor.course_number %></td>
                 <td class="text-center">
                   <div>
-                    <%= item.Instructor.rating %> 
+                    <%= item.Instructor.rating %>
                   </div>
                   <div>
                     (<%= item.Instructor.rating_number %> ratings)
@@ -286,7 +286,7 @@
     </div>
   </div>
   <div class="overlay"></div>
-  
+
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -476,11 +476,11 @@
 
       $(document).on({
           ajaxStart: function(){
-              $("body").addClass("loading"); 
+              $("body").addClass("loading");
           },
-          ajaxStop: function(){ 
-              $("body").removeClass("loading"); 
-          }    
+          ajaxStop: function(){
+              $("body").removeClass("loading");
+          }
       });
 
     })

@@ -263,7 +263,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 category_id: categoryId,
                 instructor_id: instructorId,
                 is_active: true
-            }).then(() => {
+            }).then((course) => {
                 if (imageFile)
                     imageFile.mv("./public/assets/images/" + imageFile.name)
                 getInstructor({id: instructorId}).then(ins => {
@@ -271,7 +271,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                         course_number: ins.course_number ? ins.course_number + 1 : 1
                     })
                 })
-                res.json({msg: "ok"})
+                res.redirect('/editCourse?id='+course.id)
             }).catch((err) => {
                 console.log(err)
                 res.json({msg: "Unknow error"})
