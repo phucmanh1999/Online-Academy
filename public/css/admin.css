@@ -90,6 +90,10 @@ tr:nth-child(even) {
   color: #fff;
 }
 
+/*#instructorTable, #courseTable, #categoryTable {*/
+/*  display: none;*/
+/*}*/
+
 #instructorTable, #courseTable, #studentTable {
   display: none;
 }
@@ -108,7 +112,7 @@ tr:nth-child(even) {
   font-size: 13px !important;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;  
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
@@ -128,7 +132,7 @@ tr:nth-child(even) {
 }
 /* Turn off scrollbar when body element has the loading class */
 body.loading{
-  overflow: hidden;   
+  overflow: hidden;
 }
 /* Make spinner image visible when body element has the loading class */
 body.loading .overlay{

@@ -368,6 +368,91 @@
           </table>
         </div>
       </div>
+      <div id="categoryTable" class="container item-table">
+        <div class="admin-title">
+          List Categories
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <div>
+          </div>
+          <div class="count">
+            Total: <%= categories.length %>
+          </div>
+        </div>
+        <div class="table-views">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Category name</th>
+              <th>Root Category</th>
+              <th>Action</th>
+            </tr>
+            <% categories.forEach(item=> { %>
+              <tr id="row<%= item.id %>">
+                <td id="id<%= item.id %>">
+                  <%= item.id %>
+                </td>
+                <td id="name<%= item.id %>">
+                  <%= item.category_name %>
+                </td>
+                <td id="root_name<%= item.id %>">
+                  <span id="text_root_name<%= item.id %>">
+                    <%= item.RootCategory.root_category_name %>
+                  </span>
+                  <select id="select_root_name<%= item.id %>" class="select_root_name">
+                    <option hidden selected>
+                      <%=item.RootCategory.root_category_name %>
+                    </option>
+                    <% rootCategories.forEach( item=> { %>
+                      <option>
+                        <%=item.root_category_name%>
+                      </option>
+                      <%})%>
+                  </select>
+                </td>
+                <td id='editdelete<%= item.id %>'>
+                  <button data-category-id="<%= item.id %>" class="btn btn-edit btn-primary">Edit</button>
+                  <button id="btndelete<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-delete btn-danger">Delete</button>
+                </td>
+                <td id='savecancel<%= item.id %>' class='savecancel'>
+                  <button id="btnsave<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-save btn-primary">Save</button>
+                  <button id="btncancel<%= item.id %>" data-category-id="<%= item.id %>"
+                    class="btn btn-cancel btn-danger">Cancel</button>
+                </td>
+              </tr>
+              <% }) %>
+                <tr>
+                  
+
+                    <th>
+                      New
+                    </th>
+                    <th>
+                      <input id='category_name' type="text" placeholder="Enter category name" name="category_name">
+                    </th>
+                    <th>
+                      <select  id='root_category_name'>
+                        <option selected hidden> </option>
+                        <% rootCategories.forEach( item=> { %>
+                          <option>
+                            <%=item.root_category_name%>
+                          </option>
+                          <%})%>
+
+                      </select>
+                    </th>
+                    <th>
+                      <button class="btn btn-add btn-success">Add</button>
+                    </th>
+                  
+
+                </tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -754,9 +839,7 @@
           $("body").removeClass("loading");
         }
       });
-
     })
   </script>
 </body>
-
 </html>
