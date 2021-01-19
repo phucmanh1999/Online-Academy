@@ -478,21 +478,21 @@
 
           alert('add new category ' + category_name + ' ' + root_category_name)
           var xhr = new XMLHttpRequest;
-              xhr.open('POST', '/admin/addCategory', true);
-              xhr.onreadystatechange = async function () { // Call a function when the state changes.
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                  // Request finished. Do processing here.
-                  await Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-                  location.reload()
-                }
-              }
-              xhr.send(form);
+          xhr.open('POST', '/admin/addCategory', true);
+          xhr.onreadystatechange = async function () { // Call a function when the state changes.
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+              // Request finished. Do processing here.
+              await Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              location.reload()
+            }
+          }
+          xhr.send(form);
         })
 
         $(".btn-edit").click(function (e) {
@@ -527,7 +527,7 @@
               let name = document.getElementById('name' + categoryId).innerText
               let root_name = document.getElementById('select_root_name' + categoryId).value
               let formData = new FormData();
-              formData.append('id',categoryId);
+              formData.append('id', categoryId);
               formData.append('category_name', name);
               formData.append('root_category_name', root_name);
 
@@ -544,6 +544,13 @@
                     timer: 1500
                   })
                   location.reload()
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: "Please try again "
+                  })
                 }
               }
               xhr.send(formData);
@@ -577,15 +584,19 @@
                     'success'
                   )
                   location.reload()
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: "Error: " + errorThrown
+                  })
+                  // alert("Status: " + textStatus); alert("Error: " + errorThrown);
                 }
               });
             }
           })
-
-
-
-
-          // $(`#${formId}`).toggle()
         })
 
 
