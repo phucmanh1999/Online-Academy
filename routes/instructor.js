@@ -320,6 +320,10 @@ router.post('/addLesson', (req, res) => {
     const chapter_id = req.query.chapter_id
     let videoFile = null
     let vidPath = null
+    let defaultIsFree = false
+    if (req.body.isFree){
+        defaultIsFree = true
+    }
     if (user && user.type === ROLE_INSTRUCTOR) {
         if (req.files) {
             videoFile = req.files.video
@@ -327,7 +331,7 @@ router.post('/addLesson', (req, res) => {
         }
         createLesson({
             chapter_id: chapter_id,
-            is_free: false,
+            is_free: defaultIsFree,
             short_description: req.body.shortDescription,
             full_description: req.body.fullDescription,
             lesson_name: req.body.lessonName,

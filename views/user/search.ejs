@@ -43,7 +43,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/">Home</a>
           </li>
-          <li class="nav-item dropdown active">
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -191,7 +191,7 @@
           </select>
 
           <select id="sortBy" data-sort-by="<%= sort_by %>" class="form-select w-100 mb-2">
-            <% if(sort_by === "DECS") { %>
+            <% if(sort_by === "DESC") { %>
               <option selected value="DESC">Descending </option>
               <option value="ASC">Ascending</option>
             <% } else { %>
@@ -199,7 +199,7 @@
               <option selected value="ASC">Ascending</option>
             <% } %>
           </select>
-          
+
           <button id="filterBtn" class="btn btn-block btn-primary">Filter</button>
 
         </div>
@@ -408,7 +408,7 @@
         let order_by = $("#orderBy").data("order-by")
         let sort_by = $("#sortBy").data("sort-by")
         let query = $("#filterSection").data("query")
-        if(order_by === "order_review" && sort_by === "DESC") {
+        if(order_by === "order_price" && sort_by === "DESC") {
           window.location.href = `/search?query=${query}&page=${page}`
         } else {
           window.location.href = `/search?query=${query}&page=${page}&${order_by}=${sort_by}`

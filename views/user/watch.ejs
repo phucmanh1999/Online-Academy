@@ -23,7 +23,7 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container">
-      <a href="#" class="navbar-branch">
+      <a href="/" class="navbar-branch">
         <img src="/assets/images/logo.svg" width="160px" />
       </a>
       <button
@@ -54,8 +54,19 @@
               >Categories</a
             >
             <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-              <% for(const category of categories) { %>
-                <a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1"><%= category.category_name %></a>
+              <% for(const rootCategory of rootCategories) { %>
+                <div class="dropdown-item p-0">
+                  <div class="nav-item dropright pl-2 pr-2">
+                    <a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= rootCategory.root_category_name %>
+                    </a>
+                    <div class="dropdown-menu">
+                      <% rootCategory.Categories.forEach(item => { %>
+                        <a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
               <%} %>
             </div>
           </li>
@@ -147,7 +158,7 @@
       </div>
     </div>
   </nav>
-  
+
   <!-- Main content -->
   <div class="container mt-2">
     <nav aria-label="breadcrumb">
@@ -186,7 +197,7 @@
               </div>
             </span>
             <hr>
-          <% }) %>  
+          <% }) %>
         </div>
       <% } else { %>
         <div class="col-12 watch-list-body d-flex justify-content-center">
@@ -215,7 +226,7 @@
         <li><img src="https://s.udemycdn.com/partner-logos/surveymonkey-logo.svg" alt=""></li>
         <li><img src="https://s.udemycdn.com/partner-logos/booking-logo.svg" alt=""></li>
       </ul>
-    </div>  
+    </div>
   </div>
   <hr>
   <div class="container-fluid footer">
@@ -243,7 +254,7 @@
       <ul class="col list-group">
         <li class="list-group"><a href="#">
           Terms</a></li>
-        <li class="list-group"><a href="#">           
+        <li class="list-group"><a href="#">
           Privacy policy and cookie policy</a></li>
         <li class="list-group"><a href="#">
           Sitemap</a></li>

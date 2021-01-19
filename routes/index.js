@@ -84,6 +84,7 @@ router.get('/search',verifyStudentOrNormal, (req, res) => {
             response.payload = payload
             response.rootCategories = await getAllRootCategory()
             response.highLightCourses = await getHighLightCourses()
+            console.log(response)
             res.render("user/search", response)
         })
     })

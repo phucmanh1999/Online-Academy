@@ -28,7 +28,7 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<form id="formSearch" method="GET" action="/search" class="ml-1">
 					<span><i class="fas fa-search"></i></span>
-					<input type="text" placeholder="Search..." class="rounded-pill" />
+					<input type="text" name="query" placeholder="Search..." class="rounded-pill" />
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active">
@@ -38,11 +38,20 @@
 						<a class="nav-link dropdown-toggle" href="#" id="dropdownCategory" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false">Categories</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownCategory">
-							<% for(const category of categories) { %>
-								<a class="dropdown-item" href="/category-courses/<%= category.id %>?page=1">
-									<%= category.category_name %>
-								</a>
-								<%} %>
+							<% for(const rootCategory of rootCategories) { %>
+								<div class="dropdown-item p-0">
+									<div class="nav-item dropright pl-2 pr-2">
+										<a class="nav-link dropdown-toggle" id="dropdownRootCategory<%= rootCategory.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<%= rootCategory.root_category_name %>
+										</a>
+										<div class="dropdown-menu">
+											<% rootCategory.Categories.forEach(item => { %>
+												<a class="dropdown-item" href="/category-courses/<%= item.id %>"><%= item.category_name %></a>
+											<% }) %>
+										</div>
+									</div>
+								</div>
+							<%} %>
 						</div>
 					</li>
 					<li class="nav-item">
