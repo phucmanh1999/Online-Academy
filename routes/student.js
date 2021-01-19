@@ -216,7 +216,7 @@ router.get('/enroll', async (req, res) => {
     const user = req.user ? req.user : undefined
     let categories = await getAllCategories();
     if (user && user.type === ROLE_STUDENT) {
-        getBought({student_id: user.role_id}).then((courses) => {
+        getBought(user.role_id).then((courses) => {
             res.render('user/enroll',{user,courses,categories})
         })
     } else {
@@ -229,7 +229,6 @@ router.get('/profile', async (req,res) =>{
     let categories = await getAllCategories();
     let rootCategories = await getAllRootCategory();
     let user = await getUser({id: id});
-    console.log(user)
     res.render("user/profile",{categories,user,rootCategories})
 })
 
@@ -239,11 +238,12 @@ router.post('/profile',  (req, res) => {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         gender: req.body.gender,
-        birthday: req.body.birthday,
         email: req.body.email,
         job_title: req.body.job_title,
         user_address: req.body.address,
     }
+    if (req.body.birthday)
+        responseUser.birthday = req.body.birthday
     let imageFile = null
     let imgPath = null
         if (req.files) {
@@ -252,10 +252,12 @@ router.post('/profile',  (req, res) => {
             responseUser.avatar_url = imgPath
         }
         updateUser(user.id, responseUser).then(() => {
+            console.log(responseUser)
             if (imageFile)
                 imageFile.mv("./public" + imgPath)
             res.json({msg: "ok"})
         }).catch((err) => {
+            console.log(err)
             res.redirect("/login")
         })
 })

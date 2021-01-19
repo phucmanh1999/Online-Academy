@@ -270,7 +270,7 @@
 													<p>Add Lesson</p>
 													<hr>
 													<form action="/instructor/addLesson?chapter_id=<%=course.Chapters[i].id%>" id="formLessonAL<%= i %>" enctype="multipart/form-data" class="formLessonAL" method='post'>
-														
+
 														<div class="form-group">
 															<label for="lessonNameAL<%= i %>">Lesson name</label>
 															<input type="text" class="form-control" id="lessonNameAL<%= i %>" placeholder=""
@@ -500,7 +500,7 @@
 					});
 				});
 
-				
+
 
 
 
@@ -538,9 +538,9 @@
 							error: function (jqXHR, textStatus, errorMessage) {
 								console.log(errorMessage); // Optional
 							},
-							beforeSend: function (jqXHR, settings) {
-								alert('url '+ settings.url);
-							},
+							// beforeSend: function (jqXHR, settings) {
+							// 	alert('url '+ settings.url);
+							// },
 							success: function (data) {
 								Swal.fire('Saved!', '', 'success')
 								location.reload()
@@ -550,7 +550,7 @@
 						Swal.fire('Changes are not saved', '', 'info')
 					}
 				})
-				
+
 			})
 
 			//state for create editor in edit lesson

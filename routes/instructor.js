@@ -89,11 +89,12 @@ router.post('/profile', (req, res) => {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         gender: req.body.gender,
-        birthday: req.body.birthday,
         email: req.body.email,
         job_title: req.body.job_title,
         user_address: req.body.address,
     }
+    if (req.body.birthday)
+        responseUser.birthday = req.body.birthday
     let imageFile = null
     let imgPath = null
     if (user && user.type === ROLE_INSTRUCTOR) {
@@ -180,10 +181,15 @@ router.post('/editChapter', (req, res) => {
     updateChapter(chapter_id, {
         chapter_name: req.body.chapterName,
         short_description: req.body.shortDescription
+    }).then(() => {
+        getChapter({id: chapter_id}).then((c) => {
+            res.redirect('/instructor/editCourse?id='+c.course_id)
+        })
     })
 })
 
 router.post('/editCourse', async (req, res) => {
+    console.log(req.body)
     if (req.user) {
         if (req.user.type === ROLE_INSTRUCTOR) {
             let imgPath = null
@@ -256,7 +262,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                 view_number: 0,
                 rating: 0,
                 price: req.body.price + 0,
-                concurrency: req.body.concurrency,
+                concurrency: req.body.concurency,
                 course_language: 'vi',
                 course_state: 'U',
                 created_at: new Date(),
@@ -271,7 +277,7 @@ router.post('/addCourse', urlencodedParser, async (req, res) => {
                         course_number: ins.course_number ? ins.course_number + 1 : 1
                     })
                 })
-                res.redirect('/editCourse?id='+course.id)
+                res.redirect('/instructor/editCourse?id='+course.id)
             }).catch((err) => {
                 console.log(err)
                 res.json({msg: "Unknow error"})
@@ -298,7 +304,7 @@ router.post('/addChapter', (req, res) => {
             getCourse({id: course_id}).then(course => {
                 const chapterNum = course.chapter_number ? course.chapter_number : 0
                 updateCourse(course_id, {chapter_number: chapterNum + 1})
-                res.json({msg: 'ok'})
+                res.redirect('/instructor/editCourse?id='+course.id)
             })
         }).catch((err) => {
             console.log(err)
@@ -331,10 +337,10 @@ router.post('/addLesson', (req, res) => {
             getChapter({id: chapter_id}).then(chapter => {
                 const lessonNum = chapter.lesson_number ? chapter.lesson_number : 0
                 updateChapter(chapter_id, {lesson_number: lessonNum + 1})
+                if (videoFile)
+                    videoFile.mv("./public" + vidPath)
+                res.redirect('/instructor/editCourse?id='+chapter.course_id)
             })
-            if (videoFile)
-                videoFile.mv("./public" + vidPath)
-            res.json({msg: "ok"})
         }).catch((err) => {
             console.log(err)
             res.json({msg: 'Unknown error'})

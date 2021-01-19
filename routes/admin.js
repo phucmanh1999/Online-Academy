@@ -88,7 +88,6 @@ router.post('/addCategory', (req, res) => {
                 created_at: new Date(),
                 category_name: req.body.category_name
             }).then(() => {
-                console.log("aaa")
                 res.json({'msg': 'ok'})
             }).catch(() => {
                 console.log("err")
